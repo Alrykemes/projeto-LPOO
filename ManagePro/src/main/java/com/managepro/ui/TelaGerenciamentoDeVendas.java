@@ -15,13 +15,29 @@ import javax.swing.ListSelectionModel;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.border.LineBorder;
+import com.toedter.calendar.JCalendar;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import com.toedter.calendar.JDateChooser;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import com.toedter.calendar.JDateChooserCellEditor;
+import com.toedter.calendar.JDateChooserBeanInfo;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class TelaGerenciamentoDeVendas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel PrincipalPanel;
 	private JTextField FieldSearch;
+	JDateChooser dateChooserFrom;
+	JDateChooser dateChooserTo;
+	JLabel textDateFrom;
+	JLabel textDateTo;
 
 	/**
 	 * Launch the application.
@@ -54,7 +70,7 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		PrincipalPanel.setLayout(null);
 		
 		JPanel SearchPanel = new JPanel();
-		SearchPanel.setBounds(10, 0, 288, 630);
+		SearchPanel.setBounds(10, 0, 327, 630);
 		PrincipalPanel.add(SearchPanel);
 		SearchPanel.setLayout(null);
 		
@@ -65,32 +81,89 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		
 		JLabel lblFor = new JLabel("Por:");
 		lblFor.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblFor.setBounds(121, 11, 39, 20);
+		lblFor.setBounds(159, 11, 39, 20);
 		SearchPanel.add(lblFor);
 		
 		FieldSearch = new JTextField();
 		FieldSearch.setForeground(new Color(105, 105, 105));
-		FieldSearch.setText("Pesquise vendas por data");
-		FieldSearch.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		FieldSearch.setBounds(10, 35, 268, 30);
-		SearchPanel.add(FieldSearch);
+		FieldSearch.setText("Pesquise vendas por ID");
+		FieldSearch.setFont(new Font("SansSerif", Font.PLAIN, 17));
+		FieldSearch.setBounds(10, 42, 307, 30);
 		FieldSearch.setColumns(10);
+		FieldSearch.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				FieldSearch.setText("");
+			}
+			
+			public void focusLost(FocusEvent e) {
+				FieldSearch.setText("Digite para pesquisar");
+			}
+		});
+		SearchPanel.add(FieldSearch);
+		
+		dateChooserFrom = new JDateChooser();
+		dateChooserFrom.setBounds(40, 42, 118, 25);
+		textDateFrom = new JLabel("De:");
+		textDateFrom.setBounds(10, 46, 30, 15);
+		textDateFrom.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		
+		dateChooserTo = new JDateChooser();
+		dateChooserTo.setBounds(199, 42, 118, 25);
+		textDateTo = new JLabel("Até:");
+		textDateTo.setBounds(165, 46, 30, 15);
+		textDateTo.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		
 		
 		JComboBox FilterComboBox = new JComboBox();
 		FilterComboBox.setFont(new Font("SansSerif", Font.PLAIN, 17));
-		FilterComboBox.setModel(new DefaultComboBoxModel(new String[] {"Data", "ID", "Funcionario"}));
-		FilterComboBox.setBounds(160, 10, 118, 22);
+		FilterComboBox.setModel(new DefaultComboBoxModel(new String[] {"ID", "Funcionario", "Data"}));
+		FilterComboBox.setBounds(199, 10, 118, 22);
 		SearchPanel.add(FilterComboBox);
-		
+		FilterComboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				
+				if(e.getItem().equals("ID")) {
+					FieldSearch.setBounds(10, 42, 307, 30);
+					FieldSearch.setText("Pesquise vendas por ID");
+					SearchPanel.add(FieldSearch);
+					SearchPanel.remove(dateChooserFrom);
+					SearchPanel.remove(textDateFrom);
+					SearchPanel.remove(dateChooserTo);
+					SearchPanel.remove(textDateTo);
+					
+				}
+				
+				if(e.getItem().equals("Data")) {
+					FieldSearch.setBounds(0, 0, 0, 0);
+					SearchPanel.remove(FieldSearch);
+					SearchPanel.add(dateChooserFrom);
+					SearchPanel.add(textDateFrom);
+					SearchPanel.add(dateChooserTo);
+					SearchPanel.add(textDateTo);
+				}
+				
+				if(e.getItem().equals("Funcionario")) {
+					FieldSearch.setBounds(10, 42, 307, 30);
+					FieldSearch.setText("Pesquise vendas por Funcionario");
+					SearchPanel.add(FieldSearch);
+					SearchPanel.remove(dateChooserFrom);
+					SearchPanel.remove(textDateFrom);
+					SearchPanel.remove(dateChooserTo);
+					SearchPanel.remove(textDateTo);
+				}
+			}
+		});
+
 		JList SalesList = new JList();
 		SalesList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		SalesList.setValueIsAdjusting(true);
 		SalesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		SalesList.setBounds(10, 76, 268, 543);
+		SalesList.setBounds(10, 83, 307, 536);
 		SearchPanel.add(SalesList);
 		
+		
 		JPanel SalePanel = new JPanel();
-		SalePanel.setBounds(297, 0, 697, 630);
+		SalePanel.setBounds(337, 0, 657, 630);
 		PrincipalPanel.add(SalePanel);
 		SalePanel.setLayout(null);
 		
@@ -107,19 +180,19 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		
 		JLabel lblTextDate = new JLabel("Data:");
 		lblTextDate.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblTextDate.setBounds(529, 23, 58, 29);
+		lblTextDate.setBounds(489, 23, 58, 29);
 		SalePanel.add(lblTextDate);
 		
 		JLabel lblDate = new JLabel("17/06/2021");
 		lblDate.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblDate.setBounds(587, 23, 100, 29);
+		lblDate.setBounds(547, 23, 100, 29);
 		SalePanel.add(lblDate);
 		
 		JList productsList = new JList();
 		productsList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		productsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		productsList.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		productsList.setBounds(10, 75, 677, 342);
+		productsList.setBounds(10, 75, 637, 342);
 		SalePanel.add(productsList);
 		
 		JButton buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
@@ -130,19 +203,19 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		JLabel lblEmployeeName = new JLabel("Alguém da Silva");
 		lblEmployeeName.setToolTipText("");
 		lblEmployeeName.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblEmployeeName.setBounds(307, 23, 204, 29);
+		lblEmployeeName.setBounds(275, 23, 204, 29);
 		SalePanel.add(lblEmployeeName);
 		
 		JLabel lblTextEmployee = new JLabel("Funcionário:");
 		lblTextEmployee.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblTextEmployee.setBounds(201, 23, 108, 29);
+		lblTextEmployee.setBounds(169, 23, 108, 29);
 		SalePanel.add(lblTextEmployee);
 		
 		JButton btnDelete = new JButton("Deletar");
 		btnDelete.setForeground(new Color(255, 255, 255));
 		btnDelete.setBackground(new Color(255, 0, 0));
 		btnDelete.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnDelete.setBounds(558, 578, 129, 41);
+		btnDelete.setBounds(518, 578, 129, 41);
 		SalePanel.add(btnDelete);
 		
 		JButton btnEdit = new JButton("Editar");

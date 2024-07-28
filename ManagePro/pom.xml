@@ -4,12 +4,13 @@
   <artifactId>com.managepro.project</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>ManageProProject</name>
-  
+
   <dependencies>
-   <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-jdbc</artifactId>
-    <version>6.1.11</version>
-	</dependency>
+    <dependency>
+     <groupId>com.toedter</groupId>
+     <artifactId>jcalendar</artifactId>
+     <version>1.4</version>
+     </dependency>
   </dependencies>
+
 </project>
