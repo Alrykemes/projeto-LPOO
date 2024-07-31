@@ -12,26 +12,26 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
+import javax.swing.JLabel;
 
 public class JanelaFuncionario {
 
 	private JFrame frame;
 	private JTextField txtManegepro;
-	private JTextField txtCadastrarFuncionrio;
 	private JTextField txtNome;
 	private JTextField txtCpf;
 	private JTextField txtEmail;
 	private JTextField txtSenha;
 	private JTextField txtCargo;
-	private JTextField txtNome_1;
-	private JTextField txtEmail_1;
-	private JTextField txtCpf_1;
-	private JTextField txtSenha_1;
-	private JTextField txtCargo_1;
-	private JTextField txtSalrio;
-	private JTextField txtDataAdmisso;
-	private JTextField txtFrequncia;
 	private JTable table;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_5;
+	private JLabel lblNewLabel_6;
+	private JLabel lblNewLabel_7;
 
 	/**
 	 * Launch the application.
@@ -71,6 +71,7 @@ public class JanelaFuncionario {
 		panel_1.setLayout(null);
 		
 		txtManegepro = new JTextField();
+		txtManegepro.setEnabled(false);
 		txtManegepro.setFont(new Font("SansSerif", Font.BOLD, 15));
 		txtManegepro.setEditable(false);
 		txtManegepro.setBounds(0, 0, 115, 30);
@@ -78,118 +79,46 @@ public class JanelaFuncionario {
 		panel_1.add(txtManegepro);
 		txtManegepro.setColumns(10);
 		
-		txtCadastrarFuncionrio = new JTextField();
-		txtCadastrarFuncionrio.setFont(new Font("SansSerif", Font.BOLD, 20));
-		txtCadastrarFuncionrio.setEditable(false);
-		txtCadastrarFuncionrio.setBounds(0, 75, 1006, 54);
-		txtCadastrarFuncionrio.setText("Cadastrar Funcionário");
-		panel_1.add(txtCadastrarFuncionrio);
-		txtCadastrarFuncionrio.setColumns(10);
-		
 		txtNome = new JTextField();
-		txtNome.setFont(new Font("SansSerif", Font.PLAIN, 10));
+		txtNome.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		txtNome.setText("Nome:");
-		txtNome.setBounds(0, 139, 96, 19);
+		txtNome.setBounds(2, 46, 132, 25);
 		panel_1.add(txtNome);
 		txtNome.setColumns(10);
 		
 		txtCpf = new JTextField();
-		txtCpf.setFont(new Font("SansSerif", Font.PLAIN, 10));
+		txtCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		txtCpf.setText("CPF:");
-		txtCpf.setBounds(106, 139, 96, 19);
+		txtCpf.setBounds(144, 46, 115, 25);
 		panel_1.add(txtCpf);
 		txtCpf.setColumns(10);
 		
 		txtEmail = new JTextField();
-		txtEmail.setFont(new Font("SansSerif", Font.PLAIN, 10));
+		txtEmail.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		txtEmail.setText("Email:");
-		txtEmail.setBounds(212, 139, 96, 19);
+		txtEmail.setBounds(269, 46, 115, 25);
 		panel_1.add(txtEmail);
 		txtEmail.setColumns(10);
 		
 		txtSenha = new JTextField();
-		txtSenha.setFont(new Font("SansSerif", Font.PLAIN, 10));
+		txtSenha.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		txtSenha.setText("Senha:");
-		txtSenha.setBounds(318, 139, 96, 19);
+		txtSenha.setBounds(394, 46, 115, 25);
 		panel_1.add(txtSenha);
 		txtSenha.setColumns(10);
 		
 		txtCargo = new JTextField();
-		txtCargo.setFont(new Font("SansSerif", Font.PLAIN, 10));
+		txtCargo.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		txtCargo.setText("Cargo:");
-		txtCargo.setBounds(424, 139, 96, 19);
+		txtCargo.setBounds(519, 46, 123, 25);
 		panel_1.add(txtCargo);
 		txtCargo.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Adicionar");
 		btnNewButton.setBackground(new Color(128, 128, 128));
-		btnNewButton.setFont(new Font("SansSerif", Font.BOLD, 10));
-		btnNewButton.setBounds(598, 138, 85, 21);
+		btnNewButton.setFont(new Font("SansSerif", Font.BOLD, 20));
+		btnNewButton.setBounds(867, 46, 123, 27);
 		panel_1.add(btnNewButton);
-		
-		txtNome_1 = new JTextField();
-		txtNome_1.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtNome_1.setEditable(false);
-		txtNome_1.setText("Nome");
-		txtNome_1.setBounds(0, 168, 115, 20);
-		panel_1.add(txtNome_1);
-		txtNome_1.setColumns(10);
-		
-		txtEmail_1 = new JTextField();
-		txtEmail_1.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtEmail_1.setEditable(false);
-		txtEmail_1.setText("Email");
-		txtEmail_1.setBounds(250, 168, 115, 20);
-		panel_1.add(txtEmail_1);
-		txtEmail_1.setColumns(10);
-		
-		txtCpf_1 = new JTextField();
-		txtCpf_1.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtCpf_1.setEditable(false);
-		txtCpf_1.setText("CPF");
-		txtCpf_1.setBounds(125, 168, 115, 20);
-		panel_1.add(txtCpf_1);
-		txtCpf_1.setColumns(10);
-		
-		txtSenha_1 = new JTextField();
-		txtSenha_1.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtSenha_1.setEditable(false);
-		txtSenha_1.setText("Senha");
-		txtSenha_1.setBounds(375, 168, 115, 20);
-		panel_1.add(txtSenha_1);
-		txtSenha_1.setColumns(10);
-		
-		txtCargo_1 = new JTextField();
-		txtCargo_1.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtCargo_1.setEditable(false);
-		txtCargo_1.setText("Cargo");
-		txtCargo_1.setBounds(500, 168, 115, 20);
-		panel_1.add(txtCargo_1);
-		txtCargo_1.setColumns(10);
-		
-		txtSalrio = new JTextField();
-		txtSalrio.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtSalrio.setEditable(false);
-		txtSalrio.setText("Salário");
-		txtSalrio.setBounds(625, 168, 115, 20);
-		panel_1.add(txtSalrio);
-		txtSalrio.setColumns(10);
-		
-		txtDataAdmisso = new JTextField();
-		txtDataAdmisso.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtDataAdmisso.setEditable(false);
-		txtDataAdmisso.setText("Data Admissão");
-		txtDataAdmisso.setBounds(750, 168, 115, 20);
-		panel_1.add(txtDataAdmisso);
-		txtDataAdmisso.setColumns(10);
-		
-		txtFrequncia = new JTextField();
-		txtFrequncia.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		txtFrequncia.setEditable(false);
-		txtFrequncia.setText("Frequência");
-		txtFrequncia.setBounds(875, 168, 115, 20);
-		panel_1.add(txtFrequncia);
-		txtFrequncia.setColumns(10);
 		
 		table = new JTable();
 		table.setFont(new Font("SansSerif", Font.PLAIN, 10));
@@ -237,7 +166,47 @@ public class JanelaFuncionario {
 				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
 			}
 		));
-		table.setBounds(10, 198, 980, 435);
+		table.setBounds(10, 155, 980, 478);
 		panel_1.add(table);
+		
+		lblNewLabel = new JLabel("Nome");
+		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel.setBounds(0, 125, 115, 20);
+		panel_1.add(lblNewLabel);
+		
+		lblNewLabel_1 = new JLabel("CPF");
+		lblNewLabel_1.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel_1.setBounds(125, 125, 115, 20);
+		panel_1.add(lblNewLabel_1);
+		
+		lblNewLabel_2 = new JLabel("Email");
+		lblNewLabel_2.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel_2.setBounds(250, 125, 115, 20);
+		panel_1.add(lblNewLabel_2);
+		
+		lblNewLabel_3 = new JLabel("Senha");
+		lblNewLabel_3.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel_3.setBounds(375, 125, 115, 20);
+		panel_1.add(lblNewLabel_3);
+		
+		lblNewLabel_4 = new JLabel("Cargo");
+		lblNewLabel_4.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel_4.setBounds(500, 125, 115, 20);
+		panel_1.add(lblNewLabel_4);
+		
+		lblNewLabel_5 = new JLabel("Salário");
+		lblNewLabel_5.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel_5.setBounds(625, 125, 115, 20);
+		panel_1.add(lblNewLabel_5);
+		
+		lblNewLabel_6 = new JLabel("Data Admissão");
+		lblNewLabel_6.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel_6.setBounds(750, 125, 115, 20);
+		panel_1.add(lblNewLabel_6);
+		
+		lblNewLabel_7 = new JLabel("Frequência");
+		lblNewLabel_7.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNewLabel_7.setBounds(875, 125, 115, 20);
+		panel_1.add(lblNewLabel_7);
 	}
 }
