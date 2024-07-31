@@ -26,40 +26,30 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 
-public class TeladeEstoque extends JFrame {
+public class TeladeEstoque{
 
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TeladeEstoque frame = new TeladeEstoque();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	private JFrame frame;
+	
+	public JFrame getFrame() {
+		return this.frame;
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public TeladeEstoque() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1020, 600);
+		this.initialize();
+	}
+	
+	private void initialize() {
+		frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 1020, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setTitle("ManagePro");
+		frame.setTitle("ManagePro");
 		
 
-		setContentPane(contentPane);
+		frame.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		textField = new JTextField();
@@ -86,6 +76,12 @@ public class TeladeEstoque extends JFrame {
 		JButton editarProduto = new JButton("EDITAR");
 		editarProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		editarProduto.setBounds(242, 55, 131, 45);
+		editarProduto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaEditarProdutos telaEditar = new TelaEditarProdutos();
+				telaEditar.getFrame().setVisible(true);
+			}
+		});
 		contentPane.add(editarProduto);
 		
 		JButton removerProduto = new JButton("REMOVER");
