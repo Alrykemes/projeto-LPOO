@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.managepro</groupId>
+  <artifactId>com.managepro.project</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>ManageProProject</name>
+  
+  <repositories>
+  <repository>
+    <id>com.teamdev</id>
+    <url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
+	</repository>
+  </repositories>
+
+  <dependencies>
+  <!-- JCalendar -->
+     <dependency>
+     <groupId>com.toedter</groupId>
+     <artifactId>jcalendar</artifactId>
+     <version>1.4</version>
+     </dependency>
+   <!-- Mockito -->
+   	<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>5.12.0</version>
+    <scope>test</scope>
+	</dependency>
+    <dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-junit-jupiter</artifactId>
+    <version>5.12.0</version>
+    <scope>test</scope>
+	</dependency>
+	<!-- JxBrowser -->
+	<dependency>
+    <groupId>com.teamdev.jxbrowser</groupId>
+    <artifactId>jxbrowser-swing</artifactId>
+    <version>7.39.2</version>
+	</dependency>
+	<dependency>
+    <groupId>com.teamdev.jxbrowser</groupId>
+    <artifactId>jxbrowser-cross-platform</artifactId>
+    <version>7.39.2</version>
+    <type>pom</type>
+	</dependency>
+
+
+
+  </dependencies>
+
+</project>
