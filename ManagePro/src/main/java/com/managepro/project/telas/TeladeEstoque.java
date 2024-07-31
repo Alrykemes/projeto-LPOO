@@ -25,15 +25,16 @@ import javax.swing.JLabel;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 
 public class TeladeEstoque{
 
 	private JPanel contentPane;
 	private JTextField textField;
-	private JFrame frame;
+	private JFrame FrmManagePro;
 	
 	public JFrame getFrame() {
-		return this.frame;
+		return this.FrmManagePro;
 	}
 
 	public TeladeEstoque() {
@@ -41,15 +42,15 @@ public class TeladeEstoque{
 	}
 	
 	private void initialize() {
-		frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(100, 100, 1020, 600);
+		FrmManagePro = new JFrame();
+		FrmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		FrmManagePro.setBounds(100, 100, 1020, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		frame.setTitle("ManagePro");
+		FrmManagePro.setTitle("ManagePro");
 		
 
-		frame.setContentPane(contentPane);
+		FrmManagePro.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		textField = new JTextField();
@@ -69,6 +70,12 @@ public class TeladeEstoque{
 		contentPane.add(list);
 		
 		JButton novoProduto = new JButton("NOVO");
+		novoProduto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaAdicionarProdutos telaAddProdutos = new TelaAdicionarProdutos();
+				telaAddProdutos.getFrame().setVisible(true);
+			}
+		});
 		novoProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		novoProduto.setBounds(50, 55, 131, 45);
 		contentPane.add(novoProduto);
@@ -87,7 +94,10 @@ public class TeladeEstoque{
 		JButton removerProduto = new JButton("REMOVER");
 		removerProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (JOptionPane.showConfirmDialog(removerProduto, "Deseja mesmo remover o(s) produto(s) ?","", JOptionPane.YES_NO_OPTION) == 0 ) {
+					JOptionPane.showMessageDialog(removerProduto, "Produto(s) removido.");
 			}
+		}
 		});
 		removerProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		removerProduto.setBounds(445, 55, 131, 45);
@@ -102,6 +112,10 @@ public class TeladeEstoque{
 		filtroLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		filtroLabel.setBounds(775, 93, 51, 14);
 		contentPane.add(filtroLabel);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(966, 166, 14, 373);
+		contentPane.add(scrollPane);
 		
 		
 		
