@@ -1,7 +1,5 @@
 package com.managepro.ui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -9,68 +7,54 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
-import java.awt.Component;
-
 import javax.swing.border.LineBorder;
-import com.toedter.calendar.JCalendar;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import com.toedter.calendar.JDateChooser;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import com.toedter.calendar.JDateChooserCellEditor;
-import com.toedter.calendar.JDateChooserBeanInfo;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
-public class TelaGerenciamentoDeVendas extends JFrame {
+public class TelaGerenciamentoDeVendas {
 
-	private static final long serialVersionUID = 1L;
+	private JFrame frmManagePro;
 	private JPanel PrincipalPanel;
 	private JTextField FieldSearch;
-	JDateChooser dateChooserFrom;
-	JDateChooser dateChooserTo;
-	JLabel textDateFrom;
-	JLabel textDateTo;
+	private JDateChooser dateChooserFrom;
+	private JDateChooser dateChooserTo;
+	private JLabel textDateFrom;
+	private JLabel textDateTo;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaGerenciamentoDeVendas frame = new TelaGerenciamentoDeVendas();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public JFrame getFrame() {
+		return this.frmManagePro;
 	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public TelaGerenciamentoDeVendas() {
-		setResizable(false);
-		setTitle("ManagePro - Gerenciamento de vendas");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1020, 680);
+		initialize();
+	}
+		
+	private void initialize() {
+		frmManagePro = new JFrame();
+		frmManagePro.setResizable(false);
+		frmManagePro.setLocationRelativeTo(null);
+		frmManagePro.setTitle("ManagePro");
+		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmManagePro.setBounds(100, 100, 1020, 680);
 		PrincipalPanel = new JPanel();
 		PrincipalPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		frmManagePro.setContentPane(PrincipalPanel);
 
-		setContentPane(PrincipalPanel);
 		PrincipalPanel.setLayout(null);
 		
 		JPanel SearchPanel = new JPanel();
-		SearchPanel.setBounds(10, 0, 327, 630);
+		SearchPanel.setBounds(10, 45, 327, 585);
 		PrincipalPanel.add(SearchPanel);
 		SearchPanel.setLayout(null);
 		
@@ -93,10 +77,12 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		FieldSearch.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				FieldSearch.setText("");
+				FieldSearch.setForeground(new Color(0, 0, 0));
 			}
 			
 			public void focusLost(FocusEvent e) {
 				FieldSearch.setText("Digite para pesquisar");
+				FieldSearch.setForeground(new Color(105, 105, 105));
 			}
 		});
 		SearchPanel.add(FieldSearch);
@@ -114,9 +100,9 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		textDateTo.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		
 		
-		JComboBox FilterComboBox = new JComboBox();
+		JComboBox<String> FilterComboBox = new JComboBox<String>();
 		FilterComboBox.setFont(new Font("SansSerif", Font.PLAIN, 17));
-		FilterComboBox.setModel(new DefaultComboBoxModel(new String[] {"ID", "Funcionario", "Data"}));
+		FilterComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "Funcionario", "Data"}));
 		FilterComboBox.setBounds(199, 10, 118, 22);
 		SearchPanel.add(FilterComboBox);
 		FilterComboBox.addItemListener(new ItemListener() {
@@ -154,11 +140,11 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 			}
 		});
 
-		JList SalesList = new JList();
+		JList<?> SalesList = new JList<Object>();
 		SalesList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		SalesList.setValueIsAdjusting(true);
 		SalesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		SalesList.setBounds(10, 83, 307, 536);
+		SalesList.setBounds(10, 83, 307, 491);
 		SearchPanel.add(SalesList);
 		
 		
@@ -188,7 +174,7 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		lblDate.setBounds(547, 23, 100, 29);
 		SalePanel.add(lblDate);
 		
-		JList productsList = new JList();
+		JList<?> productsList = new JList<Object>();
 		productsList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		productsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		productsList.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -262,5 +248,19 @@ public class TelaGerenciamentoDeVendas extends JFrame {
 		lblNewLabel_1_1_2.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		lblNewLabel_1_1_2.setBounds(55, 517, 135, 29);
 		SalePanel.add(lblNewLabel_1_1_2);
+		
+		JButton btnNewButton = new JButton("Voltar   ");
+		btnNewButton.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
+		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaMenu menu = new TelaMenu();
+				getFrame().setVisible(false);
+				menu.getFrame().setLocationRelativeTo(null);
+				menu.getFrame().setVisible(true);
+			}
+		});
+		btnNewButton.setBounds(20, 8, 120, 35);
+		PrincipalPanel.add(btnNewButton);
 	}
 }
