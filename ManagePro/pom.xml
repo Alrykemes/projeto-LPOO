@@ -5,7 +5,15 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>ManageProProject</name>
   
+  <repositories>
+  <repository>
+    <id>com.teamdev</id>
+    <url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
+	</repository>
+  </repositories>
+
   <dependencies>
+<<<<<<< HEAD
    <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-jdbc</artifactId>
@@ -19,4 +27,42 @@
 	 </dependency>
   </dependencies>
   
+=======
+  <!-- JCalendar -->
+     <dependency>
+     <groupId>com.toedter</groupId>
+     <artifactId>jcalendar</artifactId>
+     <version>1.4</version>
+     </dependency>
+   <!-- Mockito -->
+   	<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>5.12.0</version>
+    <scope>test</scope>
+	</dependency>
+    <dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-junit-jupiter</artifactId>
+    <version>5.12.0</version>
+    <scope>test</scope>
+	</dependency>
+	<!-- JxBrowser -->
+	<dependency>
+    <groupId>com.teamdev.jxbrowser</groupId>
+    <artifactId>jxbrowser-swing</artifactId>
+    <version>7.39.2</version>
+	</dependency>
+	<dependency>
+    <groupId>com.teamdev.jxbrowser</groupId>
+    <artifactId>jxbrowser-cross-platform</artifactId>
+    <version>7.39.2</version>
+    <type>pom</type>
+	</dependency>
+
+
+
+  </dependencies>
+
+>>>>>>> main
 </project>
