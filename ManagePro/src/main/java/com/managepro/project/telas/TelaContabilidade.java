@@ -27,11 +27,11 @@ public class TelaContabilidade extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel lblImage1;		//IMAGENS DOS GRÁFICOS (APAGAR DEPOIS: APENAS TESTE)
-	private JLabel lblImage2;		//AVISO: NOMES GENÉRICOS CRIADOS PROPOSITALMENTE: APENAS TESTE
+	private JLabel lblImage1;		
+	private JLabel lblImage2;		
 	private JLabel lblImage3;
-	private JDateChooser dateChooser;
-	private JDateChooser dateChooser_1;
+	private JDateChooser escolherPrimeiraData;
+	private JDateChooser escolherDataFinal;
 
 	/**
 	 * Launch the application.
@@ -100,11 +100,11 @@ public class TelaContabilidade extends JFrame {
 		agruparLabel.setBounds(507, 11, 101, 29);
 		painelOpcoes.add(agruparLabel);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Venda", "Produto", "Cliente", "Forma de pagamento", "Código"}));
-		comboBox.setBounds(507, 39, 167, 35);
-		painelOpcoes.add(comboBox);
+		JComboBox caixaOpcoes = new JComboBox();
+		caixaOpcoes.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		caixaOpcoes.setModel(new DefaultComboBoxModel(new String[] {"Venda", "Produto", "Cliente", "Forma de pagamento", "Código"}));
+		caixaOpcoes.setBounds(507, 39, 167, 35);
+		painelOpcoes.add(caixaOpcoes);
 		
 		JButton gerarRelatorio = new JButton("Gerar relatório");
 		gerarRelatorio.setBackground(new Color(255, 255, 255));
@@ -112,15 +112,14 @@ public class TelaContabilidade extends JFrame {
 		gerarRelatorio.setBounds(749, 41, 145, 31);
 		painelOpcoes.add(gerarRelatorio);
 		
-		dateChooser = new JDateChooser();
-		dateChooser.setBounds(72, 39, 155, 35);
-		painelOpcoes.add(dateChooser);
+		escolherPrimeiraData = new JDateChooser();
+		escolherPrimeiraData.setBounds(72, 39, 155, 35);
+		painelOpcoes.add(escolherPrimeiraData);
 		
-		dateChooser_1 = new JDateChooser();
-		dateChooser_1.setBounds(289, 39, 161, 35);
-		painelOpcoes.add(dateChooser_1);
+		escolherDataFinal = new JDateChooser();
+		escolherDataFinal.setBounds(289, 39, 161, 35);
+		painelOpcoes.add(escolherDataFinal);
 		
-		//BOTÃO
 		gerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				validarData();
@@ -140,10 +139,10 @@ public class TelaContabilidade extends JFrame {
 		contentPane.add(cardUm);
 		cardUm.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Produtos");
-		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel.setBounds(20, 11, 60, 14);
-		cardUm.add(lblNewLabel);
+		JLabel contadorProdutos = new JLabel("Produtos");
+		contadorProdutos.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		contadorProdutos.setBounds(20, 11, 60, 14);
+		cardUm.add(contadorProdutos);
 		
 		JLabel lblNewLabel_2 = new JLabel("340");
 		lblNewLabel_2.setFont(new Font("SansSerif", Font.PLAIN, 20));
@@ -169,10 +168,10 @@ public class TelaContabilidade extends JFrame {
 		cardDois.setBounds(394, 108, 248, 116);
 		contentPane.add(cardDois);
 		
-		JLabel lblNewLabel_5 = new JLabel("Vendas");
-		lblNewLabel_5.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_5.setBounds(20, 11, 46, 14);
-		cardDois.add(lblNewLabel_5);
+		JLabel quantidadeVendas = new JLabel("Vendas");
+		quantidadeVendas.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		quantidadeVendas.setBounds(20, 11, 46, 14);
+		cardDois.add(quantidadeVendas);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("340");
 		lblNewLabel_2_1.setFont(new Font("SansSerif", Font.PLAIN, 20));
@@ -185,10 +184,10 @@ public class TelaContabilidade extends JFrame {
 		cardTres.setBounds(648, 108, 249, 116);
 		contentPane.add(cardTres);
 		
-		JLabel lblNewLabel_3 = new JLabel("Ganhos");
-		lblNewLabel_3.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_3.setBounds(26, 11, 46, 14);
-		cardTres.add(lblNewLabel_3);
+		JLabel ganhosVenda = new JLabel("Ganhos");
+		ganhosVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ganhosVenda.setBounds(26, 11, 46, 14);
+		cardTres.add(ganhosVenda);
 		
 		JLabel lblNewLabel_4 = new JLabel("R$ 12.500");
 		lblNewLabel_4.setFont(new Font("SansSerif", Font.PLAIN, 20));
@@ -199,8 +198,8 @@ public class TelaContabilidade extends JFrame {
 	
 	
 		private void validarData() { 
-			Date dataInicial = dateChooser.getDate();
-			Date dataFinal = dateChooser_1.getDate();
+			Date dataInicial = escolherPrimeiraData.getDate();
+			Date dataFinal = escolherDataFinal.getDate();
 			
 			if(dataInicial == null || dataFinal == null) {
 				JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -209,7 +208,7 @@ public class TelaContabilidade extends JFrame {
 			}
     }
 	
-		private void showImage() {	//MOSTRA AS IMAGENS DOS GRÁFICOS
+		private void showImage() {	
 			lblImage1.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
 			lblImage2.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
 			lblImage3.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
