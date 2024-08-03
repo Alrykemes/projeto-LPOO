@@ -1,6 +1,7 @@
 package com.managepro.ui;
 
 import javax.swing.JFrame;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -12,17 +13,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import java.awt.Toolkit;
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JPanel;
-import javax.swing.ImageIcon;
 
 public class TelaLogin {
 
 	private JFrame frmManagepro;
-	private JTextField userLogin;
-	private JPasswordField passwordLogin;
+	private JTextField campoUsuario;
+	private JPasswordField campoSenha;
 	private JPanel panel;
 	
 	public JFrame getFrame() {
@@ -42,47 +44,71 @@ public class TelaLogin {
 		frmManagepro.setResizable(false);
 		frmManagepro.setBounds(100, 100, 1024, 680);
 		frmManagepro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		panel = new JPanel();
-		panel.setBounds(0, 0, 1020, 680);
+		panel.setBounds(0, 0, 1024, 680);
 		frmManagepro.getContentPane().add(panel);
 		
-		userLogin = new JTextField();
-		userLogin.setBounds(361, 224, 292, 40);
-		userLogin.addFocusListener(new FocusAdapter() {
+		campoUsuario = new JTextField();
+		campoUsuario.setBounds(360, 225, 290, 40);
+		campoUsuario.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
-				userLogin.setText("");
-				userLogin.setForeground(Color.black);
+				campoUsuario.setText("");
+				campoUsuario.setForeground(Color.black);
 			}
 			public void focusLost(FocusEvent e) {
-                if (userLogin.getText().isEmpty()) {
-                    userLogin.setText("Usuário");
-                    userLogin.setForeground(Color.LIGHT_GRAY);
+                if (campoUsuario.getText().isEmpty()) {
+                    campoUsuario.setText("Usuário");
+                    campoUsuario.setForeground(Color.LIGHT_GRAY);
                 }
             }
 		});
 		
 		frmManagepro.getContentPane().setLayout(null);
 		panel.setLayout(null);
-		userLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		userLogin.setForeground(Color.LIGHT_GRAY);
-		userLogin.setToolTipText("");
-		panel.add(userLogin);
-		userLogin.setColumns(10);
+		campoUsuario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoUsuario.setForeground(Color.LIGHT_GRAY);
+		campoUsuario.setToolTipText("");
+		panel.add(campoUsuario);
+		campoUsuario.setColumns(10);
 		
-		JButton botaoEntrar = new JButton("Entrar");
-		botaoEntrar.setBounds(451, 357, 113, 39);
-		botaoEntrar.addMouseListener(new MouseAdapter() {
+		JLabel labelTitulo = new JLabel("LOGIN");
+		labelTitulo.setBounds(425, 95, 150, 30);
+		labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		labelTitulo.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		panel.add(labelTitulo);
 		
-		});
+		JLabel labelUsuario = new JLabel("Usuário");
+		labelUsuario.setBounds(360, 205, 60, 15);
+		labelUsuario.setHorizontalAlignment(SwingConstants.LEFT);
+		labelUsuario.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		panel.add(labelUsuario);
+		
+		JLabel labelSenha = new JLabel("Senha");
+		labelSenha.setBounds(360, 275, 45, 15);
+		labelSenha.setHorizontalAlignment(SwingConstants.LEFT);
+		labelSenha.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		panel.add(labelSenha);
+		
+		campoSenha = new JPasswordField();
+		campoSenha.setForeground(new Color(0, 0, 0));
+		campoSenha.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoSenha.setBounds(360, 295, 290, 40);
+		panel.add(campoSenha);
+		
+		Botao botaoEntrar = new Botao("Entrar");
+		botaoEntrar.setBounds(450, 360, 115, 40);
 		botaoEntrar.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		
+		
 		botaoEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-					String usuario = userLogin.getText();
+					String usuario = campoUsuario.getText();
 				
 					//String senha = passwordLogin.getText();
 					// ficou velho ^
-					char [] senhaArray = passwordLogin.getPassword();
+					char [] senhaArray = campoSenha.getPassword();
 					String senha = new String(senhaArray);
 					
 					
@@ -100,35 +126,7 @@ public class TelaLogin {
 					}
 			}
 		);
+		
 		panel.add(botaoEntrar);
-		
-		JLabel lblNewLabel = new JLabel("LOGIN");
-		lblNewLabel.setBounds(426, 96, 148, 32);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 30));
-		panel.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Usuário");
-		lblNewLabel_1.setBounds(362, 204, 60, 16);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		panel.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Senha");
-		lblNewLabel_1_1.setBounds(361, 275, 46, 16);
-		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1_1.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		panel.add(lblNewLabel_1_1);
-		
-		passwordLogin = new JPasswordField();
-		passwordLogin.setForeground(new Color(0, 0, 0));
-		passwordLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		passwordLogin.setBounds(361, 295, 292, 40);
-		panel.add(passwordLogin);
-		
-		
-		
-	
-		
 	}
 }

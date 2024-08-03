@@ -2,16 +2,19 @@ package com.managepro.ui;
 
 
 import javax.swing.JFrame;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
-
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.Font;
 import java.awt.Toolkit;
 
@@ -20,7 +23,6 @@ public class TelaMenu {
 	private JFrame frmManagePro;
 	private JPanel contentPane;
 	
-
 	public JFrame getFrame() {
 		return this.frmManagePro;
 	}
@@ -35,7 +37,7 @@ public class TelaMenu {
 		frmManagePro.setResizable(false);
 		frmManagePro.setTitle("ManagePro");
 		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.setBounds(100, 100, 1020, 680);
+		frmManagePro.setBounds(100, 100, 1024, 680);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -44,21 +46,17 @@ public class TelaMenu {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		panel.setBackground(new Color(81, 81, 81));
+		panel.setBackground(new Color(80, 80, 80));
 		panel.setBounds(0, 0, 1004, 83);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(10, 0, 336, 81);
-		panel.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\vitor\\Downloads\\ManagePRO-removebg-preview 2.png"));
+		Botao sairBotao = new Botao("Sair");
+		sairBotao.setForeground(new Color(255, 255, 255));
+		sairBotao.setFont(new Font("SansSerif", Font.BOLD, 18));
+		sairBotao.setBackground(new Color(255, 0, 0));
 		
-		JButton btnNewButton = new JButton("Sair");
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		btnNewButton.setBackground(new Color(255, 0, 0));
-		btnNewButton.addActionListener(new ActionListener() {
+		sairBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaLogin telaInicial = new TelaLogin();
 				getFrame().setVisible(false);
@@ -66,14 +64,16 @@ public class TelaMenu {
 				telaInicial.getFrame().setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(889, 27, 89, 27);
-		panel.add(btnNewButton);
 		
-		JButton estoqueBotao = new JButton("Estoque       ");
+		sairBotao.setBounds(890, 25, 90, 30);
+		panel.add(sairBotao);
+		
+		Botao estoqueBotao = new Botao("Estoque       ");
 		estoqueBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/EstoqueIcon.png")));
 		estoqueBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		estoqueBotao.setBorder(new LineBorder(Color.GRAY, 2));
 		estoqueBotao.setBounds(381, 125, 249, 60);
+		
 		estoqueBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaEstoque telaEstoque = new TelaEstoque();
@@ -84,11 +84,12 @@ public class TelaMenu {
 		});
 		contentPane.add(estoqueBotao);
 		
-		JButton novaVendaBotao = new JButton("Nova Venda   ");
+		Botao novaVendaBotao = new Botao("Nova Venda   ");
 		novaVendaBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/NovaVendaIcon.png")));
 		novaVendaBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		novaVendaBotao.setBorder(new LineBorder(Color.GRAY, 2));
 		novaVendaBotao.setBounds(381, 211, 249, 60);
+		
 		novaVendaBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaNovaVenda telaNovaVenda = new TelaNovaVenda();
@@ -99,12 +100,13 @@ public class TelaMenu {
 		});
 		contentPane.add(novaVendaBotao);
 		
-		JButton vendasBt = new JButton("Vendas        ");
-		vendasBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/VendasIcon.png")));
-		vendasBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		vendasBt.setBorder(new LineBorder(Color.GRAY, 2));
-		vendasBt.setBounds(381, 302, 249, 60);
-		vendasBt.addActionListener(new ActionListener() {
+		Botao vendasBotao = new Botao("Vendas        ");
+		vendasBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/VendasIcon.png")));
+		vendasBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		vendasBotao.setBorder(new LineBorder(Color.GRAY, 2));
+		vendasBotao.setBounds(381, 302, 249, 60);
+		
+		vendasBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaGerenciamentoDeVendas telaVendas = new TelaGerenciamentoDeVendas();
 				getFrame().setVisible(false);
@@ -112,14 +114,14 @@ public class TelaMenu {
 				telaVendas.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(vendasBt);
+		contentPane.add(vendasBotao);
 		
-		JButton funcionariosBt = new JButton("Funcionários ");
-		funcionariosBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
-		funcionariosBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		funcionariosBt.setBorder(new LineBorder(Color.GRAY, 2));
-		funcionariosBt.setBounds(381, 400, 249, 60);
-		funcionariosBt.addActionListener(new ActionListener() {
+		Botao funcionariosBotao = new Botao("Funcionários ");
+		funcionariosBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
+		funcionariosBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		funcionariosBotao.setBorder(new LineBorder(Color.GRAY, 2));
+		funcionariosBotao.setBounds(381, 400, 249, 60);
+		funcionariosBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaFuncionarios telaFuncionarios = new TelaFuncionarios();
 				getFrame().setVisible(false);
@@ -127,14 +129,15 @@ public class TelaMenu {
 				telaFuncionarios.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(funcionariosBt);
+		contentPane.add(funcionariosBotao);
 		
-		JButton contabilidadeBt = new JButton("Contabilidade");
-		contabilidadeBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/ContabilidadeIcon.png")));
-		contabilidadeBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		contabilidadeBt.setBorder(new LineBorder(Color.GRAY, 2));
-		contabilidadeBt.setBounds(381, 492, 249, 60);
-		contabilidadeBt.addActionListener(new ActionListener() {
+		Botao contabilidadeBotao = new Botao("Contabilidade");
+		contabilidadeBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/ContabilidadeIcon.png")));
+		contabilidadeBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		contabilidadeBotao.setBorder(new LineBorder(Color.GRAY, 2));
+		contabilidadeBotao.setBounds(381, 492, 249, 60);
+		
+		contabilidadeBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaContabilidade telaContabilidade = new TelaContabilidade();
 				getFrame().setVisible(false);
@@ -142,6 +145,6 @@ public class TelaMenu {
 				telaContabilidade.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(contabilidadeBt);
+		contentPane.add(contabilidadeBotao);
 	}
 }
