@@ -15,6 +15,7 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+import java.awt.Toolkit;
 
 public class TelaEstoque {
 
@@ -32,6 +33,7 @@ public class TelaEstoque {
 	
 	private void initialize() {
 		frmManagePro = new JFrame();
+		frmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaEstoque.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagePro.setResizable(false);
 		frmManagePro.setLocationRelativeTo(null);
 		frmManagePro.setTitle("ManagePro");

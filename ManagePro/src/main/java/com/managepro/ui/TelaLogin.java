@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 public class TelaLogin {
 
@@ -34,8 +35,8 @@ public class TelaLogin {
 
 	private void initialize() {
 		frmManagepro = new JFrame();		
+		frmManagepro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaLogin.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagepro.setTitle("ManagePro");
-		frmManagepro.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\shaun\\Downloads\\Untitled design.png"));
 		frmManagepro.setForeground(Color.WHITE);
 		frmManagepro.getContentPane().setBackground(Color.WHITE);
 		frmManagepro.setResizable(false);

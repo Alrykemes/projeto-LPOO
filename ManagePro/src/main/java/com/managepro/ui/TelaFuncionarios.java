@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Toolkit;
 
 public class TelaFuncionarios {
 
@@ -47,6 +48,7 @@ public class TelaFuncionarios {
 	
 	private void initialize() {
 		frmManagePro = new JFrame();
+		frmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaFuncionarios.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagePro.setTitle("ManagePro");
 		frmManagePro.setBounds(100, 100, 1020, 680);
 		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

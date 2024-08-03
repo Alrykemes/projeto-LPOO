@@ -21,6 +21,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 public class TelaGerenciamentoDeVendas {
 
@@ -42,6 +43,7 @@ public class TelaGerenciamentoDeVendas {
 		
 	private void initialize() {
 		frmManagePro = new JFrame();
+		frmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagePro.setResizable(false);
 		frmManagePro.setLocationRelativeTo(null);
 		frmManagePro.setTitle("ManagePro");

@@ -11,6 +11,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class TelaEditarProdutos {
 
@@ -33,6 +34,7 @@ public class TelaEditarProdutos {
 
 	public void initialize() {
 		FrmManagePro = new JFrame();
+		FrmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaEditarProdutos.class.getResource("/com/managepro/assets/manageIcon.png")));
 		FrmManagePro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		FrmManagePro.setBounds(100, 100, 700, 500);
 		FrmManagePro.setResizable(false);

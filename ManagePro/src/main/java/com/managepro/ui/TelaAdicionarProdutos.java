@@ -12,6 +12,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class TelaAdicionarProdutos{
 
@@ -34,6 +35,7 @@ public class TelaAdicionarProdutos{
 
 	private void initialize() {
 		FrmManagePro = new JFrame();
+		FrmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaAdicionarProdutos.class.getResource("/com/managepro/assets/manageIcon.png")));
 		FrmManagePro.setTitle("ManagePro");
 		FrmManagePro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		FrmManagePro.setBounds(100, 100, 700, 500);

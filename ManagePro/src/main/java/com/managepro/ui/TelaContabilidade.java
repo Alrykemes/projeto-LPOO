@@ -16,6 +16,7 @@ import java.util.Date;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Toolkit;
 
 public class TelaContabilidade {
 
@@ -37,6 +38,7 @@ public class TelaContabilidade {
 	
 	private void initialize() {
 		frmManagePro = new JFrame();
+		frmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaContabilidade.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagePro.setResizable(false);
 		frmManagePro.setLocationRelativeTo(null);
 		frmManagePro.setTitle("ManagePro");

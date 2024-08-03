@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 public class TelaMenu {
 
@@ -30,6 +31,7 @@ public class TelaMenu {
 	
 	public void initialize() {
 		frmManagePro = new JFrame();
+		frmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaMenu.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagePro.setResizable(false);
 		frmManagePro.setTitle("ManagePro");
 		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
