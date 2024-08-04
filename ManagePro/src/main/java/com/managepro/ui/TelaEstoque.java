@@ -20,8 +20,8 @@ import java.awt.Toolkit;
 public class TelaEstoque {
 
 	private JFrame frmManagePro;
-	private JPanel contentPane;
-	private JTextField textField;
+	private JPanel panel;
+	private JTextField campoTexto;
 
 	public JFrame getFrame() {
 		return this.frmManagePro;
@@ -38,31 +38,29 @@ public class TelaEstoque {
 		frmManagePro.setLocationRelativeTo(null);
 		frmManagePro.setTitle("ManagePro");
 		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.setBounds(100, 100, 1020, 680);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		frmManagePro.setBounds(100, 100, 1024, 680);
 		
-
-		frmManagePro.setContentPane(contentPane);
-		contentPane.setLayout(null);
+		panel = new JPanel();
+		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panel.setLayout(null);
+		frmManagePro.setContentPane(panel);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("SansSerif", Font.PLAIN, 11));
-		textField.setBounds(756, 47, 167, 38);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		Botao botaoVoltar = new Botao("Voltar   ");
+		botaoVoltar.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
+		botaoVoltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		
-		JButton botaoPesquisa = new JButton("");
-		botaoPesquisa.setIcon(new ImageIcon(TelaEstoque.class.getResource("/com/managepro/assets/LupaIcon.png")));
-		botaoPesquisa.setBounds(933, 47, 40, 38);
-		contentPane.add(botaoPesquisa);
+		botaoVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaMenu menu = new TelaMenu();
+				getFrame().setVisible(false);
+				menu.getFrame().setLocationRelativeTo(null);
+				menu.getFrame().setVisible(true);
+			}
+		});
+		botaoVoltar.setBounds(20, 8, 120, 35);
+		panel.add(botaoVoltar);
 		
-		JList<?> list = new JList<>();
-		list.setFont(new Font("SansSerif", Font.PLAIN, 11));
-		list.setBounds(20, 165, 960, 374);
-		contentPane.add(list);
-		
-		JButton novoProduto = new JButton("NOVO");
+		Botao novoProduto = new Botao("NOVO");
 		novoProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		novoProduto.setBounds(256, 47, 131, 45);
 		novoProduto.addActionListener(new ActionListener() {
@@ -71,9 +69,9 @@ public class TelaEstoque {
 				telaAddProdutos.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(novoProduto);
+		panel.add(novoProduto);
 		
-		JButton editarProduto = new JButton("EDITAR");
+		Botao editarProduto = new Botao("EDITAR");
 		editarProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		editarProduto.setBounds(408, 47, 131, 45);
 		editarProduto.addActionListener(new ActionListener() {
@@ -82,9 +80,9 @@ public class TelaEstoque {
 				telaEditar.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(editarProduto);
+		panel.add(editarProduto);
 		
-		JButton removerProduto = new JButton("REMOVER");
+		Botao removerProduto = new Botao("REMOVER");
 		removerProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			if (JOptionPane.showConfirmDialog(removerProduto, "Deseja mesmo remover o(s) produto(s) ?","", JOptionPane.YES_NO_OPTION) == 0 ) {
@@ -93,43 +91,44 @@ public class TelaEstoque {
 			}});
 		removerProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		removerProduto.setBounds(566, 47, 131, 45);
-		contentPane.add(removerProduto);
+		panel.add(removerProduto);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "Nome"}));
-		comboBox.setBounds(830, 89, 93, 22);
-		contentPane.add(comboBox);
+		campoTexto = new JTextField();
+		campoTexto.setFont(new Font("SansSerif", Font.PLAIN, 11));
+		campoTexto.setBounds(756, 47, 167, 38);
+		panel.add(campoTexto);
+		campoTexto.setColumns(10);
 		
 		JLabel filtroLabel = new JLabel("Filtrar por:");
 		filtroLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		filtroLabel.setBounds(756, 90, 76, 19);
-		contentPane.add(filtroLabel);
+		panel.add(filtroLabel);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(966, 166, 14, 373);
-		contentPane.add(scrollPane);
+		ComboBox<String> filtrar = new ComboBox<String>();
+		filtrar.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		filtrar.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "Nome"}));
+		filtrar.setBounds(830, 89, 93, 22);
+		panel.add(filtrar);
 		
+		Botao botaoPesquisa = new Botao("");
+		botaoPesquisa.setIcon(new ImageIcon(TelaEstoque.class.getResource("/com/managepro/assets/LupaIcon.png")));
+		botaoPesquisa.setBounds(933, 47, 40, 38);
+		panel.add(botaoPesquisa);
 		
 		botaoPesquisa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, textField.getText());
+				JOptionPane.showMessageDialog(null, campoTexto.getText());
 			}
 		});
 		
-		JButton btnNewButton = new JButton("Voltar   ");
-		btnNewButton.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaMenu menu = new TelaMenu();
-				getFrame().setVisible(false);
-				menu.getFrame().setLocationRelativeTo(null);
-				menu.getFrame().setVisible(true);
-			}
-		});
-		btnNewButton.setBounds(20, 8, 120, 35);
-		contentPane.add(btnNewButton);
+		JList<?> list = new JList<>();
+		list.setFont(new Font("SansSerif", Font.PLAIN, 11));
+		list.setBounds(20, 165, 960, 374);
+		panel.add(list);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(966, 166, 14, 373);
+		panel.add(scrollPane);
 		
 	}
 }

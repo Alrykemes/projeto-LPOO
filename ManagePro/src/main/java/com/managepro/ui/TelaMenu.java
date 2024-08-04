@@ -21,7 +21,7 @@ import java.awt.Toolkit;
 public class TelaMenu {
 
 	private JFrame frmManagePro;
-	private JPanel contentPane;
+	private JPanel panel;
 	
 	public JFrame getFrame() {
 		return this.frmManagePro;
@@ -38,18 +38,18 @@ public class TelaMenu {
 		frmManagePro.setTitle("ManagePro");
 		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmManagePro.setBounds(100, 100, 1024, 680);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		frmManagePro.setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		panel.setBackground(new Color(80, 80, 80));
-		panel.setBounds(0, 0, 1004, 83);
-		contentPane.add(panel);
+		panel = new JPanel();
+		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panel.setLayout(null);
+		frmManagePro.setContentPane(panel);
+		
+		JPanel cabecalho = new JPanel();
+		cabecalho.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		cabecalho.setBackground(new Color(80, 80, 80));
+		cabecalho.setBounds(0, 0, 1004, 83);
+		cabecalho.setLayout(null);
+		panel.add(cabecalho);
 		
 		Botao sairBotao = new Botao("Sair");
 		sairBotao.setForeground(new Color(255, 255, 255));
@@ -66,7 +66,7 @@ public class TelaMenu {
 		});
 		
 		sairBotao.setBounds(890, 25, 90, 30);
-		panel.add(sairBotao);
+		cabecalho.add(sairBotao);
 		
 		Botao estoqueBotao = new Botao("Estoque       ");
 		estoqueBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/EstoqueIcon.png")));
@@ -82,7 +82,7 @@ public class TelaMenu {
 				telaEstoque.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(estoqueBotao);
+		panel.add(estoqueBotao);
 		
 		Botao novaVendaBotao = new Botao("Nova Venda   ");
 		novaVendaBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/NovaVendaIcon.png")));
@@ -98,7 +98,7 @@ public class TelaMenu {
 				telaNovaVenda.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(novaVendaBotao);
+		panel.add(novaVendaBotao);
 		
 		Botao vendasBotao = new Botao("Vendas        ");
 		vendasBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/VendasIcon.png")));
@@ -114,7 +114,7 @@ public class TelaMenu {
 				telaVendas.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(vendasBotao);
+		panel.add(vendasBotao);
 		
 		Botao funcionariosBotao = new Botao("Funcionários ");
 		funcionariosBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
@@ -129,7 +129,7 @@ public class TelaMenu {
 				telaFuncionarios.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(funcionariosBotao);
+		panel.add(funcionariosBotao);
 		
 		Botao contabilidadeBotao = new Botao("Contabilidade");
 		contabilidadeBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/ContabilidadeIcon.png")));
@@ -145,6 +145,6 @@ public class TelaMenu {
 				telaContabilidade.getFrame().setVisible(true);
 			}
 		});
-		contentPane.add(contabilidadeBotao);
+		panel.add(contabilidadeBotao);
 	}
 }
