@@ -18,13 +18,13 @@ import java.awt.Scrollbar;
 public class TelaAdicionarProduto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField preencherNome;
-	private JTextField textoCodigo;
-	private JTextField textoPreco;
-	private JTextField campoQuantidade;
-	private JTextField textoMarca;
-	private JTextField preencherFornecedor;
+	private JPanel PainelConteudo;
+	private JTextField PreencherNome;
+	private JTextField TextoCodigo;
+	private JTextField TextoPreco;
+	private JTextField CampoQuantidade;
+	private JTextField TextoMarca;
+	private JTextField PreencherFornecedor;
 
 	/**
 	 * Launch the application.
@@ -48,148 +48,144 @@ public class TelaAdicionarProduto extends JFrame {
 	public TelaAdicionarProduto() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		PainelConteudo = new JPanel();
+		PainelConteudo.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setContentPane(PainelConteudo);
+		PainelConteudo.setLayout(null);
 		
-		JLabel avisoPreencherCampos = new JLabel("Preencha os campos abaixo corretamente *");
-		avisoPreencherCampos.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		avisoPreencherCampos.setBounds(10, 35, 268, 14);
-		contentPane.add(avisoPreencherCampos);
+		JLabel AvisoPreencherCampos = new JLabel("Preencha os campos abaixo corretamente *");
+		AvisoPreencherCampos.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		AvisoPreencherCampos.setBounds(10, 35, 268, 14);
+		PainelConteudo.add(AvisoPreencherCampos);
 		
 		JLabel NomeProduto = new JLabel("Nome do Produto *");
 		NomeProduto.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		NomeProduto.setBounds(34, 73, 118, 14);
-		contentPane.add(NomeProduto);
+		PainelConteudo.add(NomeProduto);
 		
-		preencherNome = new JTextField();
-		preencherNome.setBounds(34, 98, 217, 35);
-		contentPane.add(preencherNome);
-		preencherNome.setColumns(10);
+		PreencherNome = new JTextField();
+		PreencherNome.setBounds(34, 98, 217, 35);
+		PainelConteudo.add(PreencherNome);
+		PreencherNome.setColumns(10);
 		
 		JLabel Codigo = new JLabel("Código *");
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
-		contentPane.add(Codigo);
+		PainelConteudo.add(Codigo);
 		
-		textoCodigo = new JTextField();
-		textoCodigo.setColumns(10);
-		textoCodigo.setBounds(312, 98, 131, 35);
-		contentPane.add(textoCodigo);
+		TextoCodigo = new JTextField();
+		TextoCodigo.setColumns(10);
+		TextoCodigo.setBounds(312, 98, 131, 35);
+		PainelConteudo.add(TextoCodigo);
 		
-		textoPreco = new JTextField();
-		textoPreco.setColumns(10);
-		textoPreco.setBounds(501, 98, 131, 35);
-		contentPane.add(textoPreco);
+		TextoPreco = new JTextField();
+		TextoPreco.setColumns(10);
+		TextoPreco.setBounds(501, 98, 131, 35);
+		PainelConteudo.add(TextoPreco);
 		
 		JLabel PrecoVenda = new JLabel("Preço de Venda *");
 		PrecoVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoVenda.setBounds(501, 73, 110, 14);
-		contentPane.add(PrecoVenda);
+		PainelConteudo.add(PrecoVenda);
 		
-		Panel rodapeBotoes = new Panel();
-		rodapeBotoes.setBackground(new Color(255, 255, 255));
-		rodapeBotoes.setBounds(0, 398, 684, 63);
-		contentPane.add(rodapeBotoes);
-		rodapeBotoes.setLayout(null);
+		Panel RodapeBotoes = new Panel();
+		RodapeBotoes.setBackground(new Color(255, 255, 255));
+		RodapeBotoes.setBounds(0, 398, 684, 63);
+		PainelConteudo.add(RodapeBotoes);
+		RodapeBotoes.setLayout(null);
 		
-		JButton botaoCancelar = new JButton("Cancelar");
-		botaoCancelar.setBounds(45, 11, 99, 41);
-		rodapeBotoes.add(botaoCancelar);
+		JButton BotaoCancelar = new JButton("Cancelar");
+		BotaoCancelar.setBounds(45, 11, 99, 41);
+		RodapeBotoes.add(BotaoCancelar);
 		
-		JButton botaoCadastrar = new JButton("Cadastrar");
-		botaoCadastrar.setBounds(539, 11, 99, 41);
-		rodapeBotoes.add(botaoCadastrar);
+		JButton BotaoCadastrar = new JButton("Cadastrar");
+		BotaoCadastrar.setBounds(539, 11, 99, 41);
+		RodapeBotoes.add(BotaoCadastrar);
 		
-		campoQuantidade = new JTextField();
-		campoQuantidade.setColumns(10);
-		campoQuantidade.setBounds(34, 182, 131, 35);
-		contentPane.add(campoQuantidade);
+		CampoQuantidade = new JTextField();
+		CampoQuantidade.setColumns(10);
+		CampoQuantidade.setBounds(34, 182, 131, 35);
+		PainelConteudo.add(CampoQuantidade);
 		
 		JLabel Quantidade = new JLabel("Quantidade *");
 		Quantidade.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Quantidade.setBounds(34, 157, 118, 14);
-		contentPane.add(Quantidade);
+		PainelConteudo.add(Quantidade);
 		
-		textoMarca = new JTextField();
-		textoMarca.setColumns(10);
-		textoMarca.setBounds(218, 182, 139, 35);
-		contentPane.add(textoMarca);
+		TextoMarca = new JTextField();
+		TextoMarca.setColumns(10);
+		TextoMarca.setBounds(218, 182, 139, 35);
+		PainelConteudo.add(TextoMarca);
 		
 		JLabel Marca = new JLabel("Marca *");
 		Marca.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Marca.setBounds(218, 157, 87, 14);
-		contentPane.add(Marca);
+		PainelConteudo.add(Marca);
 		
 		JLabel Fornecedor = new JLabel("Fornecedor *");
 		Fornecedor.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Fornecedor.setBounds(415, 157, 81, 14);
-		contentPane.add(Fornecedor);
+		PainelConteudo.add(Fornecedor);
 		
-		preencherFornecedor = new JTextField();
-		preencherFornecedor.setColumns(10);
-		preencherFornecedor.setBounds(415, 182, 217, 35);
-		contentPane.add(preencherFornecedor);
+		PreencherFornecedor = new JTextField();
+		PreencherFornecedor.setColumns(10);
+		PreencherFornecedor.setBounds(415, 182, 217, 35);
+		PainelConteudo.add(PreencherFornecedor);
 		
-		JPanel painelTexto = new JPanel();
-		painelTexto.setBackground(new Color(255, 255, 255));
-		painelTexto.setBounds(34, 241, 598, 140);
-		contentPane.add(painelTexto);
-		painelTexto.setLayout(null);
+		JPanel PainelTexto = new JPanel();
+		PainelTexto.setBackground(new Color(255, 255, 255));
+		PainelTexto.setBounds(34, 241, 598, 140);
+		PainelConteudo.add(PainelTexto);
+		PainelTexto.setLayout(null);
 		
-		Panel painelInformacoes = new Panel();
-		painelInformacoes.setBackground(new Color(128, 128, 128));
-		painelInformacoes.setBounds(0, 0, 598, 36);
-		painelTexto.add(painelInformacoes);
-		painelInformacoes.setLayout(null);
+		Panel PainelInformacoes = new Panel();
+		PainelInformacoes.setBackground(new Color(128, 128, 128));
+		PainelInformacoes.setBounds(0, 0, 598, 36);
+		PainelTexto.add(PainelInformacoes);
+		PainelInformacoes.setLayout(null);
 		
-		JLabel lblNewLabel_8 = new JLabel("Nome");
-		lblNewLabel_8.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_8.setBounds(51, 11, 46, 14);
-		painelInformacoes.add(lblNewLabel_8);
+		JLabel ExibirNome = new JLabel("Nome");
+		ExibirNome.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ExibirNome.setBounds(51, 11, 46, 14);
+		PainelInformacoes.add(ExibirNome);
 		
-		JLabel lblNewLabel_9 = new JLabel("Cód");
-		lblNewLabel_9.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_9.setBounds(143, 6, 46, 24);
-		painelInformacoes.add(lblNewLabel_9);
+		JLabel ExibirCodigo = new JLabel("Cód");
+		ExibirCodigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ExibirCodigo.setBounds(143, 6, 46, 24);
+		PainelInformacoes.add(ExibirCodigo);
 		
-		JLabel lblNewLabel_10 = new JLabel("R$");
-		lblNewLabel_10.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_10.setBounds(220, 9, 46, 18);
-		painelInformacoes.add(lblNewLabel_10);
+		JLabel ExibirValor = new JLabel("R$");
+		ExibirValor.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ExibirValor.setBounds(220, 9, 46, 18);
+		PainelInformacoes.add(ExibirValor);
 		
-		JLabel lblNewLabel_11 = new JLabel("Qntd");
-		lblNewLabel_11.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_11.setBounds(291, 9, 57, 18);
-		painelInformacoes.add(lblNewLabel_11);
+		JLabel ExibirQuantidade = new JLabel("Qntd");
+		ExibirQuantidade.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ExibirQuantidade.setBounds(291, 9, 57, 18);
+		PainelInformacoes.add(ExibirQuantidade);
 		
-		JLabel lblNewLabel_12 = new JLabel("Marca");
-		lblNewLabel_12.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_12.setBounds(383, 9, 46, 18);
-		painelInformacoes.add(lblNewLabel_12);
+		JLabel ExibirMarca = new JLabel("Marca");
+		ExibirMarca.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ExibirMarca.setBounds(383, 9, 46, 18);
+		PainelInformacoes.add(ExibirMarca);
 		
-		JLabel lblNewLabel_13 = new JLabel("Fornecedor");
-		lblNewLabel_13.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_13.setBounds(465, 11, 87, 14);
-		painelInformacoes.add(lblNewLabel_13);
+		JLabel ExibirFornecedor = new JLabel("Fornecedor");
+		ExibirFornecedor.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ExibirFornecedor.setBounds(465, 11, 87, 14);
+		PainelInformacoes.add(ExibirFornecedor);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(34, 241, 598, 24);
-		contentPane.add(panel_2);
+		JLabel CadastrarProduto = new JLabel("CADASTRAR PRODUTO");
+		CadastrarProduto.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		CadastrarProduto.setBounds(10, 11, 295, 24);
+		PainelConteudo.add(CadastrarProduto);
 		
-		JLabel cadastrarProduto = new JLabel("CADASTRAR PRODUTO");
-		cadastrarProduto.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		cadastrarProduto.setBounds(10, 11, 295, 24);
-		contentPane.add(cadastrarProduto);
-		
-		botaoCadastrar.addActionListener(new ActionListener() {
+		BotaoCadastrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
-                if (preencherNome.getText().isEmpty() || textoCodigo.getText().isEmpty() || 
-                    textoPreco.getText().isEmpty() || campoQuantidade.getText().isEmpty() || 
-                    textoMarca.getText().isEmpty() || preencherFornecedor.getText().isEmpty()) {
+                if (PreencherNome.getText().isEmpty() || TextoCodigo.getText().isEmpty() || 
+                    TextoPreco.getText().isEmpty() || CampoQuantidade.getText().isEmpty() || 
+                    TextoMarca.getText().isEmpty() || PreencherFornecedor.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
                 } else {  	
                 	JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -197,7 +193,7 @@ public class TelaAdicionarProduto extends JFrame {
             }
         });
 		
-		botaoCancelar.addActionListener(new ActionListener() {
+		BotaoCancelar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int confirm = JOptionPane.showConfirmDialog(null, "Deseja mesmo cancelar?", "Confirmação", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {

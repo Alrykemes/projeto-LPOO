@@ -26,7 +26,7 @@ import com.toedter.calendar.JDateChooser;
 public class TelaContabilidade extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel conteudoPainel;
 	private JLabel lblImage1;		
 	private JLabel lblImage2;		
 	private JLabel lblImage3;
@@ -56,29 +56,29 @@ public class TelaContabilidade extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1020, 600);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(192, 192, 192));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		conteudoPainel = new JPanel();
+		conteudoPainel.setBackground(new Color(192, 192, 192));
+		conteudoPainel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setContentPane(conteudoPainel);
+		conteudoPainel.setLayout(null);
 		
 		Panel painelGrafico = new Panel();
 		painelGrafico.setBackground(new Color(255, 255, 255));
 		painelGrafico.setBounds(132, 230, 510, 150);
-		contentPane.add(painelGrafico);
+		conteudoPainel.add(painelGrafico);
 		painelGrafico.setLayout(null);
 		
 		Panel painelGrafico2 = new Panel();
 		painelGrafico2.setBackground(new Color(255, 255, 255));
 		painelGrafico2.setBounds(648, 230, 249, 300);
-		contentPane.add(painelGrafico2);
+		conteudoPainel.add(painelGrafico2);
 		painelGrafico2.setLayout(null);
 		
 		Panel painelOpcoes = new Panel();
 		painelOpcoes.setBackground(new Color(153, 51, 153));
 		painelOpcoes.setBounds(0, 0, 1004, 93);
-		contentPane.add(painelOpcoes);
+		conteudoPainel.add(painelOpcoes);
 		painelOpcoes.setLayout(null);
 		
 		JLabel dataLabel = new JLabel("Data Inicial *");
@@ -130,24 +130,24 @@ public class TelaContabilidade extends JFrame {
 		Panel painelGrafico3 = new Panel();
 		painelGrafico3.setBackground(new Color(255, 255, 255));
 		painelGrafico3.setBounds(132, 386, 510, 144);
-		contentPane.add(painelGrafico3);
+		conteudoPainel.add(painelGrafico3);
 		painelGrafico3.setLayout(null);
 		
-		Panel cardUm = new Panel();
-		cardUm.setBackground(new Color(255, 255, 255));
-		cardUm.setBounds(132, 108, 255, 116);
-		contentPane.add(cardUm);
-		cardUm.setLayout(null);
+		Panel cardProdutos = new Panel();
+		cardProdutos.setBackground(new Color(255, 255, 255));
+		cardProdutos.setBounds(132, 108, 255, 116);
+		conteudoPainel.add(cardProdutos);
+		cardProdutos.setLayout(null);
 		
 		JLabel contadorProdutos = new JLabel("Produtos");
 		contadorProdutos.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		contadorProdutos.setBounds(20, 11, 60, 14);
-		cardUm.add(contadorProdutos);
+		cardProdutos.add(contadorProdutos);
 		
 		JLabel lblNewLabel_2 = new JLabel("340");
 		lblNewLabel_2.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblNewLabel_2.setBounds(151, 68, 60, 26);
-		cardUm.add(lblNewLabel_2);
+		cardProdutos.add(lblNewLabel_2);
 		
 		
 		lblImage1 = new JLabel("fotoaqui");
@@ -162,37 +162,37 @@ public class TelaContabilidade extends JFrame {
 		lblImage3.setBounds(10, -21, 438, 170);
 		painelGrafico3.add(lblImage3);
 		
-		Panel cardDois = new Panel();
-		cardDois.setLayout(null);
-		cardDois.setBackground(new Color(255, 255, 255));
-		cardDois.setBounds(394, 108, 248, 116);
-		contentPane.add(cardDois);
+		Panel cardVendas = new Panel();
+		cardVendas.setLayout(null);
+		cardVendas.setBackground(new Color(255, 255, 255));
+		cardVendas.setBounds(394, 108, 248, 116);
+		conteudoPainel.add(cardVendas);
 		
 		JLabel quantidadeVendas = new JLabel("Vendas");
 		quantidadeVendas.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		quantidadeVendas.setBounds(20, 11, 46, 14);
-		cardDois.add(quantidadeVendas);
+		cardVendas.add(quantidadeVendas);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("340");
 		lblNewLabel_2_1.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblNewLabel_2_1.setBounds(169, 68, 60, 26);
-		cardDois.add(lblNewLabel_2_1);
+		cardVendas.add(lblNewLabel_2_1);
 		
-		Panel cardTres = new Panel();
-		cardTres.setLayout(null);
-		cardTres.setBackground(new Color(255, 255, 255));
-		cardTres.setBounds(648, 108, 249, 116);
-		contentPane.add(cardTres);
+		Panel cardGanhos = new Panel();
+		cardGanhos.setLayout(null);
+		cardGanhos.setBackground(new Color(255, 255, 255));
+		cardGanhos.setBounds(648, 108, 249, 116);
+		conteudoPainel.add(cardGanhos);
 		
 		JLabel ganhosVenda = new JLabel("Ganhos");
 		ganhosVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		ganhosVenda.setBounds(26, 11, 46, 14);
-		cardTres.add(ganhosVenda);
+		cardGanhos.add(ganhosVenda);
 		
 		JLabel lblNewLabel_4 = new JLabel("R$ 12.500");
 		lblNewLabel_4.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblNewLabel_4.setBounds(104, 68, 111, 26);
-		cardTres.add(lblNewLabel_4);
+		cardGanhos.add(lblNewLabel_4);
 		
 	}
 	
