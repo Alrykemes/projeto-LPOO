@@ -1,13 +1,12 @@
 package com.managepro.ui;
 
 import javax.swing.JFrame;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -99,10 +98,10 @@ public class TelaEstoque {
 		panel.add(campoTexto);
 		campoTexto.setColumns(10);
 		
-		JLabel filtroLabel = new JLabel("Filtrar por:");
-		filtroLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		filtroLabel.setBounds(756, 90, 76, 19);
-		panel.add(filtroLabel);
+		JLabel labelFiltro = new JLabel("Filtrar por:");
+		labelFiltro.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		labelFiltro.setBounds(756, 90, 76, 19);
+		panel.add(labelFiltro);
 		
 		ComboBox<String> filtrar = new ComboBox<String>();
 		filtrar.setFont(new Font("SansSerif", Font.PLAIN, 16));

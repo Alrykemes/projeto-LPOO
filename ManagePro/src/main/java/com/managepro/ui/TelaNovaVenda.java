@@ -11,11 +11,9 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
@@ -28,8 +26,8 @@ public class TelaNovaVenda {
 	private JTextField campoDesconto;
 	private JTextField campoCPF;
 	private JTextField campoValorRecebido;
-	private JLabel tituloValorRebido;
-	private JLabel trocoTitulo;
+	private JLabel labelValorRebido;
+	private JLabel labelValorTroco;
 	private JLabel valorTroco;
 	
 	public JFrame getFrame() {
@@ -59,10 +57,10 @@ public class TelaNovaVenda {
 		panel.add(addProdutoPanel);
 		addProdutoPanel.setLayout(null);
 		
-		JLabel tituloCodigo = new JLabel("Informe o código do produto: ");
-		tituloCodigo.setBounds(10, 11, 274, 24);
-		tituloCodigo.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		addProdutoPanel.add(tituloCodigo);
+		JLabel labelCodigo = new JLabel("Informe o código do produto: ");
+		labelCodigo.setBounds(10, 11, 274, 24);
+		labelCodigo.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		addProdutoPanel.add(labelCodigo);
 		
 		campoCodigo = new JTextField();
 		campoCodigo.setBounds(10, 34, 264, 26);
@@ -70,10 +68,10 @@ public class TelaNovaVenda {
 		addProdutoPanel.add(campoCodigo);
 		campoCodigo.setColumns(10);
 		
-		JLabel tituloQuantidade = new JLabel("Informe a quantidade desejada:");
-		tituloQuantidade.setBounds(10, 71, 274, 24);
-		tituloQuantidade.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		addProdutoPanel.add(tituloQuantidade);
+		JLabel labelQuantidade = new JLabel("Informe a quantidade desejada:");
+		labelQuantidade.setBounds(10, 71, 274, 24);
+		labelQuantidade.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		addProdutoPanel.add(labelQuantidade);
 		
 		campoQuantidade = new JTextField();
 		campoQuantidade.setBounds(10, 94, 264, 26);
@@ -81,10 +79,10 @@ public class TelaNovaVenda {
 		campoQuantidade.setColumns(10);
 		addProdutoPanel.add(campoQuantidade);
 		
-		JLabel tituloDesconto = new JLabel("Informe o código do desconto");
-		tituloDesconto.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		tituloDesconto.setBounds(10, 130, 274, 24);
-		addProdutoPanel.add(tituloDesconto);
+		JLabel labelDesconto = new JLabel("Informe o código do desconto");
+		labelDesconto.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		labelDesconto.setBounds(10, 130, 274, 24);
+		addProdutoPanel.add(labelDesconto);
 		
 		campoDesconto = new JTextField();
 		campoDesconto.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -92,20 +90,20 @@ public class TelaNovaVenda {
 		campoDesconto.setBounds(10, 153, 264, 26);
 		addProdutoPanel.add(campoDesconto);
 		
-		JLabel tituloPrecoUnitario = new JLabel("Preço Unitário: \r\n");
-		tituloPrecoUnitario.setBounds(10, 208, 119, 24);
-		tituloPrecoUnitario.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		addProdutoPanel.add(tituloPrecoUnitario);
+		JLabel labelPrecoUnitario = new JLabel("Preço Unitário: \r\n");
+		labelPrecoUnitario.setBounds(10, 208, 119, 24);
+		labelPrecoUnitario.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		addProdutoPanel.add(labelPrecoUnitario);
 		
 		JLabel precoUnitario = new JLabel("R$ 16,99");
 		precoUnitario.setBounds(118, 208, 156, 24);
 		precoUnitario.setFont(new Font("SansSerif", Font.BOLD, 16));
 		addProdutoPanel.add(precoUnitario);
 		
-		JLabel tituloPrecoTotal = new JLabel("Total Compra:");
-		tituloPrecoTotal.setFont(new Font("SansSerif", Font.BOLD, 18));
-		tituloPrecoTotal.setBounds(84, 292, 132, 33);
-		addProdutoPanel.add(tituloPrecoTotal);
+		JLabel labelPrecoTotal = new JLabel("Total Compra:");
+		labelPrecoTotal.setFont(new Font("SansSerif", Font.BOLD, 18));
+		labelPrecoTotal.setBounds(84, 292, 132, 33);
+		addProdutoPanel.add(labelPrecoTotal);
 		
 		JLabel precoTotal = new JLabel("R$ 847,60");
 		precoTotal.setHorizontalAlignment(SwingConstants.CENTER);
@@ -122,10 +120,10 @@ public class TelaNovaVenda {
 		panel.add(configuracaoVendaPanel);
 		configuracaoVendaPanel.setLayout(null);
 		
-		JLabel tituloCPFCliente = new JLabel("CPF do cliente:");
-		tituloCPFCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		tituloCPFCliente.setBounds(10, 11, 150, 30);
-		configuracaoVendaPanel.add(tituloCPFCliente);
+		JLabel labelCPFCliente = new JLabel("CPF do cliente:");
+		labelCPFCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		labelCPFCliente.setBounds(10, 11, 150, 30);
+		configuracaoVendaPanel.add(labelCPFCliente);
 		
 		campoCPF = new JTextField();
 		campoCPF.setForeground(new Color(192, 192, 192));
@@ -145,10 +143,10 @@ public class TelaNovaVenda {
 		configuracaoVendaPanel.add(campoCPF);
 		campoCPF.setColumns(10);
 		
-		JLabel tituloNomeFuncionario = new JLabel("Funcionário:\r\n");
-		tituloNomeFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		tituloNomeFuncionario.setBounds(10, 146, 105, 24);
-		configuracaoVendaPanel.add(tituloNomeFuncionario);
+		JLabel labelNomeFuncionario = new JLabel("Funcionário:\r\n");
+		labelNomeFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		labelNomeFuncionario.setBounds(10, 146, 105, 24);
+		configuracaoVendaPanel.add(labelNomeFuncionario);
 		
 		JLabel NomeFuncionario = new JLabel("Alrykemes Peso PLENO");
 		NomeFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -162,48 +160,48 @@ public class TelaNovaVenda {
 		listaTipoPagamento.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getItem().equals("Dinheiro")) {
-					configuracaoVendaPanel.add(tituloValorRebido);
+					configuracaoVendaPanel.add(labelValorRebido);
 					configuracaoVendaPanel.add(campoValorRecebido);
-					configuracaoVendaPanel.add(trocoTitulo);
+					configuracaoVendaPanel.add(labelValorTroco);
 					configuracaoVendaPanel.add(valorTroco);
 				}
 				if(e.getItem().equals("Pix")) {
-					configuracaoVendaPanel.remove(tituloValorRebido);
+					configuracaoVendaPanel.remove(labelValorRebido);
 					configuracaoVendaPanel.remove(campoValorRecebido);
-					configuracaoVendaPanel.remove(trocoTitulo);
+					configuracaoVendaPanel.remove(labelValorTroco);
 					configuracaoVendaPanel.remove(valorTroco);
 				}
 				if(e.getItem().equals("Cartão de Crédito")) {
-					configuracaoVendaPanel.remove(tituloValorRebido);
+					configuracaoVendaPanel.remove(labelValorRebido);
 					configuracaoVendaPanel.remove(campoValorRecebido);
-					configuracaoVendaPanel.remove(trocoTitulo);
+					configuracaoVendaPanel.remove(labelValorTroco);
 					configuracaoVendaPanel.remove(valorTroco);
 				}
 				if(e.getItem().equals("Cartão de Débito")) {
-					configuracaoVendaPanel.remove(tituloValorRebido);
+					configuracaoVendaPanel.remove(labelValorRebido);
 					configuracaoVendaPanel.remove(campoValorRecebido);
-					configuracaoVendaPanel.remove(trocoTitulo);
+					configuracaoVendaPanel.remove(labelValorTroco);
 					configuracaoVendaPanel.remove(valorTroco);
 				}
 				if(e.getItem().equals("Ticket Alimentação")) {
-					configuracaoVendaPanel.remove(tituloValorRebido);
+					configuracaoVendaPanel.remove(labelValorRebido);
 					configuracaoVendaPanel.remove(campoValorRecebido);
-					configuracaoVendaPanel.remove(trocoTitulo);
+					configuracaoVendaPanel.remove(labelValorTroco);
 					configuracaoVendaPanel.remove(valorTroco);
 				}
 			}
 		});
 		configuracaoVendaPanel.add(listaTipoPagamento);
 		
-		JLabel tituloMetodoPagamento = new JLabel("Selecione o método de pagamento:");
-		tituloMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		tituloMetodoPagamento.setBounds(321, 22, 282, 14);
-		configuracaoVendaPanel.add(tituloMetodoPagamento);
+		JLabel labelMetodoPagamento = new JLabel("Selecione o método de pagamento:");
+		labelMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		labelMetodoPagamento.setBounds(321, 22, 282, 14);
+		configuracaoVendaPanel.add(labelMetodoPagamento);
 		
-		tituloValorRebido = new JLabel("Valor recebido:");
-		tituloValorRebido.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		tituloValorRebido.setBounds(321, 81, 150, 24);
-		configuracaoVendaPanel.add(tituloValorRebido);
+		labelValorRebido = new JLabel("Valor recebido:");
+		labelValorRebido.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		labelValorRebido.setBounds(321, 81, 150, 24);
+		configuracaoVendaPanel.add(labelValorRebido);
 		
 		campoValorRecebido = new JTextField();
 		campoValorRecebido.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -211,10 +209,10 @@ public class TelaNovaVenda {
 		campoValorRecebido.setColumns(10);
 		configuracaoVendaPanel.add(campoValorRecebido);
 		
-		trocoTitulo = new JLabel("Troco:");
-		trocoTitulo.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		trocoTitulo.setBounds(321, 146, 71, 14);
-		configuracaoVendaPanel.add(trocoTitulo);
+		labelValorTroco = new JLabel("Troco:");
+		labelValorTroco.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		labelValorTroco.setBounds(321, 146, 71, 14);
+		configuracaoVendaPanel.add(labelValorTroco);
 		
 		valorTroco = new JLabel("R$ 2,60");
 		valorTroco.setFont(new Font("SansSerif", Font.PLAIN, 18));
