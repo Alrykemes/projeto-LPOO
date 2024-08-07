@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 public class TelaLogin {
 
@@ -46,7 +47,7 @@ public class TelaLogin {
 		frmManagepro.getContentPane().add(panel);
 		
 		userLogin = new JTextField();
-		userLogin.setBounds(361, 224, 292, 40);
+		userLogin.setBounds(317, 268, 320, 51);
 		userLogin.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				userLogin.setText("");
@@ -69,7 +70,7 @@ public class TelaLogin {
 		userLogin.setColumns(10);
 		
 		JButton botaoEntrar = new JButton("Entrar");
-		botaoEntrar.setBounds(451, 357, 113, 39);
+		botaoEntrar.setBounds(419, 455, 113, 39);
 		botaoEntrar.addMouseListener(new MouseAdapter() {
 		
 		});
@@ -102,28 +103,33 @@ public class TelaLogin {
 		panel.add(botaoEntrar);
 		
 		JLabel lblNewLabel = new JLabel("LOGIN");
-		lblNewLabel.setBounds(426, 96, 148, 32);
+		lblNewLabel.setBounds(419, 24, 120, 32);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 30));
 		panel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Usuário");
-		lblNewLabel_1.setBounds(362, 204, 60, 16);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		panel.add(lblNewLabel_1);
+		JLabel lblUser = new JLabel("Usuário");
+		lblUser.setBounds(318, 248, 60, 16);
+		lblUser.setHorizontalAlignment(SwingConstants.LEFT);
+		lblUser.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		panel.add(lblUser);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Senha");
-		lblNewLabel_1_1.setBounds(361, 275, 46, 16);
-		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1_1.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		panel.add(lblNewLabel_1_1);
+		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setBounds(317, 352, 65, 16);
+		lblSenha.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSenha.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		panel.add(lblSenha);
 		
 		passwordLogin = new JPasswordField();
 		passwordLogin.setForeground(new Color(0, 0, 0));
 		passwordLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		passwordLogin.setBounds(361, 295, 292, 40);
+		passwordLogin.setBounds(317, 372, 320, 51);
 		panel.add(passwordLogin);
+		
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(TelaLogin.class.getResource("/com/managepro/assets/ManagePRO-logo.png")));
+		lblLogo.setBounds(325, 94, 300, 107);
+		panel.add(lblLogo);
 		
 		
 		
