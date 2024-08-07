@@ -1,9 +1,11 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Cursor;
+
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -11,42 +13,41 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JPanel;
+import java.awt.event.MouseEvent;
 
 public class TelaLogin {
 
-	private JFrame frmManagepro;
+	private JPanel panelLogin;
 	private JTextField userLogin;
 	private JPasswordField passwordLogin;
-	private JPanel panel;
 	
-	public JFrame getFrame() {
-		return this.frmManagepro;
+	public JPanel getPanel() {
+		return this.panelLogin;
+	}
+	
+	public JTextField getUserLoginField() {
+		return this.userLogin;
+	}
+	
+	public JTextField getUserPasswordField() {
+		return this.passwordLogin;
 	}
 	
 	public TelaLogin() {
-		initialize();
+		this.initialize();
 	}
 
 	private void initialize() {
-		frmManagepro = new JFrame();		
-		frmManagepro.setTitle("ManagePro");
-		frmManagepro.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\shaun\\Downloads\\Untitled design.png"));
-		frmManagepro.setForeground(Color.WHITE);
-		frmManagepro.getContentPane().setBackground(Color.WHITE);
-		frmManagepro.setResizable(false);
-		frmManagepro.setBounds(100, 100, 1024, 680);
-		frmManagepro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		panel = new JPanel();
-		panel.setBounds(0, 0, 1020, 680);
-		frmManagepro.getContentPane().add(panel);
+		panelLogin = new JPanel();		
+		panelLogin.setBackground(Color.WHITE);
+		panelLogin.setBounds(0, 0, 1024, 680);
 		
 		userLogin = new JTextField();
-		userLogin.setBounds(361, 224, 292, 40);
+		userLogin.setBounds(317, 268, 320, 51);
 		userLogin.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				userLogin.setText("");
@@ -60,18 +61,19 @@ public class TelaLogin {
             }
 		});
 		
-		frmManagepro.getContentPane().setLayout(null);
-		panel.setLayout(null);
+		panelLogin.setLayout(null);
 		userLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		userLogin.setForeground(Color.LIGHT_GRAY);
 		userLogin.setToolTipText("");
-		panel.add(userLogin);
+		panelLogin.add(userLogin);
 		userLogin.setColumns(10);
 		
 		JButton botaoEntrar = new JButton("Entrar");
-		botaoEntrar.setBounds(451, 357, 113, 39);
+		botaoEntrar.setBounds(419, 455, 113, 39);
 		botaoEntrar.addMouseListener(new MouseAdapter() {
-		
+			public void mouseEntered(MouseEvent e) {
+				new Cursor(Cursor.HAND_CURSOR);
+			}
 		});
 		botaoEntrar.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		botaoEntrar.addActionListener(new ActionListener() {
@@ -79,55 +81,49 @@ public class TelaLogin {
 				
 					String usuario = userLogin.getText();
 				
-					//String senha = passwordLogin.getText();
-					// ficou velho ^
-					char [] senhaArray = passwordLogin.getPassword();
-					String senha = new String(senhaArray);
+					String senha = new String(passwordLogin.getPassword());
 					
 					
 					if (usuario.equals("sa") && senha.equals("sa")) {
-						TelaMenu menu = new TelaMenu();
-						menu.getFrame().setLocationRelativeTo(null);
-						getFrame().setVisible(false);
-						menu.getFrame().setVisible(true);
-						JOptionPane.showMessageDialog(frmManagepro, "Bem vindo, "+usuario);
+						Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");	
+						JOptionPane.showMessageDialog(panelLogin, "Bem vindo, " + usuario);
 					}
 					else {
-						JOptionPane.showMessageDialog(frmManagepro,"Usuário ou senha inválidos.");
+						JOptionPane.showMessageDialog(panelLogin,"Usuário ou senha inválidos.");
 						 }
-						//java.util.Arrays.fill(senhaArray, '0');
 					}
 			}
 		);
-		panel.add(botaoEntrar);
+		panelLogin.add(botaoEntrar);
 		
 		JLabel lblNewLabel = new JLabel("LOGIN");
-		lblNewLabel.setBounds(426, 96, 148, 32);
+		lblNewLabel.setBounds(419, 24, 120, 32);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 30));
-		panel.add(lblNewLabel);
+		panelLogin.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Usuário");
-		lblNewLabel_1.setBounds(362, 204, 60, 16);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		panel.add(lblNewLabel_1);
+		JLabel lblUser = new JLabel("Usuário");
+		lblUser.setBounds(318, 248, 60, 16);
+		lblUser.setHorizontalAlignment(SwingConstants.LEFT);
+		lblUser.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		panelLogin.add(lblUser);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Senha");
-		lblNewLabel_1_1.setBounds(361, 275, 46, 16);
-		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1_1.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		panel.add(lblNewLabel_1_1);
+		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setBounds(317, 352, 65, 16);
+		lblSenha.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSenha.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		panelLogin.add(lblSenha);
 		
 		passwordLogin = new JPasswordField();
 		passwordLogin.setForeground(new Color(0, 0, 0));
 		passwordLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		passwordLogin.setBounds(361, 295, 292, 40);
-		panel.add(passwordLogin);
+		passwordLogin.setBounds(317, 372, 320, 51);
+		panelLogin.add(passwordLogin);
 		
-		
-		
-	
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(TelaLogin.class.getResource("/com/managepro/assets/ManageProLogin.png")));
+		lblLogo.setBounds(325, 94, 300, 107);
+		panelLogin.add(lblLogo);
 		
 	}
 }

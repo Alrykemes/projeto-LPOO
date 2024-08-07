@@ -1,9 +1,6 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -15,17 +12,16 @@ import java.awt.event.ActionEvent;
 
 public class TelaAdicionarProdutos{
 
-	private JPanel contentPane;
+	private JPanel adicionarProdutoPanel;
 	private JTextField textFieldNomeProduto;
 	private JTextField textFieldCodigo;
 	private JTextField textFieldPrecoVenda;
 	private JTextField textFieldQuanditade;
 	private JTextField textFieldMarca;
 	private JTextField textFieldFornecedor;
-	private JFrame FrmManagePro;
 
-	public JFrame getFrame() {
-		return this.FrmManagePro;
+	public JPanel getPanel() {
+		return this.adicionarProdutoPanel;
 	}
 
 	public TelaAdicionarProdutos() {
@@ -33,62 +29,57 @@ public class TelaAdicionarProdutos{
 	}
 
 	private void initialize() {
-		FrmManagePro = new JFrame();
-		FrmManagePro.setTitle("ManagePro");
-		FrmManagePro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		FrmManagePro.setBounds(100, 100, 700, 500);
-		FrmManagePro.setResizable(false);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		FrmManagePro.setContentPane(contentPane);
-		contentPane.setLayout(null);
+		adicionarProdutoPanel = new JPanel();
+		adicionarProdutoPanel.setSize(700, 500);
+		adicionarProdutoPanel.setLayout(null);
 
 		JLabel subTituloTela = new JLabel("Preencha os campos abaixo corretamente *");
 		subTituloTela.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		subTituloTela.setBounds(10, 35, 268, 14);
-		contentPane.add(subTituloTela);
+		adicionarProdutoPanel.add(subTituloTela);
 
 		JLabel NomeProduto = new JLabel("Nome do Produto *");
 		NomeProduto.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		NomeProduto.setBounds(34, 73, 118, 14);
-		contentPane.add(NomeProduto);
+		adicionarProdutoPanel.add(NomeProduto);
 
 		textFieldNomeProduto = new JTextField();
 		textFieldNomeProduto.setBounds(34, 98, 217, 35);
-		contentPane.add(textFieldNomeProduto);
+		adicionarProdutoPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
 		JLabel Codigo = new JLabel("Código *");
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
-		contentPane.add(Codigo);
+		adicionarProdutoPanel.add(Codigo);
 
 		textFieldCodigo = new JTextField();
 		textFieldCodigo.setColumns(10);
 		textFieldCodigo.setBounds(312, 98, 131, 35);
-		contentPane.add(textFieldCodigo);
+		adicionarProdutoPanel.add(textFieldCodigo);
 
 		textFieldPrecoVenda = new JTextField();
 		textFieldPrecoVenda.setColumns(10);
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
-		contentPane.add(textFieldPrecoVenda);
+		adicionarProdutoPanel.add(textFieldPrecoVenda);
 
 		JLabel PrecoVenda = new JLabel("Preço de Venda *");
 		PrecoVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoVenda.setBounds(501, 73, 110, 14);
-		contentPane.add(PrecoVenda);
+		adicionarProdutoPanel.add(PrecoVenda);
 
 		Panel panel = new Panel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 398, 684, 63);
-		contentPane.add(panel);
+		adicionarProdutoPanel.add(panel);
 		panel.setLayout(null);
 
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getFrame().setVisible(false);
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
+				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstace().getFrame().setLocationRelativeTo(null);
 			}
 		});
 		btnCancelar.setBounds(45, 11, 99, 41);
@@ -97,7 +88,9 @@ public class TelaAdicionarProdutos{
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getFrame().setVisible(false);
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
+				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstace().getFrame().setLocationRelativeTo(null);
 			}
 		});
 		btnCadastrar.setBounds(539, 11, 99, 41);
@@ -106,37 +99,37 @@ public class TelaAdicionarProdutos{
 		textFieldQuanditade = new JTextField();
 		textFieldQuanditade.setColumns(10);
 		textFieldQuanditade.setBounds(34, 182, 131, 35);
-		contentPane.add(textFieldQuanditade);
+		adicionarProdutoPanel.add(textFieldQuanditade);
 
 		JLabel Quantidade = new JLabel("Quantidade *");
 		Quantidade.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Quantidade.setBounds(34, 157, 118, 14);
-		contentPane.add(Quantidade);
+		adicionarProdutoPanel.add(Quantidade);
 
 		textFieldMarca = new JTextField();
 		textFieldMarca.setColumns(10);
 		textFieldMarca.setBounds(218, 182, 139, 35);
-		contentPane.add(textFieldMarca);
+		adicionarProdutoPanel.add(textFieldMarca);
 
 		JLabel Marca = new JLabel("Marca *");
 		Marca.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Marca.setBounds(218, 157, 87, 14);
-		contentPane.add(Marca);
+		adicionarProdutoPanel.add(Marca);
 
 		JLabel Fornecedor = new JLabel("Fornecedor *");
 		Fornecedor.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Fornecedor.setBounds(415, 157, 81, 14);
-		contentPane.add(Fornecedor);
+		adicionarProdutoPanel.add(Fornecedor);
 
 		textFieldFornecedor = new JTextField();
 		textFieldFornecedor.setColumns(10);
 		textFieldFornecedor.setBounds(415, 182, 217, 35);
-		contentPane.add(textFieldFornecedor);
+		adicionarProdutoPanel.add(textFieldFornecedor);
 
 		JPanel MostrarDescricao = new JPanel();
 		MostrarDescricao.setBackground(new Color(255, 255, 255));
 		MostrarDescricao.setBounds(34, 241, 598, 140);
-		contentPane.add(MostrarDescricao);
+		adicionarProdutoPanel.add(MostrarDescricao);
 		MostrarDescricao.setLayout(null);
 
 		Panel panel_3 = new Panel();
@@ -182,11 +175,11 @@ public class TelaAdicionarProdutos{
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(34, 241, 598, 24);
-		contentPane.add(panel_2);
+		adicionarProdutoPanel.add(panel_2);
 
 		JLabel TituloTela = new JLabel("CADASTRAR PRODUTO");
 		TituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		TituloTela.setBounds(10, 11, 295, 24);
-		contentPane.add(TituloTela);
+		adicionarProdutoPanel.add(TituloTela);
 	}
 }
