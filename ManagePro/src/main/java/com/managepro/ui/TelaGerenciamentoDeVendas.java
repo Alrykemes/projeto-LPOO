@@ -1,6 +1,5 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -24,7 +23,7 @@ import javax.swing.ImageIcon;
 
 public class TelaGerenciamentoDeVendas {
 
-	private JFrame frmManagePro;
+	private JPanel gerenciamentoVendasPanel;
 	private JPanel PrincipalPanel;
 	private JTextField FieldSearch;
 	private JDateChooser dateChooserFrom;
@@ -32,8 +31,8 @@ public class TelaGerenciamentoDeVendas {
 	private JLabel textDateFrom;
 	private JLabel textDateTo;
 
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.gerenciamentoVendasPanel;
 	}
 	
 	public TelaGerenciamentoDeVendas() {
@@ -41,16 +40,13 @@ public class TelaGerenciamentoDeVendas {
 	}
 		
 	private void initialize() {
-		frmManagePro = new JFrame();
-		frmManagePro.setResizable(false);
-		frmManagePro.setLocationRelativeTo(null);
-		frmManagePro.setTitle("ManagePro");
-		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.setBounds(100, 100, 1020, 680);
+		gerenciamentoVendasPanel = new JPanel();
+		gerenciamentoVendasPanel.setSize(1020, 680);
+		gerenciamentoVendasPanel.setLayout(null);
 		PrincipalPanel = new JPanel();
 		PrincipalPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		frmManagePro.setContentPane(PrincipalPanel);
-
+		PrincipalPanel.setSize(1020, 680);
+		gerenciamentoVendasPanel.add(PrincipalPanel);
 		PrincipalPanel.setLayout(null);
 		
 		JPanel SearchPanel = new JPanel();
@@ -204,11 +200,6 @@ public class TelaGerenciamentoDeVendas {
 		btnDelete.setBounds(518, 578, 129, 41);
 		SalePanel.add(btnDelete);
 		
-		JButton btnEdit = new JButton("Editar");
-		btnEdit.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnEdit.setBounds(316, 578, 129, 41);
-		SalePanel.add(btnEdit);
-		
 		JLabel lblNewLabel = new JLabel("Total da Compra:");
 		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		lblNewLabel.setBounds(10, 428, 146, 29);
@@ -254,10 +245,7 @@ public class TelaGerenciamentoDeVendas {
 		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaMenu menu = new TelaMenu();
-				getFrame().setVisible(false);
-				menu.getFrame().setLocationRelativeTo(null);
-				menu.getFrame().setVisible(true);
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnNewButton.setBounds(20, 8, 120, 35);

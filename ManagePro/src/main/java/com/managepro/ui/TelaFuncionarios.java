@@ -1,6 +1,5 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
@@ -20,7 +19,7 @@ import java.awt.event.FocusEvent;
 
 public class TelaFuncionarios {
 
-	private JFrame frmManagePro;
+	private JPanel funcionariosPanel;
 	private JTextField txtNome;
 	private JTextField txtCpf;
 	private JTextField txtEmail;
@@ -36,8 +35,8 @@ public class TelaFuncionarios {
 	private JLabel lblDataAdmissaoLabel;
 	private JLabel lblFrequenciaLabel;
 
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.funcionariosPanel;
 	}
 	
 	public TelaFuncionarios() {
@@ -46,15 +45,13 @@ public class TelaFuncionarios {
 
 	
 	private void initialize() {
-		frmManagePro = new JFrame();
-		frmManagePro.setTitle("ManagePro");
-		frmManagePro.setBounds(100, 100, 1020, 680);
-		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.getContentPane().setLayout(null);
+		funcionariosPanel = new JPanel();
+		funcionariosPanel.setSize(1020, 680);
+		funcionariosPanel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 0, 1006, 643);
-		frmManagePro.getContentPane().add(panel_1);
+		panel_1.setSize(1006, 643);
+		funcionariosPanel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		txtNome = new JTextField();
@@ -262,10 +259,7 @@ public class TelaFuncionarios {
 		btnComeback.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnComeback.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaMenu menu = new TelaMenu();
-				getFrame().setVisible(false);
-				menu.getFrame().setLocationRelativeTo(null);
-				menu.getFrame().setVisible(true);
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnComeback.setBounds(20, 8, 120, 35);

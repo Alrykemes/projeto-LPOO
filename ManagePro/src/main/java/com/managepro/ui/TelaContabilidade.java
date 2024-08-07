@@ -1,6 +1,5 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -19,16 +18,18 @@ import com.toedter.calendar.JDateChooser;
 
 public class TelaContabilidade {
 
-	private JFrame frmManagePro;
-	private JPanel contentPane;
+	private JPanel contabilidadePanel;
 	private JLabel lblImage1;		//IMAGENS DOS GRÁFICOS (APAGAR DEPOIS: APENAS TESTE)
 	private JLabel lblImage2;		//AVISO: NOMES GENÉRICOS CRIADOS PROPOSITALMENTE: APENAS TESTE
 	private JLabel lblImage3;
+	private Panel painelGrafico;
+	private Panel painelGrafico2;
+	private Panel painelOpcoes;
 	private JDateChooser dateChooser;
 	private JDateChooser dateChooser_1;
 
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.contabilidadePanel;
 	}
 	
 	public TelaContabilidade() {
@@ -36,35 +37,28 @@ public class TelaContabilidade {
 	}
 	
 	private void initialize() {
-		frmManagePro = new JFrame();
-		frmManagePro.setResizable(false);
-		frmManagePro.setLocationRelativeTo(null);
-		frmManagePro.setTitle("ManagePro");
-		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.setBounds(100, 100, 1020, 680);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(192, 192, 192));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		frmManagePro.setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contabilidadePanel = new JPanel();
+		contabilidadePanel.setBackground(new Color(192, 192, 192));
+		contabilidadePanel.setSize(1020,680);
+		contabilidadePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contabilidadePanel.setLayout(null);
 		
-		Panel painelGrafico = new Panel();
+		painelGrafico = new Panel();
 		painelGrafico.setBackground(new Color(255, 255, 255));
 		painelGrafico.setBounds(132, 230, 510, 150);
-		contentPane.add(painelGrafico);
+		contabilidadePanel.add(painelGrafico);
 		painelGrafico.setLayout(null);
 		
-		Panel painelGrafico2 = new Panel();
+		painelGrafico2 = new Panel();
 		painelGrafico2.setBackground(new Color(255, 255, 255));
 		painelGrafico2.setBounds(648, 230, 249, 300);
-		contentPane.add(painelGrafico2);
+		contabilidadePanel.add(painelGrafico2);
 		painelGrafico2.setLayout(null);
 		
-		Panel painelOpcoes = new Panel();
+		painelOpcoes = new Panel();
 		painelOpcoes.setBackground(new Color(153, 51, 153));
 		painelOpcoes.setBounds(0, 0, 1004, 93);
-		contentPane.add(painelOpcoes);
+		contabilidadePanel.add(painelOpcoes);
 		painelOpcoes.setLayout(null);
 		
 		JLabel dataLabel = new JLabel("Data Inicial *");
@@ -117,13 +111,13 @@ public class TelaContabilidade {
 		Panel painelGrafico3 = new Panel();
 		painelGrafico3.setBackground(new Color(255, 255, 255));
 		painelGrafico3.setBounds(132, 386, 510, 144);
-		contentPane.add(painelGrafico3);
+		contabilidadePanel.add(painelGrafico3);
 		painelGrafico3.setLayout(null);
 		
 		Panel cardUm = new Panel();
 		cardUm.setBackground(new Color(255, 255, 255));
 		cardUm.setBounds(132, 108, 255, 116);
-		contentPane.add(cardUm);
+		contabilidadePanel.add(cardUm);
 		cardUm.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Produtos");
@@ -153,7 +147,7 @@ public class TelaContabilidade {
 		cardDois.setLayout(null);
 		cardDois.setBackground(new Color(255, 255, 255));
 		cardDois.setBounds(394, 108, 248, 116);
-		contentPane.add(cardDois);
+		contabilidadePanel.add(cardDois);
 		
 		JLabel lblNewLabel_5 = new JLabel("Vendas");
 		lblNewLabel_5.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -169,7 +163,7 @@ public class TelaContabilidade {
 		cardTres.setLayout(null);
 		cardTres.setBackground(new Color(255, 255, 255));
 		cardTres.setBounds(648, 108, 249, 116);
-		contentPane.add(cardTres);
+		contabilidadePanel.add(cardTres);
 		
 		JLabel lblNewLabel_3 = new JLabel("Ganhos");
 		lblNewLabel_3.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -182,14 +176,11 @@ public class TelaContabilidade {
 		cardTres.add(lblNewLabel_4);
 		
 		JButton btnNewButton = new JButton("Voltar   ");
-		btnNewButton.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
+		btnNewButton.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/com/managepro/assets/BackToHome.png")));
 		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaMenu menu = new TelaMenu();
-				getFrame().setVisible(false);
-				menu.getFrame().setLocationRelativeTo(null);
-				menu.getFrame().setVisible(true);
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnNewButton.setBounds(10, 26, 120, 35);
@@ -203,7 +194,7 @@ public class TelaContabilidade {
 			Date dataFinal = dateChooser_1.getDate();
 			
 			if(dataInicial == null || dataFinal == null) {
-				JOptionPane.showMessageDialog(this.getFrame(), "Por favor, preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this.contabilidadePanel, "Por favor, preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
 			} else {
 				showImage();
 			}
