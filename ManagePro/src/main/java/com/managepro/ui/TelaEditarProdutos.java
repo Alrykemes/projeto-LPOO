@@ -1,9 +1,11 @@
 package com.managepro.ui;
 
+<<<<<<< HEAD
 import javax.swing.JFrame;
 
+=======
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -15,15 +17,29 @@ import java.awt.Toolkit;
 
 public class TelaEditarProdutos {
 
+<<<<<<< HEAD
 	private JFrame FrmManagePro;
 	public JFrame getFrame() {		
 		return this.FrmManagePro;
+=======
+	private JPanel editarProdutosPanel;
+	private JTextField textFieldNomeProduto;
+	private JTextField textFieldCodigo;
+	private JTextField textFieldPrecoVenda;
+	private JTextField textFieldQuantidade;
+	private JTextField textFieldMarca;
+	private JTextField textFieldFornecedor;
+	
+	public JPanel getPanel() {		
+		return this.editarProdutosPanel;
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 	}
 
 	public TelaEditarProdutos() {
 		initialize();
 	}
 
+<<<<<<< HEAD
 	private JPanel panel;
 	private JTextField campoNomeProduto;
 	private JTextField campoCodigo;
@@ -42,6 +58,53 @@ public class TelaEditarProdutos {
 		
 		panel = new JPanel();
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+=======
+
+	public void initialize() {
+		editarProdutosPanel = new JPanel();
+		editarProdutosPanel.setSize(700, 500);
+		editarProdutosPanel.setLayout(null);
+
+		JLabel textoTituloTela = new JLabel("Preencha os campos abaixo corretamente *");
+		textoTituloTela.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		textoTituloTela.setBounds(10, 35, 268, 14);
+		editarProdutosPanel.add(textoTituloTela);
+
+		JLabel NomedoProduto = new JLabel("Nome do Produto *");
+		NomedoProduto.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		NomedoProduto.setBounds(34, 73, 118, 14);
+		editarProdutosPanel.add(NomedoProduto);
+
+		textFieldNomeProduto = new JTextField();
+		textFieldNomeProduto.setBounds(34, 98, 217, 35);
+		editarProdutosPanel.add(textFieldNomeProduto);
+		textFieldNomeProduto.setColumns(10);
+
+		JLabel Codigo = new JLabel("Código *");
+		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Codigo.setBounds(312, 73, 70, 14);
+		editarProdutosPanel.add(Codigo);
+
+		textFieldCodigo = new JTextField();
+		textFieldCodigo.setColumns(10);
+		textFieldCodigo.setBounds(312, 98, 131, 35);
+		editarProdutosPanel.add(textFieldCodigo);
+
+		textFieldPrecoVenda = new JTextField();
+		textFieldPrecoVenda.setColumns(10);
+		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
+		editarProdutosPanel.add(textFieldPrecoVenda);
+
+		JLabel PrecoDeVenda = new JLabel("Preço de Venda *");
+		PrecoDeVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		PrecoDeVenda.setBounds(501, 73, 110, 14);
+		editarProdutosPanel.add(PrecoDeVenda);
+
+		Panel panel = new Panel();
+		panel.setBackground(new Color(255, 255, 255));
+		panel.setBounds(0, 398, 684, 63);
+		editarProdutosPanel.add(panel);
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 		panel.setLayout(null);
 		FrmManagePro.setContentPane(panel);
 		
@@ -50,6 +113,7 @@ public class TelaEditarProdutos {
 		TituloTela.setBounds(10, 11, 295, 24);
 		panel.add(TituloTela);
 
+<<<<<<< HEAD
 		JLabel subTituloTela = new JLabel("Preencha os campos abaixo corretamente *");
 		subTituloTela.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		subTituloTela.setBounds(10, 35, 268, 14);
@@ -114,6 +178,65 @@ public class TelaEditarProdutos {
 		campoFornecedor.setColumns(10);
 		campoFornecedor.setBounds(415, 182, 217, 35);
 		panel.add(campoFornecedor);
+=======
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
+				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+			}
+		});
+		btnCancelar.setBounds(45, 11, 99, 41);
+		panel.add(btnCancelar);
+
+		JButton btnEditar = new JButton("Salvar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
+				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+			}
+		});
+		btnEditar.setBounds(539, 11, 99, 41);
+		panel.add(btnEditar);
+
+		textFieldQuantidade = new JTextField();
+		textFieldQuantidade.setColumns(10);
+		textFieldQuantidade.setBounds(34, 182, 131, 35);
+		editarProdutosPanel.add(textFieldQuantidade);
+
+		JLabel Quantidade = new JLabel("Quantidade *");
+		Quantidade.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Quantidade.setBounds(34, 157, 118, 14);
+		editarProdutosPanel.add(Quantidade);
+
+		textFieldMarca = new JTextField();
+		textFieldMarca.setColumns(10);
+		textFieldMarca.setBounds(218, 182, 139, 35);
+		editarProdutosPanel.add(textFieldMarca);
+
+		JLabel Marca = new JLabel("Marca *");
+		Marca.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Marca.setBounds(218, 157, 87, 14);
+		editarProdutosPanel.add(Marca);
+
+		JLabel Fornecedor = new JLabel("Fornecedor *");
+		Fornecedor.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Fornecedor.setBounds(415, 157, 81, 14);
+		editarProdutosPanel.add(Fornecedor);
+
+		textFieldFornecedor = new JTextField();
+		textFieldFornecedor.setColumns(10);
+		textFieldFornecedor.setBounds(415, 182, 217, 35);
+		editarProdutosPanel.add(textFieldFornecedor);
+
+		JPanel MenuDescricao = new JPanel();
+		MenuDescricao.setBackground(new Color(255, 255, 255));
+		MenuDescricao.setBounds(34, 241, 598, 140);
+		editarProdutosPanel.add(MenuDescricao);
+		MenuDescricao.setLayout(null);
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 
 		JPanel PanelMostrarDescricao = new JPanel();
 		PanelMostrarDescricao.setBackground(new Color(255, 255, 255));
@@ -168,6 +291,7 @@ public class TelaEditarProdutos {
 		panel.add(panelInferior);
 		panelInferior.setLayout(null);
 
+<<<<<<< HEAD
 		Botao botaoCancelar = new Botao("Cancelar");
 		botaoCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -185,5 +309,15 @@ public class TelaEditarProdutos {
 		});
 		botaoEditar.setBounds(539, 11, 99, 41);
 		panelInferior.add(botaoEditar);
+=======
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(34, 241, 598, 24);
+		editarProdutosPanel.add(panel_2);
+
+		JLabel tituloTela = new JLabel("EDITAR PRODUTO");
+		tituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		tituloTela.setBounds(10, 11, 295, 24);
+		editarProdutosPanel.add(tituloTela);
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 	}
 }

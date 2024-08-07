@@ -1,6 +1,5 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -20,6 +19,7 @@ import java.awt.Toolkit;
 
 public class TelaNovaVenda {
 
+<<<<<<< HEAD
 	private JFrame frmManagePro;
 	private JTextField campoCodigo;
 	private JTextField campoQuantidade;
@@ -29,9 +29,20 @@ public class TelaNovaVenda {
 	private JLabel labelValorRebido;
 	private JLabel labelValorTroco;
 	private JLabel valorTroco;
+=======
+	private JPanel novaVendaPanel;
+	private JTextField codField;
+	private JTextField qtdField;
+	private JTextField descontoField;
+	private JTextField txtDigiteOCpf;
+	private JTextField ValueInsertField;
+	private JLabel txtValueInsert;
+	private JLabel txtTroco;
+	private JLabel lblTroco;
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 	
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.novaVendaPanel;
 	}
 
 	public TelaNovaVenda() {
@@ -39,6 +50,7 @@ public class TelaNovaVenda {
 	}
 
 	private void initialize() {
+<<<<<<< HEAD
 		frmManagePro = new JFrame();
 		frmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaNovaVenda.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagePro.setResizable(false);
@@ -51,6 +63,16 @@ public class TelaNovaVenda {
 		panel.setBounds(10, 11, 984, 619);
 		panel.setLayout(null);
 		frmManagePro.getContentPane().add(panel);
+=======
+		novaVendaPanel = new JPanel();
+		novaVendaPanel.setSize(1020, 680);
+		novaVendaPanel.setLayout(null);
+		
+		JPanel PrincipalPanel = new JPanel();
+		PrincipalPanel.setBounds(10, 11, 984, 619);
+		novaVendaPanel.add(PrincipalPanel);
+		PrincipalPanel.setLayout(null);
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 		
 		JPanel addProdutoPanel = new JPanel();
 		addProdutoPanel.setBounds(699, 0, 285, 400);
@@ -222,11 +244,16 @@ public class TelaNovaVenda {
 		Botao botaoCancelar = new Botao("Cancelar\r\n");
 		botaoCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
 				TelaMenu menu = new TelaMenu();
 				if(JOptionPane.showConfirmDialog(botaoCancelar, "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
 					getFrame().setVisible(false);
 					menu.getFrame().setLocationRelativeTo(null);
 					menu.getFrame().setVisible(true);
+=======
+				if(JOptionPane.showConfirmDialog(btnCancel, "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
+					Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 				}
 			}
 		});

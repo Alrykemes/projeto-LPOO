@@ -1,6 +1,5 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
@@ -19,12 +18,21 @@ import java.awt.Toolkit;
 
 public class TelaFuncionarios {
 
+<<<<<<< HEAD
 	private JFrame frmManagePro;
 	private JTextField campoNome;
 	private JTextField campoCpf;
 	private JTextField campoEmail;
 	private JTextField campoSenha;
 	private JTextField campoCargo;
+=======
+	private JPanel funcionariosPanel;
+	private JTextField txtNome;
+	private JTextField txtCpf;
+	private JTextField txtEmail;
+	private JTextField txtSenha;
+	private JTextField txtCargo;
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 	private JTable table;
 	private JLabel labelNome;
 	private JLabel labelCpf;
@@ -35,8 +43,8 @@ public class TelaFuncionarios {
 	private JLabel labelDataAdmissao;
 	private JLabel labelFrequencia;
 
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.funcionariosPanel;
 	}
 	
 	public TelaFuncionarios() {
@@ -45,6 +53,7 @@ public class TelaFuncionarios {
 
 	
 	private void initialize() {
+<<<<<<< HEAD
 		frmManagePro = new JFrame();
 		frmManagePro.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaFuncionarios.class.getResource("/com/managepro/assets/manageIcon.png")));
 		frmManagePro.setTitle("ManagePro");
@@ -56,6 +65,16 @@ public class TelaFuncionarios {
 		panel.setBounds(0, 0, 1006, 643);
 		panel.setLayout(null);
 		frmManagePro.getContentPane().add(panel);
+=======
+		funcionariosPanel = new JPanel();
+		funcionariosPanel.setSize(1020, 680);
+		funcionariosPanel.setLayout(null);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setSize(1006, 643);
+		funcionariosPanel.add(panel_1);
+		panel_1.setLayout(null);
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 		
 		Botao botaoVoltar = new Botao("Voltar   ");
 		botaoVoltar.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
@@ -269,6 +288,69 @@ public class TelaFuncionarios {
 			}
 		));
 		table.setBounds(10, 155, 980, 478);
+<<<<<<< HEAD
 		panel.add(table);
+=======
+		panel_1.add(table);
+		
+		lblNomeLabel = new JLabel("Nome");
+		lblNomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNomeLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNomeLabel.setBounds(0, 125, 115, 20);
+		panel_1.add(lblNomeLabel);
+		
+		lblCPFLabel = new JLabel("CPF");
+		lblCPFLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCPFLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblCPFLabel.setBounds(125, 125, 115, 20);
+		panel_1.add(lblCPFLabel);
+		
+		lblEmailLabel = new JLabel("Email");
+		lblEmailLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmailLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblEmailLabel.setBounds(250, 125, 115, 20);
+		panel_1.add(lblEmailLabel);
+		
+		lblSenhaLabel = new JLabel("Senha");
+		lblSenhaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSenhaLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblSenhaLabel.setBounds(375, 125, 115, 20);
+		panel_1.add(lblSenhaLabel);
+		
+		lblCargoLabel = new JLabel("Cargo");
+		lblCargoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCargoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblCargoLabel.setBounds(500, 125, 115, 20);
+		panel_1.add(lblCargoLabel);
+		
+		lblSalarioLabel = new JLabel("Salário");
+		lblSalarioLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSalarioLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblSalarioLabel.setBounds(625, 125, 115, 20);
+		panel_1.add(lblSalarioLabel);
+		
+		lblDataAdmissaoLabel = new JLabel("Data Admissão");
+		lblDataAdmissaoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDataAdmissaoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblDataAdmissaoLabel.setBounds(750, 125, 115, 20);
+		panel_1.add(lblDataAdmissaoLabel);
+		
+		lblFrequenciaLabel = new JLabel("Frequência");
+		lblFrequenciaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFrequenciaLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblFrequenciaLabel.setBounds(875, 125, 115, 20);
+		panel_1.add(lblFrequenciaLabel);
+		
+		JButton btnComeback = new JButton("Voltar   ");
+		btnComeback.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
+		btnComeback.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		btnComeback.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+			}
+		});
+		btnComeback.setBounds(20, 8, 120, 35);
+		panel_1.add(btnComeback);
+>>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
 	}
 }
