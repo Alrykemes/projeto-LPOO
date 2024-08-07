@@ -1,6 +1,5 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -21,7 +20,7 @@ import java.awt.event.ActionEvent;
 
 public class TelaNovaVenda {
 
-	private JFrame frmManagePro;
+	private JPanel novaVendaPanel;
 	private JTextField codField;
 	private JTextField qtdField;
 	private JTextField descontoField;
@@ -31,8 +30,8 @@ public class TelaNovaVenda {
 	private JLabel txtTroco;
 	private JLabel lblTroco;
 	
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.novaVendaPanel;
 	}
 
 	public TelaNovaVenda() {
@@ -40,16 +39,13 @@ public class TelaNovaVenda {
 	}
 
 	private void initialize() {
-		frmManagePro = new JFrame();
-		frmManagePro.setResizable(false);
-		frmManagePro.setTitle("ManagePro\r\n");
-		frmManagePro.setBounds(100, 100, 1020, 680);
-		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.getContentPane().setLayout(null);
+		novaVendaPanel = new JPanel();
+		novaVendaPanel.setSize(1020, 680);
+		novaVendaPanel.setLayout(null);
 		
 		JPanel PrincipalPanel = new JPanel();
 		PrincipalPanel.setBounds(10, 11, 984, 619);
-		frmManagePro.getContentPane().add(PrincipalPanel);
+		novaVendaPanel.add(PrincipalPanel);
 		PrincipalPanel.setLayout(null);
 		
 		JPanel addProductPanel = new JPanel();
@@ -232,11 +228,8 @@ public class TelaNovaVenda {
 		JButton btnCancel = new JButton("Cancelar\r\n");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaMenu menu = new TelaMenu();
 				if(JOptionPane.showConfirmDialog(btnCancel, "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
-					getFrame().setVisible(false);
-					menu.getFrame().setLocationRelativeTo(null);
-					menu.getFrame().setVisible(true);
+					Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
 				}
 			}
 		});
