@@ -1,6 +1,5 @@
 package com.managepro.core.model;
 
-<<<<<<< HEAD
 import java.time.LocalDate;
 
 public class Cliente {
@@ -25,19 +24,7 @@ public class Cliente {
 
 	public int getId() {
 		return id;
-=======
-public class Cliente {
-	private String nome;
-	private String cpf;
-	
-	public Cliente() {}
-	
-	public Cliente(String nome, String cpf) {
-		this.nome = nome;
-		this.cpf = cpf;
->>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
-	}
-	
+	}	
 	public String getNome() {
 		return nome;
 	}	
@@ -53,7 +40,6 @@ public class Cliente {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-<<<<<<< HEAD
 
 	public String getEndereco() {
 		return endereco;
@@ -87,7 +73,4 @@ public class Cliente {
 		this.dataCadastro = dataCadastro;
 	}		
 }
-=======
-	
-}
->>>>>>> 3e2d2b8bb61d0847ffe527d238c0239bd88fa712
+
