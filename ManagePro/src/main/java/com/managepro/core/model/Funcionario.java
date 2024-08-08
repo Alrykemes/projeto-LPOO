@@ -1,91 +1,72 @@
 package com.managepro.core.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Funcionario {
 	private String nome;
 	private String cpf;
+	private String usuario;
 	private String senha;
-	private String email;
-	private String cargo;
-	private double salario;
+	private Cargos funcao;
+	private BigDecimal salario;
 	private Date dataAdmissao;
-	private int frequencia;
 	
-	public Funcionario(String nome, String cpf, String senha, String email, String cargo, double salario, Date dataAdmissao, int frequencia) {
+	public Funcionario() {}
+	
+	public Funcionario(String nome, String cpf, String usuario, String senha, Cargos funcao, BigDecimal salario,
+			Date dataAdmissao) {
+		super();
 		this.nome = nome;
 		this.cpf = cpf;
+		this.usuario = usuario;
 		this.senha = senha;
-		this.email = email;
-		this.cargo = cargo;
+		this.funcao = funcao;
 		this.salario = salario;
 		this.dataAdmissao = dataAdmissao;
-		this.frequencia = frequencia;
 	}
-	
-	// Getters e Setters
+
 	public String getNome() {
 		return nome;
 	}
-	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
 	public String getCpf() {
 		return cpf;
 	}
-	
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
-	public String getEmail() {
-		return email;
+	public String getUsuario() {
+		return usuario;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
-	
 	public String getSenha() {
 		return senha;
 	}
-	
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	public String getCargo() {
-		return cargo;
+	public Cargos getFuncao() {
+		return funcao;
 	}
-	
-	public void setCargo(String cargo) {
-		this.cargo = cargo;
+	public void setFuncao(Cargos funcao) {
+		this.funcao = funcao;
 	}
-	
-	public double getSalario() {
+	public BigDecimal getSalario() {
 		return salario;
 	}
-	
-	public void setSalario(double salario) {
+	public void setSalario(BigDecimal salario) {
 		this.salario = salario;
 	}
-	
 	public Date getDataAdmissao() {
 		return dataAdmissao;
 	}
-	
 	public void setDataAdmissao(Date dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
-	}
-	
-	public int getFrequencia() {
-		return frequencia;
-	}
-	
-	public void setFrequencia(int frequencia) {
-		this.frequencia = frequencia;
 	}
 	
 }
