@@ -1,8 +1,8 @@
 package com.managepro.core.model;
 
-public class vendedor extends funcionario {
+public class Vendedor extends Funcionario {
 	public double calcularBonificacao() {
-		double bonificacao = salario * 0.2;
+		double bonificacao = getSalario() * 0.1;
 		return bonificacao;
 	}
 }

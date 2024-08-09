@@ -1,6 +1,6 @@
-package gerenciamentoFuncionario;
+package com.managepro.core.model;
 
-public class Funcionario {
+public abstract class Funcionario {
 	private String nome;
 	private String cpf;
 	private String senha;
@@ -11,7 +11,7 @@ public class Funcionario {
 	private int frequencia;
 	
 	// Construtor de funcionário
-	public Funcionario(String nome, String cpf, String senha, String email, String cargo, double salario, String dataAdmissão, int frequencia) {
+	public void funcionario(String nome, String cpf, String senha, String email, String cargo, double salario, String dataAdmissao, int frequencia) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.senha = senha;
@@ -85,6 +85,11 @@ public class Funcionario {
 	
 	public void setFrequencia(int frequencia) {
 		this.frequencia = frequencia;
+	}
+	
+	public double calcularBonificacao () {
+		double bonificacao = salario;
+		return bonificacao;
 	}
 	
 	//Método toString

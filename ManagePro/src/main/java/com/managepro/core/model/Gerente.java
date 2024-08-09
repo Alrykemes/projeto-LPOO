@@ -1,8 +1,8 @@
 package com.managepro.core.model;
 
-public class gerente extends funcionario {
+public class Gerente extends Funcionario {
 	public double calcularBonificacao() {
-		double bonificacao = get.Salario * 0.2;
+		double bonificacao = getSalario() * 0.5;
 		return bonificacao;
 	}
 }
