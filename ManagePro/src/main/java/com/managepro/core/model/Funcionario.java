@@ -1,17 +1,18 @@
 package com.managepro.core.model;
 
-public abstract class Funcionario {
+import java.util.Date;
+
+public class Funcionario {
 	private String nome;
 	private String cpf;
 	private String senha;
 	private String email;
 	private String cargo;
 	private double salario;
-	private String dataAdmissao;
+	private Date dataAdmissao;
 	private int frequencia;
 	
-	// Construtor de funcionário
-	public void funcionario(String nome, String cpf, String senha, String email, String cargo, double salario, String dataAdmissao, int frequencia) {
+	public Funcionario(String nome, String cpf, String senha, String email, String cargo, double salario, Date dataAdmissao, int frequencia) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.senha = senha;
@@ -71,11 +72,11 @@ public abstract class Funcionario {
 		this.salario = salario;
 	}
 	
-	public String getDataAdmissao() {
+	public Date getDataAdmissao() {
 		return dataAdmissao;
 	}
 	
-	public void setDataAdmissao(String dataAdmissao) {
+	public void setDataAdmissao(Date dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
 	}
 	
@@ -87,22 +88,4 @@ public abstract class Funcionario {
 		this.frequencia = frequencia;
 	}
 	
-	public double calcularBonificacao () {
-		double bonificacao = salario;
-		return bonificacao;
-	}
-	
-	//Método toString
-	@Override
-	public String toString() {
-		return "Funcionario{" +
-				"nome='" + nome + '\'' +
-				", cpf='" + cpf + '\'' +
-				", email='" + email + '\'' +
-				", cargo='" + cargo + '\'' +
-				", salario='" + salario + '\'' +
-				", dataAdmissao='" + dataAdmissao + '\'' +
-				", frequencia='" + frequencia + '\'' +
-				'}';
-	}
 }
