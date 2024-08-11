@@ -12,16 +12,16 @@ public class GerenciamentoDeVendas {
     private Date data;
     private BigDecimal preco;
     private TipoPagamento metodoPagamento;
-    private List<produto> produtosVendidos;
+    private List<GerenciamentoDeVendas> produtosVendidos;
     private Cliente cliente;
     
     
     
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,11 +47,11 @@ public class GerenciamentoDeVendas {
 
     
     
-    public double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
-    public void setPreco(double preco) {
+    public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
 
@@ -63,6 +63,16 @@ public class GerenciamentoDeVendas {
 
     public void setMetodoPagamento(TipoPagamento metodoPagamento) {
         this.metodoPagamento = metodoPagamento;
+    }
+    
+    
+    
+    public List<GerenciamentoDeVendas> getLista() {
+    	return produtosVendidos;
+    }
+    
+    public void setLista(List<GerenciamentoDeVendas> produtosVendidos) {
+    	this.produtosVendidos = produtosVendidos;
     }
     
     
