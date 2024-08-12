@@ -2,7 +2,7 @@ BEGIN;
 
 CREATE TABLE cliente (
   id_cliente int NOT NULL,
-  nome varchar(45) NOT NULL,
+  nome varchar(70) NOT NULL,
   cpf varchar(11) NOT NULL,
   data_nascimento date NOT NULL,
   PRIMARY KEY (id_cliente)
@@ -10,21 +10,28 @@ CREATE TABLE cliente (
 
 CREATE TABLE funcionario (
     id_funcionario INT NOT NULL,
-    nome VARCHAR(45) NOT NULL,
+    nome VARCHAR(70) NOT NULL,
     cpf VARCHAR(45) NOT NULL,
-    cargo VARCHAR(45) NOT NULL,
-    salario INT NOT NULL,
+    cargo ENUM("ADMINISTRADOR", "CONTADOR", "ESTOQUISTA", "GERENTE", "VENDEDOR") NOT NULL,,
+    salario decimal NOT NULL,
     data_admissao DATE NOT NULL,
+    usuario varchar(45) NOT NULL,
+    senha varchar(120) NOT NULL,
     PRIMARY KEY (id_funcionario)
 );
 
-CREATE TABLE telefone (
-    id_portador INT NOT NULL,
+CREATE TABLE telefone_cliente (
+    id_cliente INT NOT NULL,
     numero VARCHAR(15) NOT NULL,
-    FOREIGN KEY (id_portador)
-        REFERENCES cliente (id_cliente),
-    FOREIGN KEY (id_portador)
-        REFERENCES funcionario (id_funcionario)
+    FOREIGN KEY (id_cliente)
+        REFERENCES cliente(id_cliente)
+);
+
+CREATE TABLE telefone_funcionario (
+    id_cliente INT NOT NULL,
+    numero VARCHAR(15) NOT NULL,
+    FOREIGN KEY (id_funcionario)
+        REFERENCES funcionario(id_funcionario)
 );
 
 CREATE TABLE produto (
@@ -42,7 +49,7 @@ CREATE TABLE venda (
   id_venda int NOT NULL,
   id_funcionario int NOT NULL,
   id_cliente int NOT NULL,
-  forma_pagamento varchar(45) NOT NULL,
+  forma_pagamento ENUM("CARTAODEALIMENTACAO", "CARTAODECREDITO", "CARTAODEDEBITO", "DINHEIRO", "PIX") NOT NULL,
   data_venda date NOT NULL,
   preco decimal NOT NULL,
   PRIMARY KEY (id_venda),
@@ -60,3 +67,5 @@ CREATE TABLE produto_venda (
   FOREIGN KEY (id_venda) REFERENCES venda(id_venda),
   FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
 );
+
+INSERT INTO funcionario VALUES(1, "admininastor", "123.456.789-12", "ADMINISTRADOR", 2.50, '2024-08-12', "admin", "123");
