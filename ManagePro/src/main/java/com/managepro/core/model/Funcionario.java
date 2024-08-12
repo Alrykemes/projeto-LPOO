@@ -6,24 +6,24 @@ import java.util.Date;
 public class Funcionario {
 	private String nome;
 	private String cpf;
-	private String usuario;
-	private String senha;
 	private Cargos funcao;
 	private BigDecimal salario;
 	private Date dataAdmissao;
+	private String usuario;
+	private String senha;
 	
 	public Funcionario() {}
 	
-	public Funcionario(String nome, String cpf, String usuario, String senha, Cargos funcao, BigDecimal salario,
-			Date dataAdmissao) {
+	public Funcionario(String nome, String cpf, Cargos funcao, BigDecimal salario,
+			Date dataAdmissao, String usuario, String senha) {
 		super();
 		this.nome = nome;
 		this.cpf = cpf;
-		this.usuario = usuario;
-		this.senha = senha;
 		this.funcao = funcao;
 		this.salario = salario;
 		this.dataAdmissao = dataAdmissao;
+		this.usuario = usuario;
+		this.senha = senha;
 	}
 
 	public String getNome() {

@@ -1,28 +1,28 @@
 package com.managepro.core.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Cliente {
-	private int id;
+	private Long id;
 	private String nome;
 	private String cpf;
-	private String endereco;
-	private String telefone;
-	private String email;
-	private LocalDate dataCadastro;
+	// private String endereco;
+	// private String telefone;
+	// private String email;
+	private Date dataCadastro;
 
-	public Cliente(int id, String nome, String cpf, String endereco, String telefone, String email,
-			LocalDate dataCadastro) {
+	public Cliente(Long id, String nome, String cpf, /*String endereco, String telefone, String email,*/
+			Date dataCadastro) {
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
-		this.endereco = endereco;
-		this.telefone = telefone;
-		this.email = email;
+		// this.endereco = endereco;
+		// this.telefone = telefone;
+		// this.email = email;
 		this.dataCadastro = dataCadastro;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	
@@ -41,7 +41,7 @@ public class Cliente {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-
+/*
 	public String getEndereco() {
 		return endereco;
 	}
@@ -65,12 +65,12 @@ public class Cliente {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public LocalDate getDataCadastro() {
+*/
+	public Date getDataCadastro() {
 		return dataCadastro;
 	}
 
-	public void setDataCadastro(LocalDate dataCadastro) {
+	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}		
 }

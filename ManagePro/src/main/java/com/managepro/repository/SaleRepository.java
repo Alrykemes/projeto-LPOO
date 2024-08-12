@@ -1,5 +1,5 @@
 package com.managepro.repository;
 
-public interface Repository {
-	
+public interface SaleRepository {
+
 }
