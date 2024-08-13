@@ -16,6 +16,13 @@ public class TelaMenu {
 
 	private JPanel panelMenu;
 	private JPanel panel;
+	private JLabel iconManagePro;
+	private JButton sairBotao;
+	private JButton estoqueBotao;
+	private JButton novaVendaBotao;
+	private JButton vendasBt;
+	private JButton funcionariosBt;
+	private JButton contabilidadeBt;
 	
 
 	public JPanel getPanel() {
@@ -24,7 +31,7 @@ public class TelaMenu {
 
 	public TelaMenu() {
 		this.initialize();
-	}
+	}			
 	
 	public void initialize() {
 		panelMenu = new JPanel();
@@ -39,26 +46,26 @@ public class TelaMenu {
 		panelMenu.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(10, 11, 336, 81);
-		panel.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\vitor\\Downloads\\ManagePRO-removebg-preview 2.png"));
+		iconManagePro = new JLabel("");
+		iconManagePro.setBounds(10, 0, 336, 81);
+		panel.add(iconManagePro);
+		iconManagePro.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/ManageProLogin.png")));
 		
-		JButton btnNewButton = new JButton("Sair");
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		btnNewButton.setBackground(new Color(255, 0, 0));
-		btnNewButton.addActionListener(new ActionListener() {
+		sairBotao = new JButton("Sair");
+		sairBotao.setForeground(new Color(255, 255, 255));
+		sairBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		sairBotao.setBackground(new Color(255, 0, 0));
+		sairBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Janela.getInstace().getTelaLogin().getUserLoginField().setText("");
 				Janela.getInstace().getTelaLogin().getUserPasswordField().setText("");
 				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Login");
 			}
 		});
-		btnNewButton.setBounds(889, 27, 89, 27);
-		panel.add(btnNewButton);
+		sairBotao.setBounds(889, 27, 89, 27);
+		panel.add(sairBotao);
 		
-		JButton estoqueBotao = new JButton("Estoque       ");
+		estoqueBotao = new JButton("Estoque       ");
 		estoqueBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/EstoqueIcon.png")));
 		estoqueBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		estoqueBotao.setBorder(new LineBorder(Color.GRAY, 2));
@@ -70,7 +77,7 @@ public class TelaMenu {
 		});
 		panelMenu.add(estoqueBotao);
 		
-		JButton novaVendaBotao = new JButton("Nova Venda   ");
+		novaVendaBotao = new JButton("Nova Venda   ");
 		novaVendaBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/NovaVendaIcon.png")));
 		novaVendaBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		novaVendaBotao.setBorder(new LineBorder(Color.GRAY, 2));
@@ -82,7 +89,7 @@ public class TelaMenu {
 		});
 		panelMenu.add(novaVendaBotao);
 		
-		JButton vendasBt = new JButton("Vendas        ");
+		vendasBt = new JButton("Vendas        ");
 		vendasBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/VendasIcon.png")));
 		vendasBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		vendasBt.setBorder(new LineBorder(Color.GRAY, 2));
@@ -94,7 +101,7 @@ public class TelaMenu {
 		});
 		panelMenu.add(vendasBt);
 		
-		JButton funcionariosBt = new JButton("Funcionários ");
+		funcionariosBt = new JButton("Funcionários ");
 		funcionariosBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
 		funcionariosBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		funcionariosBt.setBorder(new LineBorder(Color.GRAY, 2));
@@ -106,7 +113,7 @@ public class TelaMenu {
 		});
 		panelMenu.add(funcionariosBt);
 		
-		JButton contabilidadeBt = new JButton("Contabilidade");
+		contabilidadeBt = new JButton("Contabilidade");
 		contabilidadeBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/ContabilidadeIcon.png")));
 		contabilidadeBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		contabilidadeBt.setBorder(new LineBorder(Color.GRAY, 2));

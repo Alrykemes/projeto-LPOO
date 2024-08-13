@@ -25,11 +25,23 @@ public class TelaGerenciamentoDeVendas {
 
 	private JPanel gerenciamentoVendasPanel;
 	private JPanel PrincipalPanel;
+	private JPanel SearchPanel;
 	private JTextField FieldSearch;
 	private JDateChooser dateChooserFrom;
 	private JDateChooser dateChooserTo;
+	private JComboBox<String> FilterComboBox;
+	private JList<?> SalesList;
+	private JPanel SalePanel;
+	private JList<?> productsList;
 	private JLabel textDateFrom;
 	private JLabel textDateTo;
+	private JButton buttonNotaFiscal;
+	private JLabel lblEmployeeName;
+	private JLabel lblIdSale;
+	private JLabel lblDate;
+	private JButton btnDelete;
+	private JLabel lblTotalSale;
+	
 
 	public JPanel getPanel() {
 		return this.gerenciamentoVendasPanel;
@@ -49,7 +61,7 @@ public class TelaGerenciamentoDeVendas {
 		gerenciamentoVendasPanel.add(PrincipalPanel);
 		PrincipalPanel.setLayout(null);
 		
-		JPanel SearchPanel = new JPanel();
+		SearchPanel = new JPanel();
 		SearchPanel.setBounds(10, 45, 327, 585);
 		PrincipalPanel.add(SearchPanel);
 		SearchPanel.setLayout(null);
@@ -96,7 +108,7 @@ public class TelaGerenciamentoDeVendas {
 		textDateTo.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		
 		
-		JComboBox<String> FilterComboBox = new JComboBox<String>();
+		FilterComboBox = new JComboBox<String>();
 		FilterComboBox.setFont(new Font("SansSerif", Font.PLAIN, 17));
 		FilterComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "Funcionario", "Data"}));
 		FilterComboBox.setBounds(199, 10, 118, 22);
@@ -136,7 +148,7 @@ public class TelaGerenciamentoDeVendas {
 			}
 		});
 
-		JList<?> SalesList = new JList<Object>();
+		SalesList = new JList<Object>();
 		SalesList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		SalesList.setValueIsAdjusting(true);
 		SalesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -144,12 +156,12 @@ public class TelaGerenciamentoDeVendas {
 		SearchPanel.add(SalesList);
 		
 		
-		JPanel SalePanel = new JPanel();
+		SalePanel = new JPanel();
 		SalePanel.setBounds(337, 0, 657, 630);
 		PrincipalPanel.add(SalePanel);
 		SalePanel.setLayout(null);
 		
-		JLabel lblIdSale = new JLabel("165198");
+		lblIdSale = new JLabel("165198");
 		lblIdSale.setToolTipText("");
 		lblIdSale.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblIdSale.setBounds(42, 23, 72, 29);
@@ -165,24 +177,24 @@ public class TelaGerenciamentoDeVendas {
 		lblTextDate.setBounds(489, 23, 58, 29);
 		SalePanel.add(lblTextDate);
 		
-		JLabel lblDate = new JLabel("17/06/2021");
+		lblDate = new JLabel("17/06/2021");
 		lblDate.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblDate.setBounds(547, 23, 100, 29);
 		SalePanel.add(lblDate);
 		
-		JList<?> productsList = new JList<Object>();
+		productsList = new JList<Object>();
 		productsList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		productsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		productsList.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		productsList.setBounds(10, 75, 637, 342);
 		SalePanel.add(productsList);
 		
-		JButton buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
+		buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
 		buttonNotaFiscal.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		buttonNotaFiscal.setBounds(10, 578, 210, 41);
 		SalePanel.add(buttonNotaFiscal);
 		
-		JLabel lblEmployeeName = new JLabel("Alguém da Silva");
+		lblEmployeeName = new JLabel("Alguém da Silva");
 		lblEmployeeName.setToolTipText("");
 		lblEmployeeName.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblEmployeeName.setBounds(275, 23, 204, 29);
@@ -193,27 +205,27 @@ public class TelaGerenciamentoDeVendas {
 		lblTextEmployee.setBounds(169, 23, 108, 29);
 		SalePanel.add(lblTextEmployee);
 		
-		JButton btnDelete = new JButton("Deletar");
+		btnDelete = new JButton("Deletar");
 		btnDelete.setForeground(new Color(255, 255, 255));
 		btnDelete.setBackground(new Color(255, 0, 0));
 		btnDelete.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		btnDelete.setBounds(518, 578, 129, 41);
 		SalePanel.add(btnDelete);
 		
-		JLabel lblNewLabel = new JLabel("Total da Compra:");
-		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel.setBounds(10, 428, 146, 29);
-		SalePanel.add(lblNewLabel);
+		JLabel lbltxtTotalSale = new JLabel("Total da Compra:");
+		lbltxtTotalSale.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lbltxtTotalSale.setBounds(10, 428, 146, 29);
+		SalePanel.add(lbltxtTotalSale);
 		
-		JLabel lblNewLabel_1 = new JLabel("R$ 186,60");
-		lblNewLabel_1.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(154, 428, 119, 29);
-		SalePanel.add(lblNewLabel_1);
+		lblTotalSale = new JLabel("R$ 186,60");
+		lblTotalSale.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lblTotalSale.setBounds(154, 428, 119, 29);
+		SalePanel.add(lblTotalSale);
 		
-		JLabel lblMtodoDePagamento = new JLabel("Método de Pagamento:");
-		lblMtodoDePagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblMtodoDePagamento.setBounds(10, 458, 195, 29);
-		SalePanel.add(lblMtodoDePagamento);
+		JLabel lblMetodoDePagamento = new JLabel("Método de Pagamento:");
+		lblMetodoDePagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lblMetodoDePagamento.setBounds(10, 458, 195, 29);
+		SalePanel.add(lblMetodoDePagamento);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Dinheiro");
 		lblNewLabel_1_1.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -225,20 +237,20 @@ public class TelaGerenciamentoDeVendas {
 		lblCliente.setBounds(10, 488, 61, 32);
 		SalePanel.add(lblCliente);
 		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Alrykemes");
-		lblNewLabel_1_1_1.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel_1_1_1.setBounds(74, 490, 182, 29);
-		SalePanel.add(lblNewLabel_1_1_1);
+		JLabel lblNomeCliente = new JLabel("Alrykemes");
+		lblNomeCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lblNomeCliente.setBounds(74, 490, 182, 29);
+		SalePanel.add(lblNomeCliente);
 		
-		JLabel lblCpf = new JLabel("CPF:");
-		lblCpf.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblCpf.setBounds(10, 517, 46, 29);
-		SalePanel.add(lblCpf);
+		JLabel lblTxtCpf = new JLabel("CPF:");
+		lblTxtCpf.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lblTxtCpf.setBounds(10, 517, 46, 29);
+		SalePanel.add(lblTxtCpf);
 		
-		JLabel lblNewLabel_1_1_2 = new JLabel("123.456.789-12");
-		lblNewLabel_1_1_2.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel_1_1_2.setBounds(55, 517, 135, 29);
-		SalePanel.add(lblNewLabel_1_1_2);
+		JLabel lblCpfCliente = new JLabel("123.456.789-12");
+		lblCpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lblCpfCliente.setBounds(55, 517, 135, 29);
+		SalePanel.add(lblCpfCliente);
 		
 		JButton btnNewButton = new JButton("Voltar   ");
 		btnNewButton.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
