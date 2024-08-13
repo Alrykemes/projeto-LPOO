@@ -5,8 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public abstract class MySQLRepository implements Repository, ClientRepository, EmployeeRepository, 
-StatisticRepository, ProductRepository, SaleRepository {
+public class MySQLConnection {
 
 	private static Connection Connection() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
