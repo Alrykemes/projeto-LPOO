@@ -1,6 +1,7 @@
 package com.managepro.core.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -11,17 +12,19 @@ public class Venda {
 	private Cliente cliente;
 	private List<Produto> produtosVendidos;
 	private FormaPagamento formaDePagamentoEnum;
+	private Date data;
 	private BigDecimal preco;
 	
 	public Venda() {}
 
 	public Venda(Long id, Funcionario funcionario, Cliente cliente, List<Produto> produtosVendidos,
-			FormaPagamento formaDePagamentoEnum, BigDecimal preco) {
+			FormaPagamento formaDePagamentoEnum, Date data, BigDecimal preco) {
 		this.id = id;
 		this.funcionario = funcionario;
 		this.cliente = cliente;
 		this.produtosVendidos = produtosVendidos;
 		this.formaDePagamentoEnum = formaDePagamentoEnum;
+		this.data = data;
 		this.preco = preco;
 	}
 
@@ -60,9 +63,17 @@ public class Venda {
 	public FormaPagamento getFormaDePagamentoEnum() {
 		return formaDePagamentoEnum;
 	}
-
+	
 	public void setFormaDePagamentoEnum(FormaPagamento formaDePagamentoEnum) {
 		this.formaDePagamentoEnum = formaDePagamentoEnum;
+	}
+	
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	public BigDecimal getPreco() {
