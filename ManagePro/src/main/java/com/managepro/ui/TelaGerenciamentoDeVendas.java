@@ -103,7 +103,7 @@ public class TelaGerenciamentoDeVendas {
 		
 		dateChooserTo = new JDateChooser();
 		dateChooserTo.setBounds(199, 42, 118, 25);
-		textDateTo = new JLabel("At√©:");
+		textDateTo = new JLabel("AtÈ:");
 		textDateTo.setBounds(165, 46, 30, 15);
 		textDateTo.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		
@@ -194,13 +194,13 @@ public class TelaGerenciamentoDeVendas {
 		buttonNotaFiscal.setBounds(10, 578, 210, 41);
 		SalePanel.add(buttonNotaFiscal);
 		
-		lblEmployeeName = new JLabel("Algu√©m da Silva");
+		lblEmployeeName = new JLabel("AlguÈm da Silva");
 		lblEmployeeName.setToolTipText("");
 		lblEmployeeName.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblEmployeeName.setBounds(275, 23, 204, 29);
 		SalePanel.add(lblEmployeeName);
 		
-		JLabel lblTextEmployee = new JLabel("Funcion√°rio:");
+		JLabel lblTextEmployee = new JLabel("Funcion·rio:");
 		lblTextEmployee.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		lblTextEmployee.setBounds(169, 23, 108, 29);
 		SalePanel.add(lblTextEmployee);
@@ -222,7 +222,7 @@ public class TelaGerenciamentoDeVendas {
 		lblTotalSale.setBounds(154, 428, 119, 29);
 		SalePanel.add(lblTotalSale);
 		
-		JLabel lblMetodoDePagamento = new JLabel("M√©todo de Pagamento:");
+		JLabel lblMetodoDePagamento = new JLabel("MÈtodo de Pagamento:");
 		lblMetodoDePagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		lblMetodoDePagamento.setBounds(10, 458, 195, 29);
 		SalePanel.add(lblMetodoDePagamento);

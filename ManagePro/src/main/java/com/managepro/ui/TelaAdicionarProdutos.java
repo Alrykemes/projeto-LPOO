@@ -49,7 +49,7 @@ public class TelaAdicionarProdutos{
 		adicionarProdutoPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
-		JLabel Codigo = new JLabel("CÃ³digo *");
+		JLabel Codigo = new JLabel("Código *");
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
 		adicionarProdutoPanel.add(Codigo);
@@ -64,7 +64,7 @@ public class TelaAdicionarProdutos{
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		adicionarProdutoPanel.add(textFieldPrecoVenda);
 
-		JLabel PrecoVenda = new JLabel("PreÃ§o de Venda *");
+		JLabel PrecoVenda = new JLabel("Preço de Venda *");
 		PrecoVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoVenda.setBounds(501, 73, 110, 14);
 		adicionarProdutoPanel.add(PrecoVenda);
@@ -144,7 +144,7 @@ public class TelaAdicionarProdutos{
 		Nome2.setBounds(25, 11, 46, 14);
 		panel_3.add(Nome2);
 
-		JLabel Codigo2 = new JLabel("CÃ³d");
+		JLabel Codigo2 = new JLabel("Cód");
 		Codigo2.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo2.setBounds(104, 6, 46, 24);
 		panel_3.add(Codigo2);
@@ -169,7 +169,7 @@ public class TelaAdicionarProdutos{
 		Fornecedor2.setBounds(347, 11, 87, 14);
 		panel_3.add(Fornecedor2);
 
-		JLabel Descricao = new JLabel("Inserir texto com as informaÃ§Ãµes do produto que estÃ¡ sendo cadastrado //To Do");
+		JLabel Descricao = new JLabel("Inserir texto com as informações do produto que está sendo cadastrado //To Do");
 		Descricao.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		Descricao.setBounds(23, 51, 547, 26);
 		MostrarDescricao.add(Descricao);

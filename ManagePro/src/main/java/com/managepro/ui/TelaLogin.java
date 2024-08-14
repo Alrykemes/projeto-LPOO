@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -57,7 +58,7 @@ public class TelaLogin {
 			}
 			public void focusLost(FocusEvent e) {
                 if (userLogin.getText().isEmpty()) {
-                    userLogin.setText("Usuário");
+                    userLogin.setText("Usuario");
                     userLogin.setForeground(Color.LIGHT_GRAY);
                 }
             }
@@ -86,7 +87,7 @@ public class TelaLogin {
 						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Bem vindo, " + usuario);
 					}
 					else {
-						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(),"Usuário ou senha inválidos.");
+						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(),"Usu�rio ou senha inv�lidos.");
 						 }
 					}
 			}
@@ -99,7 +100,7 @@ public class TelaLogin {
 		txtLogin.setFont(new Font("SansSerif", Font.PLAIN, 30));
 		panelLogin.add(txtLogin);
 		
-		txtUser = new JLabel("Usuário");
+		txtUser = new JLabel("Usu�rio");
 		txtUser.setBounds(318, 248, 60, 16);
 		txtUser.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUser.setFont(new Font("SansSerif", Font.PLAIN, 16));
