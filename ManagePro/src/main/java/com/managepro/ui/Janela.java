@@ -52,7 +52,7 @@ public class Janela {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setName("ManagePro");
+		frame.setTitle("ManagePro");
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaMenu.class.getResource("/com/managepro/assets/ManageProIcon.png")));
 		frame.setBounds(0, 0, 1020, 680);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

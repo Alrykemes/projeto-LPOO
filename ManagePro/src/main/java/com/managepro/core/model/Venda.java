@@ -1,7 +1,7 @@
 package com.managepro.core.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -12,13 +12,13 @@ public class Venda {
 	private Cliente cliente;
 	private List<Produto> produtosVendidos;
 	private FormaPagamento formaDePagamentoEnum;
-	private Date data;
+	private LocalDate data;
 	private BigDecimal preco;
 	
 	public Venda() {}
 
 	public Venda(Long id, Funcionario funcionario, Cliente cliente, List<Produto> produtosVendidos,
-			FormaPagamento formaDePagamentoEnum, Date data, BigDecimal preco) {
+			FormaPagamento formaDePagamentoEnum, LocalDate data, BigDecimal preco) {
 		this.id = id;
 		this.funcionario = funcionario;
 		this.cliente = cliente;
@@ -68,11 +68,11 @@ public class Venda {
 		this.formaDePagamentoEnum = formaDePagamentoEnum;
 	}
 	
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 

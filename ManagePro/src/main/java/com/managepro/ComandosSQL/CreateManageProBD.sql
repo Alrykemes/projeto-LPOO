@@ -1,9 +1,13 @@
 BEGIN;
 
+CREATE DATABASE managepro_bd;
+
+USE managepro_bd;
+
 CREATE TABLE cliente (
   id_cliente int NOT NULL,
   nome varchar(70) NOT NULL,
-  cpf varchar(11) NOT NULL,
+  cpf varchar(14) NOT NULL,
   data_nascimento date NOT NULL,
   PRIMARY KEY (id_cliente)
 );
@@ -13,7 +17,7 @@ CREATE TABLE funcionario (
     nome VARCHAR(70) NOT NULL,
     cpf VARCHAR(45) NOT NULL,
     cargo ENUM("ADMINISTRADOR", "CONTADOR", "ESTOQUISTA", "GERENTE", "VENDEDOR") NOT NULL,,
-    salario decimal NOT NULL,
+    salario decimal(10,2) NOT NULL,
     data_admissao DATE NOT NULL,
     usuario varchar(45) NOT NULL,
     senha varchar(120) NOT NULL,
@@ -51,7 +55,7 @@ CREATE TABLE venda (
   id_cliente int NOT NULL,
   forma_pagamento ENUM("CARTAODEALIMENTACAO", "CARTAODECREDITO", "CARTAODEDEBITO", "DINHEIRO", "PIX") NOT NULL,
   data_venda date NOT NULL,
-  preco decimal NOT NULL,
+  preco decimal(10,2) NOT NULL,
   PRIMARY KEY (id_venda),
   FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario),
   FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente)
@@ -62,7 +66,7 @@ CREATE TABLE produto_venda (
   id_venda int NOT NULL,
   id_produto int NOT NULL,
   quantidade int NOT NULL,
-  preco decimal NOT NULL,
+  preco decimal(10,2) NOT NULL,
   PRIMARY KEY (id_produto_venda),
   FOREIGN KEY (id_venda) REFERENCES venda(id_venda),
   FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
