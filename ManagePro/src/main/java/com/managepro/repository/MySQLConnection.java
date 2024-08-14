@@ -9,11 +9,12 @@ public class MySQLConnection {
 
 	private static Connection Connection() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/ManagePro_BD", "root", "Senha do Seu LocalHost");
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/managepro_bd", "root", "2004");
 	}
 	
 	public static Connection getConnection() throws ClassNotFoundException, SQLException {
 		return Connection();
 	}
+	
 	
 }
