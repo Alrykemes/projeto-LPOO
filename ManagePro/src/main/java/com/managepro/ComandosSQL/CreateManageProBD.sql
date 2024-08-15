@@ -23,21 +23,21 @@ CREATE TABLE funcionario (
 );
 
 CREATE TABLE telefone_cliente (
-	id_telefone_cliente INT PRIMARY KEY NOT NULL, 
+	id_telefone_cliente INT AUTO_INCREMENT PRIMARY KEY NOT NULL, 
     id_cliente INT NOT NULL,
     numero VARCHAR(15) NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente)
 );
 
 CREATE TABLE telefone_funcionario (
-	id_telefone_funcionario INT PRIMARY KEY NOT NULL,
+	id_telefone_funcionario INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     id_funcionario INT NOT NULL,
     numero VARCHAR(15) NOT NULL,
     FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
 );
 
 CREATE TABLE produto (
-  id_produto INT PRIMARY KEY NOT NULL,
+  id_produto INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   nome VARCHAR(45) NOT NULL,
   preco DECIMAL NOT NULL,
   quantidade INT NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE produto (
 );
 
 CREATE TABLE venda (
-  id_venda INT PRIMARY KEY NOT NULL,
+  id_venda INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   id_funcionario INT NOT NULL,
   id_cliente INT NOT NULL,
   forma_pagamento ENUM("CARTAODEALIMENTACAO", "CARTAODECREDITO", "CARTAODEDEBITO", "DINHEIRO", "PIX") NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE venda (
   );
 
 CREATE TABLE produto_venda (
-  id_produto_venda INT PRIMARY KEY NOT NULL,
+  id_produto_venda INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   id_venda INT NOT NULL,
   id_produto INT NOT NULL,
   quantidade INT NOT NULL,
@@ -66,5 +66,3 @@ CREATE TABLE produto_venda (
   FOREIGN KEY (id_venda) REFERENCES venda(id_venda),
   FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
 );
-
-INSERT INTO funcionario VALUES(1, "admininastor", "123.456.789-12", "ADMINISTRADOR", 2.50, '2024-08-12', "admin", "123");
