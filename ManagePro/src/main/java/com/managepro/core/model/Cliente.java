@@ -11,8 +11,7 @@ public class Cliente {
 
 	public Cliente() {}
 
-	public Cliente(Long id, String nome, String cpf, String telefone, LocalDate dataNascimento) {
-		this.id = id;
+	public Cliente(String nome, String cpf, String telefone, LocalDate dataNascimento) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.telefone = telefone;

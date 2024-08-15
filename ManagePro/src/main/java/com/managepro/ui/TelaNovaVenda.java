@@ -5,7 +5,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
@@ -33,10 +32,10 @@ public class TelaNovaVenda {
 	private JPanel PrincipalPanel;
 	private JPanel addProductPanel;
 	private JPanel SaleConfigPanel;
-	private JTextField codField;
-	private JTextField qtdField;
+	private JFormattedTextField codField;
+	private JFormattedTextField qtdField;
 	private JFormattedTextField cpfField;
-	private JTextField ValueInsertField;
+	private JFormattedTextField ValueInsertField;
 	private JLabel txtValueInsert;
 	private JLabel txtTroco;
 	private JLabel lblTroco;
@@ -73,13 +72,19 @@ public class TelaNovaVenda {
 		lblTextCod.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(lblTextCod);
 		
-		codField = new JTextField();
+		MaskFormatter maskCod = new MaskFormatter("#############");
+		maskCod.setValidCharacters("0123456789");
+		maskCod.setAllowsInvalid(false);
+		codField = new JFormattedTextField(maskCod);
 		codField.setBounds(10, 228, 281, 26);
 		codField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(codField);
 		codField.setColumns(10);
 		
-		qtdField = new JTextField();
+		MaskFormatter maskqtd = new MaskFormatter("####");
+		maskqtd.setValidCharacters("0123456789");
+		maskqtd.setAllowsInvalid(false);
+		qtdField = new JFormattedTextField(maskqtd);
 		qtdField.setBounds(10, 288, 281, 26);
 		qtdField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		qtdField.setColumns(10);
@@ -279,7 +284,7 @@ public class TelaNovaVenda {
 		txtValueInsert.setBounds(321, 81, 120, 24);
 		SaleConfigPanel.add(txtValueInsert);
 		
-		ValueInsertField = new JTextField();
+		ValueInsertField = new JFormattedTextField();
 		ValueInsertField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		ValueInsertField.setBounds(321, 105, 282, 30);
 		ValueInsertField.setColumns(10);

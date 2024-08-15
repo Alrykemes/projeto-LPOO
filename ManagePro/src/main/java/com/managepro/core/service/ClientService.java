@@ -16,7 +16,7 @@ public class ClientService {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void CadastrarCliente(String nome, String cpf, LocalDate data_nascimento) throws Exception {
+	public void CadastrarCliente(String nome, String cpf, LocalDate data_nascimento, String telefone) throws Exception {
 		if (nome.length() >= 69) {
 			throw new Exception("Erro, nome muito grande");
 		}
@@ -27,10 +27,10 @@ public class ClientService {
 		}
 		
 		if (clienteDAO.findClientByCpf(cpf) != null) {
-			Cliente cliente = new Cliente(nome, cpf, data_nascimento);
+			Cliente cliente = new Cliente(nome, cpf, telefone, data_nascimento);
 			clienteDAO.addCliente(cliente);
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstace().getFrame(), "CPF jรก cadastrado)");
+			JOptionPane.showMessageDialog(Janela.getInstace().getFrame(), "CPF jแก cadastrado)");
 		}
 	}
 }

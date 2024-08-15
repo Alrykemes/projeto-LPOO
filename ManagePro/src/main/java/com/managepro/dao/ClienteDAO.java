@@ -19,7 +19,7 @@ public class ClienteDAO implements ClientRepository{
 	private Cliente cliente;
 	
 	@Override
-	public void addCliente(Cliente cliente) throws SQLException {
+	public void addCliente(Cliente cliente) {
 		try {
 			LocalDate data =  cliente.getDataNascimento();
 			Date sqlDate = java.sql.Date.valueOf(data);
@@ -31,7 +31,8 @@ public class ClienteDAO implements ClientRepository{
 			statement.close();
 			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			System.out.println(e.getMessage());
 		}
 		
 	}
@@ -43,7 +44,6 @@ public class ClienteDAO implements ClientRepository{
 			Statement statement = connection.createStatement();
 			
 			String sql = "SELECT * FROM cliente c WHERE c.cpf = '" + cpf + "'";
-			
 			ResultSet rs = statement.executeQuery(sql);
 			
 			if(rs.next()) {
@@ -52,20 +52,28 @@ public class ClienteDAO implements ClientRepository{
 				cliente.setNome(rs.getString("nome"));
 				cliente.setCpf(rs.getString("cpf"));
 				cliente.setDataNascimento((rs.getDate("data_nascimento").toLocalDate()));
-			
+			}
+				
 			if(cliente == null) {
 				return new Cliente(null, null, null, null);
+			}
+			
+			String sql2 = "SELECT numero FROM telefone_cliente t WHERE t.id_cliente = '" + cliente.getId() + "'";
+			ResultSet rs2 = statement.executeQuery(sql2);
+			
+			if(rs2.next()) {
+				cliente.setTelefone(rs2.getString("numero"));
 			}
 			
 			statement.close(); 
 			connection.close();
 			
-			}
 			return cliente;
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		
 			return cliente;
 		}
