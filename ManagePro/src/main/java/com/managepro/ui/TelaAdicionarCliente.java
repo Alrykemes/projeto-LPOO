@@ -63,6 +63,7 @@ public class TelaAdicionarCliente{
 		maskCpf.setValidCharacters("0123456789");
 		maskCpf.setAllowsInvalid(false);
 		textFieldCPF = new JFormattedTextField(maskCpf);
+		textFieldCPF.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		textFieldCPF.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		textFieldCPF.setColumns(10);
 		textFieldCPF.setBounds(137, 167, 217, 35);

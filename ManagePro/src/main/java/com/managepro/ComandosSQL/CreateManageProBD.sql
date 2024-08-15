@@ -16,7 +16,7 @@ CREATE TABLE funcionario (
     nome VARCHAR(70) NOT NULL,
     cpf VARCHAR(14) NOT NULL,
     cargo ENUM("ADMINISTRADOR", "CONTADOR", "ESTOQUISTA", "GERENTE", "VENDEDOR") NOT NULL,
-    salario decimal NOT NULL,
+    salario decimal(10,2) NOT NULL,
     data_admissao DATE NOT NULL,
     usuario varchar(45) NOT NULL,
     senha varchar(20) NOT NULL
@@ -38,7 +38,7 @@ CREATE TABLE telefone_funcionario (
 CREATE TABLE produto (
   id_produto INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
   nome VARCHAR(45) NOT NULL,
-  preco DECIMAL NOT NULL,
+  preco DECIMAL(10,2) NOT NULL,
   quantidade INT NOT NULL,
   marca VARCHAR(45) NOT NULL,
   fornecedor VARCHAR(45) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE venda (
   id_cliente INT NOT NULL,
   forma_pagamento ENUM("CARTAODEALIMENTACAO", "CARTAODECREDITO", "CARTAODEDEBITO", "DINHEIRO", "PIX") NOT NULL,
   data_venda DATE NOT NULL,
-  preco DECIMAL NOT NULL,
+  preco DECIMAL(10,2) NOT NULL,
   FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario),
   FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente)
   );
@@ -61,9 +61,25 @@ CREATE TABLE produto_venda (
   id_venda INT NOT NULL,
   id_produto INT NOT NULL,
   quantidade INT NOT NULL,
-  preco DECIMAL NOT NULL,
+  preco DECIMAL(10,2) NOT NULL,
   FOREIGN KEY (id_venda) REFERENCES venda(id_venda),
   FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
 );
 
-INSERT INTO funcionario VALUES("admininastor", "123.456.789-12", "ADMINISTRADOR", 2.50, '2024-08-12', "admin", "123");
+INSERT INTO funcionario (nome, cpf, cargo, salario, data_admissao, usuario, senha) 
+VALUES("admininastor", "123.456.789-12", "ADMINISTRADOR", 2.50, '2024-08-12', "admin", "123");
+
+INSERT INTO cliente (nome, cpf, data_nascimento) 
+VALUES("Josepe Guacamole", "123.456.789-12", '2024-08-12');
+
+INSERT INTO telefone_cliente (id_cliente, numero) 
+VALUES(1, "(81)99929-4959");
+
+INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
+VALUES("Biscoito Treloso", "2.29", 20, "Vitarela", 'Vitarela', '2024-09-22');
+
+INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
+VALUES("Arroz", "7.32", 20, "Emoções", 'Cadan Distribuição', '2027-12-18');
+
+INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
+VALUES("Feijão", "2.29", 20, "Turquesa", 'Cadan Distribuição', '2026-07-26');
