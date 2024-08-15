@@ -21,6 +21,7 @@ public class TelaAdicionarCliente{
 	private JPanel adicionarProdutoPanel;
 	private JTextField textFieldNomeCliente;
 	private JFormattedTextField textFieldCPF;
+	private JFormattedTextField textFieldNumero;
 	private JDateChooser dateChooser;
 
 	public JPanel getPanel() {
@@ -43,18 +44,18 @@ public class TelaAdicionarCliente{
 
 		JLabel NomeCliente = new JLabel("Nome do Cliente*");
 		NomeCliente.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		NomeCliente.setBounds(137, 92, 148, 14);
+		NomeCliente.setBounds(137, 71, 148, 14);
 		adicionarProdutoPanel.add(NomeCliente);
 
 		textFieldNomeCliente = new JTextField();
 		textFieldNomeCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		textFieldNomeCliente.setBounds(137, 117, 217, 35);
+		textFieldNomeCliente.setBounds(137, 96, 217, 35);
 		adicionarProdutoPanel.add(textFieldNomeCliente);
 		textFieldNomeCliente.setColumns(10);
 
 		JLabel CpfCliente = new JLabel("CPF Cliente*");
 		CpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		CpfCliente.setBounds(137, 178, 121, 14);
+		CpfCliente.setBounds(137, 142, 121, 14);
 		adicionarProdutoPanel.add(CpfCliente);
 
 		
@@ -64,7 +65,7 @@ public class TelaAdicionarCliente{
 		textFieldCPF = new JFormattedTextField(maskCpf);
 		textFieldCPF.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		textFieldCPF.setColumns(10);
-		textFieldCPF.setBounds(137, 203, 217, 35);
+		textFieldCPF.setBounds(137, 167, 217, 35);
 		adicionarProdutoPanel.add(textFieldCPF);
 
 		Panel panel = new Panel();
@@ -78,13 +79,14 @@ public class TelaAdicionarCliente{
 			public void actionPerformed(ActionEvent e) {
 				textFieldCPF.setText(" ");
 				textFieldNomeCliente.setText(null);
+				
 				dateChooser.setDate(null);
 				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "NovaVenda");
 				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
 				Janela.getInstace().getFrame().setLocationRelativeTo(null);
 			}
 		});
-		btnCancelar.setBounds(45, 11, 99, 41);
+		btnCancelar.setBounds(10, 11, 99, 41);
 		panel.add(btnCancelar);
 
 		JButton btnCadastrar = new JButton("Cadastrar");
@@ -95,12 +97,12 @@ public class TelaAdicionarCliente{
 				Janela.getInstace().getFrame().setLocationRelativeTo(null);
 			}
 		});
-		btnCadastrar.setBounds(326, 11, 99, 41);
+		btnCadastrar.setBounds(391, 11, 99, 41);
 		panel.add(btnCadastrar);
 
 		JLabel DataNascimento = new JLabel("Data de Nascimento *");
 		DataNascimento.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		DataNascimento.setBounds(137, 262, 158, 14);
+		DataNascimento.setBounds(137, 284, 158, 14);
 		adicionarProdutoPanel.add(DataNascimento);
 
 		JLabel TituloTela = new JLabel("CADASTRAR CLIENTE");
@@ -109,8 +111,22 @@ public class TelaAdicionarCliente{
 		adicionarProdutoPanel.add(TituloTela);
 		
 		dateChooser = new JDateChooser();
-		dateChooser.setBounds(137, 287, 217, 35);
+		dateChooser.setBounds(137, 309, 217, 35);
 		dateChooser.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		adicionarProdutoPanel.add(dateChooser);
+		
+		JLabel lblNmeroCliente = new JLabel("N\u00FAmero do Cliente*");
+		lblNmeroCliente.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		lblNmeroCliente.setBounds(137, 213, 141, 14);
+		adicionarProdutoPanel.add(lblNmeroCliente);
+		
+		MaskFormatter maskNumero = new MaskFormatter("(##)#####-####");
+		maskCpf.setValidCharacters("0123456789");
+		maskCpf.setAllowsInvalid(false);
+		textFieldNumero = new JFormattedTextField(maskNumero);
+		textFieldNumero.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		textFieldNumero.setColumns(10);
+		textFieldNumero.setBounds(137, 238, 217, 35);
+		adicionarProdutoPanel.add(textFieldNumero);
 	}
 }
