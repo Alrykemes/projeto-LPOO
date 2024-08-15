@@ -1,9 +1,11 @@
 package com.managepro.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
@@ -18,15 +20,25 @@ public class ClienteDAO implements ClientRepository{
 	
 	@Override
 	public void addCliente(Cliente cliente) throws SQLException {
-		
+		try {
+			LocalDate data =  cliente.getDataNascimento();
+			Date sqlDate = java.sql.Date.valueOf(data);
+			
+			Connection connection = MySQLConnection.getConnection();
+			Statement statement = connection.createStatement();
+			String sql = "INSERT INTO cliente(nome, cpf, data_nascimento) VALUES ('" + cliente.getNome() + "', '"+ cliente.getCpf() +"', '"+ sqlDate +"')";
+			statement.execute(sql);
+			statement.close();
+			connection.close();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
 	@Override
-	public Cliente findClientByCpf(String cpf) {
-		
+	public Cliente findClientByCpf(String cpf){
 		try {
-			
 			Connection connection = MySQLConnection.getConnection();
 			Statement statement = connection.createStatement();
 			
@@ -40,8 +52,6 @@ public class ClienteDAO implements ClientRepository{
 				cliente.setNome(rs.getString("nome"));
 				cliente.setCpf(rs.getString("cpf"));
 				cliente.setDataNascimento((rs.getDate("data_nascimento").toLocalDate()));
-				
-			}
 			
 			if(cliente == null) {
 				return new Cliente(null, null, null, null);
@@ -50,6 +60,7 @@ public class ClienteDAO implements ClientRepository{
 			statement.close(); 
 			connection.close();
 			
+			}
 			return cliente;
 			
 		} catch (ClassNotFoundException | SQLException e) {
@@ -59,5 +70,4 @@ public class ClienteDAO implements ClientRepository{
 			return cliente;
 		}
 	}
-
 }

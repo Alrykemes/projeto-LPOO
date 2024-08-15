@@ -23,14 +23,14 @@ CREATE TABLE funcionario (
 );
 
 CREATE TABLE telefone_cliente (
-    id_telefone_cliente INT AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+	id_telefone_cliente INT AUTO_INCREMENT PRIMARY KEY NOT NULL, 
     id_cliente INT NOT NULL,
     numero VARCHAR(15) NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente)
 );
 
 CREATE TABLE telefone_funcionario (
-    id_telefone_funcionario INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	id_telefone_funcionario INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     id_funcionario INT NOT NULL,
     numero VARCHAR(15) NOT NULL,
     FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
