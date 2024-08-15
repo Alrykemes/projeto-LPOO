@@ -18,6 +18,7 @@ public class Janela {
 	private TelaAdicionarProdutos telaAdicionarProdutos;
 	private TelaEditarProdutos telaEditarProdutos;
 	private TelaNovaVenda telaNovaVenda;
+	private TelaAdicionarCliente telaAdicionarCliente;
 	private TelaGerenciamentoDeVendas telaGerenciamentoDeVendas;
 	private TelaFuncionarios telaFuncionarios;
 	private TelaContabilidade telaContabilidade;
@@ -63,19 +64,25 @@ public class Janela {
 		panelPrincipal = new JPanel(new CardLayout());
 		frame.add(panelPrincipal);
 		
-		telaLogin = new TelaLogin();
-		telaMenu = new TelaMenu();
-		telaEstoque = new TelaEstoque();
-		telaAdicionarProdutos = new TelaAdicionarProdutos();
-		telaEditarProdutos = new TelaEditarProdutos();
-		telaNovaVenda = new TelaNovaVenda();
-		telaGerenciamentoDeVendas = new TelaGerenciamentoDeVendas();
-		telaFuncionarios = new TelaFuncionarios();
-		telaContabilidade = new TelaContabilidade();
+		try {			
+			telaLogin = new TelaLogin();
+			telaMenu = new TelaMenu();
+			telaEstoque = new TelaEstoque();
+			telaAdicionarProdutos = new TelaAdicionarProdutos();
+			telaEditarProdutos = new TelaEditarProdutos();
+			telaNovaVenda = new TelaNovaVenda();
+			telaAdicionarCliente = new TelaAdicionarCliente();
+			telaGerenciamentoDeVendas = new TelaGerenciamentoDeVendas();
+			telaFuncionarios = new TelaFuncionarios();
+			telaContabilidade = new TelaContabilidade();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		panelPrincipal.add(telaContabilidade.getPanel(), "Contabilidade");
 		panelPrincipal.add(telaFuncionarios.getPanel(), "Funcionarios");
 		panelPrincipal.add(telaGerenciamentoDeVendas.getPanel(), "GerenciamentoDeVendas");
+		panelPrincipal.add(telaAdicionarCliente.getPanel(), "AdicionarCliente");
 		panelPrincipal.add(telaNovaVenda.getPanel(), "NovaVenda");
 		panelPrincipal.add(telaAdicionarProdutos.getPanel(), "AdicionarProdutos");
 		panelPrincipal.add(telaEditarProdutos.getPanel(), "EditarProdutos");

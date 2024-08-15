@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.MaskFormatter;
 
 import com.managepro.core.model.Cliente;
 import com.managepro.core.service.VendaService;
@@ -15,8 +16,10 @@ import java.awt.Color;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
+import java.text.ParseException;
 import java.awt.event.ItemEvent;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -32,7 +35,7 @@ public class TelaNovaVenda {
 	private JPanel SaleConfigPanel;
 	private JTextField codField;
 	private JTextField qtdField;
-	private JTextField cpfField;
+	private JFormattedTextField cpfField;
 	private JTextField ValueInsertField;
 	private JLabel txtValueInsert;
 	private JLabel txtTroco;
@@ -46,11 +49,11 @@ public class TelaNovaVenda {
 		return this.novaVendaPanel;
 	}
 
-	public TelaNovaVenda() {
+	public TelaNovaVenda() throws ParseException {
 		initialize();
 	}
 
-	private void initialize() {
+	private void initialize() throws ParseException {
 		novaVendaPanel = new JPanel();
 		novaVendaPanel.setSize(1020, 680);
 		novaVendaPanel.setLayout(null);
@@ -152,10 +155,12 @@ public class TelaNovaVenda {
 		txtCpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtCpfCliente.setBounds(10, 11, 150, 30);
 		SaleConfigPanel.add(txtCpfCliente);
-		
-		cpfField = new JTextField();
+
+		MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
+		maskCpf.setValidCharacters("0123456789");
+		maskCpf.setAllowsInvalid(false);
+		cpfField = new JFormattedTextField(maskCpf);
 		cpfField.setForeground(new Color(192, 192, 192));
-		cpfField.setText("Digite o CPF");
 		cpfField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		cpfField.setBounds(10, 40, 242, 30);
 		cpfField.addFocusListener(new FocusAdapter() {
@@ -176,22 +181,27 @@ public class TelaNovaVenda {
 		btnPesquisaClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VendaService service = new VendaService();
-				if (service.getClientCpf(cpfField.getText()) != null) {
-					SaleConfigPanel.remove(cpfField);
-					
-					SaleConfigPanel.add(txtClientName);
-					SaleConfigPanel.add(txtClientCpf);
-					
-					cliente = service.getClientCpf(cpfField.getText());
-					txtClientName.setText(cliente.getNome());
-					txtClientCpf.setText(cliente.getCpf());
-					
-					SaleConfigPanel.remove(btnPesquisaClient);
-				} else {
-					if (JOptionPane.showConfirmDialog(getPanel(), "Deseja Cadastrar um novo Cliente?", "Cliente Pesquisa", JOptionPane.YES_NO_OPTION) == 0) {
-						
+				String cpfCliente = cpfField.getText();
+				cliente = service.getClientCpf(cpfCliente);
+				
+					if(cliente != null) {
+						if (cliente.getCpf() == null) {
+							
+							if(JOptionPane.showConfirmDialog(Janela.getInstace().getPanelPrincipal(), "Deseja Cadastrar um novo Cliente?", "Cadastrar Cliente", JOptionPane.YES_NO_OPTION) == 0) {
+								Janela.getInstace().getFrame().setBounds(0, 0, 500, 500);
+								Janela.getInstace().getFrame().setLocationRelativeTo(null);
+								Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "AdicionarCliente");
+							}	 
+						} else if(cliente.getCpf() != null){
+							
+							SaleConfigPanel.remove(cpfField);
+							SaleConfigPanel.add(txtClientName);
+							SaleConfigPanel.add(txtClientCpf);
+							txtClientName.setText(cliente.getNome());
+							txtClientCpf.setText(cliente.getCpf());	
+							SaleConfigPanel.remove(btnPesquisaClient);
+						}
 					}
-				}
 			}
 		});
 		SaleConfigPanel.add(btnPesquisaClient);
@@ -294,7 +304,6 @@ public class TelaNovaVenda {
 				if(JOptionPane.showConfirmDialog(btnCancel, "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
 					cliente = null;
 					SaleConfigPanel.add(cpfField);
-					cpfField.setText("Digite o CPF");
 					SaleConfigPanel.remove(txtClientName);
 					SaleConfigPanel.remove(txtClientCpf);
 					SaleConfigPanel.add(btnPesquisaClient);

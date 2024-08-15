@@ -4,13 +4,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
+
+import javax.swing.JOptionPane;
 
 import com.managepro.core.model.Cliente;
 import com.managepro.repository.ClientRepository;
 import com.managepro.repository.MySQLConnection;
+import com.managepro.ui.Janela;
 
 public class ClienteDAO implements ClientRepository{
+	
+	private Cliente cliente;
 	
 	@Override
 	public void addCliente(Cliente cliente) throws SQLException {
@@ -30,29 +34,30 @@ public class ClienteDAO implements ClientRepository{
 			
 			ResultSet rs = statement.executeQuery(sql);
 			
-			Cliente cliente = new Cliente();
 			if(rs.next()) {
-
+				cliente = new Cliente();
 				cliente.setId(rs.getLong("id_cliente"));
 				cliente.setNome(rs.getString("nome"));
 				cliente.setCpf(rs.getString("cpf"));
-				cliente.setDataNascimento(LocalDate.of(2005, 8, 13));
+				cliente.setDataNascimento((rs.getDate("data_nascimento").toLocalDate()));
 				
+			}
+			
+			if(cliente == null) {
+				return new Cliente(null, null, null, null);
 			}
 			
 			statement.close(); 
 			connection.close();
 			
-			if (cliente.getCpf() == null) {
-				return null;
-			}
 			return cliente;
 			
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			System.out.println(e.getMessage());
 		
-		return null;
+			return cliente;
+		}
 	}
 
 }
