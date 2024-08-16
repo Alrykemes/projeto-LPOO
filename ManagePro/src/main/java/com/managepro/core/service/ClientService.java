@@ -16,13 +16,12 @@ public class ClientService {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void CadastrarCliente(String nome, String cpf, LocalDate data_nascimento, String telefone) throws Exception {
+	public void cadastrarCliente(String nome, String cpf, String telefone, LocalDate data_nascimento) throws Exception {
 		if (nome.length() >= 69) {
-			throw new Exception("Erro, nome muito grande");
+			throw new Exception("Erro, Nome muito grande");
 		}
 
 		if (dataAtual.compareTo(data_nascimento) < 18) {
-			System.out.println(data_nascimento.compareTo(dataAtual));
 			throw new Exception("Erro, Cliente menor de idade");
 		}
 		
@@ -30,7 +29,18 @@ public class ClientService {
 			Cliente cliente = new Cliente(nome, cpf, telefone, data_nascimento);
 			clienteDAO.addCliente(cliente);
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstace().getFrame(), "CPF j� cadastrado)");
+			JOptionPane.showMessageDialog(Janela.getInstace().getFrame(), "CPF já cadastrado)");
 		}
 	}
+
+	public Cliente ClientExist(String cpf) {
+		cpf = cpf.replaceAll(" ", "");
+		
+		if(cpf.length() != 14) {
+			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Número de CPF Invalido!");
+			return null;
+		}
+		return clienteDAO.findClientByCpf(cpf);
+	}
+
 }

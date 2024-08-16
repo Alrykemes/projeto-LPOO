@@ -87,7 +87,7 @@ public class TelaLogin {
 						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Bem vindo, " + usuario);
 					}
 					else {
-						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(),"Usuário ou senha inválidos.");
+						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(),"UsuÃ¡rio ou senha invï¿½lidos.");
 						 }
 					}
 			}
@@ -100,7 +100,7 @@ public class TelaLogin {
 		txtLogin.setFont(new Font("SansSerif", Font.PLAIN, 30));
 		panelLogin.add(txtLogin);
 		
-		txtUser = new JLabel("Usuário");
+		txtUser = new JLabel("UsuÃ¡rio");
 		txtUser.setBounds(318, 248, 60, 16);
 		txtUser.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUser.setFont(new Font("SansSerif", Font.PLAIN, 16));

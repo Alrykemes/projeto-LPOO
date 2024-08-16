@@ -101,7 +101,7 @@ public class TelaMenu {
 		});
 		panelMenu.add(vendasBt);
 		
-		funcionariosBt = new JButton("Funcion·rios ");
+		funcionariosBt = new JButton("Funcion√°rios ");
 		funcionariosBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
 		funcionariosBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		funcionariosBt.setBorder(new LineBorder(Color.GRAY, 2));

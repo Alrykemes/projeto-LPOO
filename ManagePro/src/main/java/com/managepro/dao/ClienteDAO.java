@@ -21,17 +21,15 @@ public class ClienteDAO implements ClientRepository{
 	@Override
 	public void addCliente(Cliente cliente) {
 		try {
-			LocalDate data =  cliente.getDataNascimento();
-			Date sqlDate = java.sql.Date.valueOf(data);
-			
+			LocalDate data =  cliente.getDataNascimento();	
 			Connection connection = MySQLConnection.getConnection();
 			Statement statement = connection.createStatement();
-			String sql = "INSERT INTO cliente(nome, cpf, data_nascimento) VALUES ('" + cliente.getNome() + "', '"+ cliente.getCpf() +"', '"+ sqlDate +"')";
+			String sql = "INSERT INTO cliente(nome, cpf, data_nascimento) VALUES ('"+ cliente.getNome() +"', '"+ cliente.getCpf() +"', '"+ java.sql.Date.valueOf(data)+"')";
 			statement.execute(sql);
 			statement.close();
 			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na ComuniÃ§Ã£o do sistema, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 		}
 		
@@ -55,7 +53,7 @@ public class ClienteDAO implements ClientRepository{
 			}
 				
 			if(cliente == null) {
-				return new Cliente(null, null, null, null);
+				return new Cliente(null, null, null,null);
 			}
 			
 			String sql2 = "SELECT numero FROM telefone_cliente t WHERE t.id_cliente = '" + cliente.getId() + "'";
@@ -71,7 +69,7 @@ public class ClienteDAO implements ClientRepository{
 			return cliente;
 			
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na ComuniÃ§Ã£o do sistema, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		

@@ -49,7 +49,7 @@ public class TelaEditarProdutos {
 		editarProdutosPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
-		JLabel Codigo = new JLabel("Código *");
+		JLabel Codigo = new JLabel("CÃ³digo *");
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
 		editarProdutosPanel.add(Codigo);
@@ -64,7 +64,7 @@ public class TelaEditarProdutos {
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		editarProdutosPanel.add(textFieldPrecoVenda);
 
-		JLabel PrecoDeVenda = new JLabel("Preço de Venda *");
+		JLabel PrecoDeVenda = new JLabel("PreÃ§o de Venda *");
 		PrecoDeVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoDeVenda.setBounds(501, 73, 110, 14);
 		editarProdutosPanel.add(PrecoDeVenda);

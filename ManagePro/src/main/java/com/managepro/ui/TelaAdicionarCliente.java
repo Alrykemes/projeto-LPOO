@@ -2,6 +2,8 @@ package com.managepro.ui;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
@@ -12,9 +14,16 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.awt.event.ActionEvent;
+
 import com.toedter.calendar.JDateChooser;
+
+import com.managepro.core.service.ClientService;
 
 public class TelaAdicionarCliente{
 
@@ -23,7 +32,7 @@ public class TelaAdicionarCliente{
 	private JFormattedTextField textFieldCPF;
 	private JFormattedTextField textFieldNumero;
 	private JDateChooser dateChooser;
-
+	 
 	public JPanel getPanel() {
 		return this.adicionarProdutoPanel;
 	}
@@ -58,11 +67,11 @@ public class TelaAdicionarCliente{
 		CpfCliente.setBounds(137, 142, 121, 14);
 		adicionarProdutoPanel.add(CpfCliente);
 
-		
-		MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
+		MaskFormatter maskCpf = new MaskFormatter();
 		maskCpf.setValidCharacters("0123456789");
 		maskCpf.setAllowsInvalid(false);
-		textFieldCPF = new JFormattedTextField(maskCpf);
+		textFieldCPF = new JFormattedTextField();
+		textFieldCPF.setEditable(false);
 		textFieldCPF.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		textFieldCPF.setColumns(10);
 		textFieldCPF.setBounds(137, 167, 217, 35);
@@ -74,6 +83,36 @@ public class TelaAdicionarCliente{
 		adicionarProdutoPanel.add(panel);
 		panel.setLayout(null);
 
+		JLabel DataNascimento = new JLabel("Data de Nascimento *");
+		DataNascimento.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		DataNascimento.setBounds(137, 284, 158, 14);
+		adicionarProdutoPanel.add(DataNascimento);
+
+		JLabel TituloTela = new JLabel("CADASTRAR CLIENTE");
+		TituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		TituloTela.setBounds(10, 11, 295, 24);
+		adicionarProdutoPanel.add(TituloTela);
+		
+		dateChooser = new JDateChooser();
+		dateChooser.setBounds(137, 309, 217, 35);
+		dateChooser.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		adicionarProdutoPanel.add(dateChooser);
+		
+		JLabel lblNmeroCliente = new JLabel("Número do Cliente*");
+		lblNmeroCliente.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		lblNmeroCliente.setBounds(137, 213, 141, 14);
+		adicionarProdutoPanel.add(lblNmeroCliente);
+		
+		MaskFormatter maskNumero = new MaskFormatter("(##)#####-####");
+		maskCpf.setValidCharacters("0123456789");
+		maskCpf.setAllowsInvalid(false);
+		textFieldNumero = new JFormattedTextField(maskNumero);
+		textFieldNumero.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		textFieldNumero.setColumns(10);
+		textFieldNumero.setBounds(137, 238, 217, 35);
+		adicionarProdutoPanel.add(textFieldNumero);
+		
+		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -95,38 +134,36 @@ public class TelaAdicionarCliente{
 				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "NovaVenda");
 				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
 				Janela.getInstace().getFrame().setLocationRelativeTo(null);
-			}
+				
+				String nome = textFieldNomeCliente.getText();	
+				String cpf = textFieldCPF.getText();
+				String numero = textFieldNumero.getText();
+				Date dataNascimento = dateChooser.getDate();
+				
+				Instant instant = dataNascimento.toInstant();
+			    LocalDate dataNascimentoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+				
+				ClientService cliente = new ClientService();
+				try {
+					cliente.cadastrarCliente(nome, cpf, numero, dataNascimentoLD);
+					JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso", "Success", JOptionPane.INFORMATION_MESSAGE);
+					textFieldNomeCliente.setText("");
+					textFieldCPF.setText("");
+					textFieldNumero.setText("");
+					dateChooser.setDate(null);
+
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao cadastrar cliente: " + e1.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+				
+			};
 		});
 		btnCadastrar.setBounds(391, 11, 99, 41);
 		panel.add(btnCadastrar);
-
-		JLabel DataNascimento = new JLabel("Data de Nascimento *");
-		DataNascimento.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		DataNascimento.setBounds(137, 284, 158, 14);
-		adicionarProdutoPanel.add(DataNascimento);
-
-		JLabel TituloTela = new JLabel("CADASTRAR CLIENTE");
-		TituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		TituloTela.setBounds(10, 11, 295, 24);
-		adicionarProdutoPanel.add(TituloTela);
-		
-		dateChooser = new JDateChooser();
-		dateChooser.setBounds(137, 309, 217, 35);
-		dateChooser.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		adicionarProdutoPanel.add(dateChooser);
-		
-		JLabel lblNmeroCliente = new JLabel("N\u00FAmero do Cliente*");
-		lblNmeroCliente.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		lblNmeroCliente.setBounds(137, 213, 141, 14);
-		adicionarProdutoPanel.add(lblNmeroCliente);
-		
-		MaskFormatter maskNumero = new MaskFormatter("(##)#####-####");
-		maskCpf.setValidCharacters("0123456789");
-		maskCpf.setAllowsInvalid(false);
-		textFieldNumero = new JFormattedTextField(maskNumero);
-		textFieldNumero.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		textFieldNumero.setColumns(10);
-		textFieldNumero.setBounds(137, 238, 217, 35);
-		adicionarProdutoPanel.add(textFieldNumero);
 	}
+	
+	public void setCpfField(String cpf) {
+	       textFieldCPF.setText(cpf);
+	   }
 }

@@ -35,6 +35,10 @@ public class Janela {
 		return this.cardLayout;
 	}
 	
+	public TelaAdicionarCliente getTelaAdicionarCliente() {
+	    return this.telaAdicionarCliente;
+	}
+	
 	public JPanel getPanelPrincipal() {
 		return this.panelPrincipal;
 	}

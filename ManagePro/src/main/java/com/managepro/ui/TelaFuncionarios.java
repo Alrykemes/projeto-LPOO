@@ -154,7 +154,7 @@ public class TelaFuncionarios {
 		JButton btnNewButton = new JButton("Adicionar");
 		btnNewButton.setBackground(new Color(255, 255, 255));
 		btnNewButton.setFont(new Font("SansSerif", Font.BOLD, 20));
-		btnNewButton.setBounds(867, 66, 123, 27);
+		btnNewButton.setBounds(797, 65, 171, 27);
 		panel_1.add(btnNewButton);
 		
 		table = new JTable();
@@ -236,19 +236,19 @@ public class TelaFuncionarios {
 		lblCargoLabel.setBounds(500, 125, 115, 20);
 		panel_1.add(lblCargoLabel);
 		
-		lblSalarioLabel = new JLabel("Salário");
+		lblSalarioLabel = new JLabel("SalÃ¡rio");
 		lblSalarioLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSalarioLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		lblSalarioLabel.setBounds(625, 125, 115, 20);
 		panel_1.add(lblSalarioLabel);
 		
-		lblDataAdmissaoLabel = new JLabel("Data Admissão");
+		lblDataAdmissaoLabel = new JLabel("Data AdmissÃ£o");
 		lblDataAdmissaoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDataAdmissaoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		lblDataAdmissaoLabel.setBounds(750, 125, 115, 20);
 		panel_1.add(lblDataAdmissaoLabel);
 		
-		lblFrequenciaLabel = new JLabel("Frequência");
+		lblFrequenciaLabel = new JLabel("FrequÃªncia");
 		lblFrequenciaLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFrequenciaLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		lblFrequenciaLabel.setBounds(875, 125, 115, 20);
