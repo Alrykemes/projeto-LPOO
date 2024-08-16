@@ -169,11 +169,6 @@ public class TelaAdicionarProdutos{
 		Fornecedor2.setBounds(347, 11, 87, 14);
 		panel_3.add(Fornecedor2);
 
-		JLabel Descricao = new JLabel("Inserir texto com as informações do produto que está sendo cadastrado //To Do");
-		Descricao.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		Descricao.setBounds(23, 51, 547, 26);
-		MostrarDescricao.add(Descricao);
-
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(34, 241, 598, 24);
 		adicionarProdutoPanel.add(panel_2);
