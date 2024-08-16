@@ -36,4 +36,29 @@ public class Validator {
         // Chama a DAO para salvar o funcionário no banco de dados
         return funcionarioDAO.inserirFuncionario(funcionario);
     }
+
+	public static boolean validarNome(String nome) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean validarCPF(String cpf) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean validarEmail(String email) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean validarCargo(String cargo) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean validarSalario(double salario) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
