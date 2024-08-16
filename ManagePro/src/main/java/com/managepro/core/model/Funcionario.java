@@ -14,9 +14,9 @@ public class Funcionario {
 	
 	public Funcionario() {}
 	
-	public Funcionario(String nome, String cpf, Cargos funcao, BigDecimal salario,
+	public Funcionario(String telefone, Long id, String nome, String cpf, Cargos funcao, BigDecimal salario,
 			Date dataAdmissao, String usuario, String senha) {
-		super();
+		super();		
 		this.nome = nome;
 		this.cpf = cpf;
 		this.funcao = funcao;
@@ -25,7 +25,6 @@ public class Funcionario {
 		this.usuario = usuario;
 		this.senha = senha;
 	}
-
 	public String getNome() {
 		return nome;
 	}

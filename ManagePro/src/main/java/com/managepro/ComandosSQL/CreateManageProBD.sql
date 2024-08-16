@@ -1,9 +1,10 @@
 BEGIN;
-
+CREATE DATABASE ManagePRO_bd;
+USE ManagePRO_bd;
 CREATE TABLE cliente (
   id_cliente int NOT NULL,
   nome varchar(70) NOT NULL,
-  cpf varchar(11) NOT NULL,
+  cpf varchar(14) NOT NULL,
   data_nascimento date NOT NULL,
   PRIMARY KEY (id_cliente)
 );
@@ -13,7 +14,7 @@ CREATE TABLE funcionario (
     nome VARCHAR(70) NOT NULL,
     cpf VARCHAR(45) NOT NULL,
     cargo ENUM("ADMINISTRADOR", "CONTADOR", "ESTOQUISTA", "GERENTE", "VENDEDOR") NOT NULL,,
-    salario decimal NOT NULL,
+    salario decimal(10,2) NOT NULL,
     data_admissao DATE NOT NULL,
     usuario varchar(45) NOT NULL,
     senha varchar(120) NOT NULL,
@@ -28,7 +29,7 @@ CREATE TABLE telefone_cliente (
 );
 
 CREATE TABLE telefone_funcionario (
-    id_cliente INT NOT NULL,
+    id_funcionario INT NOT NULL,
     numero VARCHAR(15) NOT NULL,
     FOREIGN KEY (id_funcionario)
         REFERENCES funcionario(id_funcionario)

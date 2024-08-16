@@ -15,6 +15,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 public class TelaLogin {
 
@@ -121,6 +122,5 @@ public class TelaLogin {
 		logo.setIcon(new ImageIcon(TelaLogin.class.getResource("/com/managepro/assets/ManageProLogin.png")));
 		logo.setBounds(325, 94, 300, 107);
 		panelLogin.add(logo);
-		
 	}
 }
