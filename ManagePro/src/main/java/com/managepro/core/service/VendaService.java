@@ -18,9 +18,7 @@ public class VendaService {
 	
 	public Cliente getClientCpf(String cpf) {
 		
-		String cpfSemEspaco = cpf.replaceAll(" ", "");
-		
-		if(cpfSemEspaco.length() != 14) {
+		if(cpf.replaceAll(" ", "").length() != 14) {
 			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Número de CPF Invalido!");
 			return null;
 		}

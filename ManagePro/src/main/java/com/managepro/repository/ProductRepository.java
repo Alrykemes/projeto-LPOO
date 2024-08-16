@@ -6,5 +6,5 @@ import com.managepro.core.model.Produto;
 
 public interface ProductRepository {
 
-	public void newProduct(Produto produto) throws ClassNotFoundException, SQLException;
+	public Produto findProductById(Long id) throws ClassNotFoundException, SQLException;
 }

@@ -1,15 +1,20 @@
 package com.managepro.ui;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
 import com.managepro.core.model.Cliente;
+import com.managepro.core.model.Produto;
+import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.service.VendaService;
+import com.managepro.dao.ProdutoDAO;
 
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
@@ -17,17 +22,25 @@ import java.awt.event.FocusEvent;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+
 import java.awt.event.ItemListener;
+import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ItemEvent;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import javax.swing.ImageIcon;
 
 public class TelaNovaVenda {
 
+	//TO DO: ORGANIZAR VARIAVEIS E SEUS NOMES
+	
 	private JPanel novaVendaPanel;
 	private JPanel PrincipalPanel;
 	private JPanel addProductPanel;
@@ -38,11 +51,17 @@ public class TelaNovaVenda {
 	private JFormattedTextField ValueInsertField;
 	private JLabel txtValueInsert;
 	private JLabel txtTroco;
-	private JLabel lblTroco;
+	private JLabel troco;
 	private JLabel txtClientCpf;
 	private JLabel txtClientName;
 	private JLabel txtNomeCliente;
 	private Cliente cliente;
+	private JList<ProdutoVendaDetails> listProdutos;
+	private JLabel unitPrice;
+	private JLabel totalPrice;
+	private JLabel totalPriceSale;
+	private BigDecimal totalPriceOfSale;
+	private List<BigDecimal> priceOfProducts;
 	
 	public JPanel getPanel() {
 		return this.novaVendaPanel;
@@ -53,6 +72,9 @@ public class TelaNovaVenda {
 	}
 
 	private void initialize() throws ParseException {
+		totalPriceOfSale = BigDecimal.ZERO;
+		priceOfProducts = new ArrayList<>();
+		
 		novaVendaPanel = new JPanel();
 		novaVendaPanel.setSize(1020, 680);
 		novaVendaPanel.setLayout(null);
@@ -76,7 +98,8 @@ public class TelaNovaVenda {
 		maskCod.setValidCharacters("0123456789");
 		maskCod.setAllowsInvalid(false);
 		codField = new JFormattedTextField(maskCod);
-		codField.setBounds(10, 228, 281, 26);
+		codField.setFocusLostBehavior(JFormattedTextField.PERSIST);
+		codField.setBounds(10, 234, 240, 30);
 		codField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(codField);
 		codField.setColumns(10);
@@ -85,10 +108,62 @@ public class TelaNovaVenda {
 		maskqtd.setValidCharacters("0123456789");
 		maskqtd.setAllowsInvalid(false);
 		qtdField = new JFormattedTextField(maskqtd);
-		qtdField.setBounds(10, 288, 281, 26);
+		qtdField.setFocusLostBehavior(JFormattedTextField.PERSIST);
+		qtdField.setBounds(10, 294, 240, 30);
 		qtdField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		qtdField.setColumns(10);
 		addProductPanel.add(qtdField);
+		
+		DefaultListModel<ProdutoVendaDetails> listModel = new DefaultListModel<>();
+		
+		listProdutos = new JList<>(listModel);
+		listProdutos.setFont(new Font("SansSerif", Font.PLAIN, 26));
+		JScrollPane scrollPane = new JScrollPane(listProdutos);
+		scrollPane.setBounds(0, 11, 689, 389);
+		PrincipalPanel.add(scrollPane, BorderLayout.CENTER);
+		
+		JButton btnPesquisaClient_1 = new JButton("");
+		btnPesquisaClient_1.setIcon(new ImageIcon(TelaNovaVenda.class.getResource("/com/managepro/assets/NovoProdutoIcon.png")));
+		btnPesquisaClient_1.setBounds(260, 234, 30, 30);
+		addProductPanel.add(btnPesquisaClient_1);
+		btnPesquisaClient_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProdutoDAO produtoDAO = new ProdutoDAO();
+				ProdutoVendaDetails produtoVendaDetails = new ProdutoVendaDetails();
+				
+				Long IDnovoProduto = Long.valueOf(codField.getText().replaceAll(" ", ""));
+				Produto produto = produtoDAO.findProductById(IDnovoProduto);
+				
+					if(produto == null) {
+						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Produto não encontrado na base de dados!");
+					} else {
+						produtoVendaDetails.setCodigoProduto(produto.getCodigoProduto());
+						produtoVendaDetails.setNomeProduto(produto.getNomeProduto());
+						
+						int qtdProdutos = Integer.valueOf(qtdField.getText().replaceAll(" ", ""));
+						
+						if(qtdProdutos != 0) {
+							produtoVendaDetails.setQuantidade(qtdProdutos);
+							BigDecimal precoProdutos = produto.getPreco().multiply(BigDecimal.valueOf(Long.valueOf(qtdProdutos)));
+							produtoVendaDetails.setPreco(precoProdutos);
+							
+							unitPrice.setText(String.format("R$ %.2f", produto.getPreco()));
+							totalPrice.setText(String.format("R$ %.2f", precoProdutos));
+							
+							priceOfProducts.add(precoProdutos);
+							
+							totalPriceOfSale = priceOfProducts
+					                .stream()				            
+					                .reduce(BigDecimal.ZERO, BigDecimal::add);
+							
+							listModel.addElement(produtoVendaDetails);
+						} else {
+							JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Insira a quantidade de produtos desejada");
+						}
+						totalPriceSale.setText(String.format("R$ %.2f", totalPriceOfSale));
+					}
+				}
+		});
 		
 		JLabel lblTextQtd = new JLabel("Informe a quantidade desejada:");
 		lblTextQtd.setHorizontalAlignment(SwingConstants.LEFT);
@@ -96,40 +171,36 @@ public class TelaNovaVenda {
 		lblTextQtd.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(lblTextQtd);
 		
-		JLabel txtUnitPrice = new JLabel("      Pre\u00E7o Unit\u00E1rio: \r\n");
-		txtUnitPrice.setHorizontalAlignment(SwingConstants.CENTER);
-		txtUnitPrice.setBounds(69, 325, 156, 24);
+		JLabel txtUnitPrice = new JLabel("Pre\u00E7o Unit\u00E1rio: \r\n");
+		txtUnitPrice.setBounds(10, 335, 156, 24);
 		txtUnitPrice.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(txtUnitPrice);
 		
 		JLabel txtTotalPrice = new JLabel("Preço Total: ");
-		txtTotalPrice.setHorizontalAlignment(SwingConstants.CENTER);
-		txtTotalPrice.setBounds(94, 375, 118, 24);
+		txtTotalPrice.setBounds(10, 392, 118, 24);
 		txtTotalPrice.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(txtTotalPrice);
 		
-		JLabel lblUnitPrice = new JLabel("R$ 16,99");
-		lblUnitPrice.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUnitPrice.setBounds(69, 352, 156, 24);
-		lblUnitPrice.setFont(new Font("SansSerif", Font.BOLD, 18));
-		addProductPanel.add(lblUnitPrice);
+		unitPrice = new JLabel("R$ 0,00");
+		unitPrice.setBounds(10, 357, 156, 24);
+		unitPrice.setFont(new Font("SansSerif", Font.BOLD, 18));
+		addProductPanel.add(unitPrice);
 		
-		JLabel lblTotalPrice = new JLabel("R$ 148,89");
-		lblTotalPrice.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTotalPrice.setBounds(69, 398, 173, 24);
-		lblTotalPrice.setFont(new Font("SansSerif", Font.BOLD, 18));
-		addProductPanel.add(lblTotalPrice);
+		totalPrice = new JLabel("R$ 0,00");
+		totalPrice.setBounds(10, 414, 173, 24);
+		totalPrice.setFont(new Font("SansSerif", Font.BOLD, 18));
+		addProductPanel.add(totalPrice);
 		
 		JLabel txtTotalSale = new JLabel("Total Compra:");
 		txtTotalSale.setFont(new Font("SansSerif", Font.BOLD, 18));
 		txtTotalSale.setBounds(93, 456, 132, 33);
 		addProductPanel.add(txtTotalSale);
 		
-		JLabel lblNewLabel = new JLabel("R$ 847,60");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
-		lblNewLabel.setBounds(52, 489, 196, 33);
-		addProductPanel.add(lblNewLabel);
+		totalPriceSale = new JLabel("R$ 0,00");
+		totalPriceSale.setHorizontalAlignment(SwingConstants.CENTER);
+		totalPriceSale.setFont(new Font("SansSerif", Font.BOLD, 24));
+		totalPriceSale.setBounds(52, 489, 196, 33);
+		addProductPanel.add(totalPriceSale);
 		
 		JButton btnFinalizar = new JButton("Finalizar");
 		btnFinalizar.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -147,10 +218,6 @@ public class TelaNovaVenda {
 		addProductPanel.add(linha2);
 		linha2.setBackground(Color.BLACK);
 		
-		JList<?> list = new JList<>();
-		list.setBounds(0, 11, 689, 389);
-		PrincipalPanel.add(list);
-		
 		SaleConfigPanel = new JPanel();
 		SaleConfigPanel.setBounds(0, 399, 700, 259);
 		PrincipalPanel.add(SaleConfigPanel);
@@ -165,6 +232,7 @@ public class TelaNovaVenda {
 		maskCpf.setValidCharacters("0123456789");
 		maskCpf.setAllowsInvalid(false);
 		cpfField = new JFormattedTextField(maskCpf);
+		cpfField.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		cpfField.setForeground(new Color(192, 192, 192));
 		cpfField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		cpfField.setBounds(10, 40, 242, 30);
@@ -237,38 +305,38 @@ public class TelaNovaVenda {
 		JComboBox<String> PagamentocomboBox = new JComboBox<>();
 		PagamentocomboBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		PagamentocomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Dinheiro", "Pix", "Cartão de Crédito", "Cartão de Débito", "Ticket Alimentação"}));
-		PagamentocomboBox.setBounds(321, 40, 282, 30);
+		PagamentocomboBox.setBounds(321, 45, 282, 30);
 		PagamentocomboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getItem().equals("Dinheiro")) {
 					SaleConfigPanel.add(txtValueInsert);
 					SaleConfigPanel.add(ValueInsertField);
 					SaleConfigPanel.add(txtTroco);
-					SaleConfigPanel.add(lblTroco);
+					SaleConfigPanel.add(troco);
 				}
 				if(e.getItem().equals("Pix")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(lblTroco);
+					SaleConfigPanel.remove(troco);
 				}
 				if(e.getItem().equals("Cartão de Crédito")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(lblTroco);
+					SaleConfigPanel.remove(troco);
 				}
 				if(e.getItem().equals("Cartão de Crédito")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(lblTroco);
+					SaleConfigPanel.remove(troco);
 				}
 				if(e.getItem().equals("Ticket Alimentação")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(lblTroco);
+					SaleConfigPanel.remove(troco);
 				}
 			}
 		});
@@ -276,7 +344,7 @@ public class TelaNovaVenda {
 		
 		JLabel txtMetodoPagamento = new JLabel("Selecione o método de pagamento:");
 		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		txtMetodoPagamento.setBounds(321, 22, 282, 14);
+		txtMetodoPagamento.setBounds(321, 16, 282, 25);
 		SaleConfigPanel.add(txtMetodoPagamento);
 		
 		txtValueInsert = new JLabel("Valor recebido:\r\n");
@@ -295,10 +363,10 @@ public class TelaNovaVenda {
 		txtTroco.setBounds(321, 146, 71, 14);
 		SaleConfigPanel.add(txtTroco);
 		
-		lblTroco = new JLabel("R$ 2,60");
-		lblTroco.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblTroco.setBounds(321, 169, 172, 25);
-		SaleConfigPanel.add(lblTroco);
+		troco = new JLabel("R$ 0,00");
+		troco.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		troco.setBounds(321, 169, 172, 25);
+		SaleConfigPanel.add(troco);
 		
 		JButton btnCancel = new JButton("Cancelar\r\n");
 		btnCancel.setBounds(79, 581, 150, 37);
@@ -312,12 +380,19 @@ public class TelaNovaVenda {
 					SaleConfigPanel.remove(txtClientName);
 					SaleConfigPanel.remove(txtClientCpf);
 					SaleConfigPanel.add(btnPesquisaClient);
+					listModel.clear();
+					priceOfProducts.clear();
+					unitPrice.setText("R$ 0,00");
+					totalPrice.setText("R$ 0,00");
+					totalPriceSale.setText("R$ 0,00");
+					
 					
 					Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
 				}
 			}
 		});
 		addProductPanel.add(btnCancel);
+		
 		
 	}
 }
