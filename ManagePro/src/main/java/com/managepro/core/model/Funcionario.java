@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Funcionario {
+	private Long id;
 	private String nome;
 	private String cpf;
 	private Cargos funcao;
@@ -67,6 +68,14 @@ public class Funcionario {
 	}
 	public void setDataAdmissao(Date dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }

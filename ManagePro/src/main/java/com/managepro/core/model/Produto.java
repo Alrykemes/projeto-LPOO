@@ -2,17 +2,15 @@ package com.managepro.core.model;
 import java.math.BigDecimal;
 
 public class Produto {
-	private Long codigoProduto;
+	private Long IdProduto;
 	private String nomeProduto;
 	private BigDecimal preco;
 	private int quantidade;
 	private String marca;
 	private String fornecedor;
 	
-	public Produto() {}
-	
 	public Produto(Long i, String nomeProduto, BigDecimal preco, int quantidade, String marca, String fornecedor) {
-		this.codigoProduto = i;
+		this.IdProduto = i;
 		this.nomeProduto = nomeProduto;
 		this.preco = preco;
 		this.quantidade = quantidade;
@@ -20,12 +18,12 @@ public class Produto {
 		this.fornecedor = fornecedor;
 	}
 
-	public Long getCodigoProduto() {
-		return codigoProduto;
+	public Long getIdProduto() {
+		return IdProduto;
 	}
 
-	public void setCodigoProduto(Long codigoProduto) {
-		this.codigoProduto = codigoProduto;
+	public void setIdProduto(Long IdProduto) {
+		this.IdProduto = IdProduto;
 	}
 
 	public String getNomeProduto() {
@@ -67,5 +65,7 @@ public class Produto {
 	public void setFornecedor(String fornecedor) {
 		this.fornecedor = fornecedor;
 	}
+
+	
 
 }
