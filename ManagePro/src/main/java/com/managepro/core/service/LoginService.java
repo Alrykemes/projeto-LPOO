@@ -1,5 +1,5 @@
 package com.managepro.core.service;
-/*
+
 public class LoginService {
     private FuncionarioDAO FuncionarioDAO;
 
@@ -12,4 +12,3 @@ public class LoginService {
         return funcionario != null && funcionario.getSenha().equals(senha);
     }
 }
-*/

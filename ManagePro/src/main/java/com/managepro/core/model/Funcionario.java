@@ -3,7 +3,9 @@ package com.managepro.core.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Funcionario {
+	public class Funcionario {
+	private String telefone;
+	private Long id;
 	private String nome;
 	private String cpf;
 	private Cargos funcao;
@@ -16,7 +18,9 @@ public class Funcionario {
 	
 	public Funcionario(String telefone, Long id, String nome, String cpf, Cargos funcao, BigDecimal salario,
 			Date dataAdmissao, String usuario, String senha) {
-		super();		
+		super();
+		this.telefone = telefone;
+		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.funcao = funcao;
@@ -24,6 +28,19 @@ public class Funcionario {
 		this.dataAdmissao = dataAdmissao;
 		this.usuario = usuario;
 		this.senha = senha;
+	}
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getNome() {
 		return nome;
@@ -67,5 +84,4 @@ public class Funcionario {
 	public void setDataAdmissao(Date dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
 	}
-	
 }
