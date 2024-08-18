@@ -15,12 +15,14 @@ public class ProdutoDao implements ProductRepository {
 	
 	
 	private Produto produto;
+	private Connection connection;
+	private PreparedStatement statement;
 
 
 	public void newProduct(Produto produto) throws ClassNotFoundException, SQLException {
 
-		Connection con = MySQLConnection.getConnection();
-		PreparedStatement statement = con.prepareStatement("INSERT INTO produto (nome,preco,quantidade,marca,fornecedor,validade) VALUES (?,?,?,?,?,?)");
+		connection = MySQLConnection.getConnection();
+		statement = connection.prepareStatement("INSERT INTO produto (nome,preco,quantidade,marca,fornecedor,validade) VALUES (?,?,?,?,?,?)");
 		statement.setString(1, produto.getNomeProduto());
 		statement.setBigDecimal(2, produto.getPreco());
 		statement.setInt(3, produto.getQuantidade());
@@ -32,8 +34,8 @@ public class ProdutoDao implements ProductRepository {
 
 	
 	public Produto editarProduto(Produto produto) throws ClassNotFoundException, SQLException {
-		Connection con = MySQLConnection.getConnection();
-		PreparedStatement statement = con.prepareStatement("UPDATE produto SET nome = ?,preco = ?,quantidade = ?,marca = ?,fornecedor = ?,validade = ?");
+		connection = MySQLConnection.getConnection();
+		statement = connection.prepareStatement("UPDATE produto SET nome = ?,preco = ?,quantidade = ?,marca = ?,fornecedor = ?,validade = ?");
 		statement.setString(1, produto.getNomeProduto());
 		statement.setBigDecimal(2, produto.getPreco());
 		statement.setInt(3, produto.getQuantidade());
@@ -46,8 +48,8 @@ public class ProdutoDao implements ProductRepository {
 
 	
 	public void removerProduto(Long id) throws ClassNotFoundException, SQLException {
-		Connection con = MySQLConnection.getConnection();
-		PreparedStatement statement = con.prepareStatement("DELETE FROM produto WHERE id_produto = ?");
+		connection = MySQLConnection.getConnection();
+		statement = connection.prepareStatement("DELETE FROM produto WHERE id_produto = ?");
 		statement.setLong(1, id);
 		statement.execute();
 		
@@ -56,13 +58,12 @@ public class ProdutoDao implements ProductRepository {
 
 	@Override
 	public List<Produto> pesquisarProdutoNome(String nomeProduto) throws ClassNotFoundException, SQLException {
-		Connection con = MySQLConnection.getConnection();
-		PreparedStatement statement = con.prepareStatement("SELECT * FROM produto WHERE nome LIKE ?");
+		connection = MySQLConnection.getConnection();
+		statement = connection.prepareStatement("SELECT * FROM produto WHERE nome LIKE ?");
 		statement.setString(1,"%" + nomeProduto + "%");
 		ResultSet rs = 	statement.executeQuery();		
 		List<Produto> product = new ArrayList<>();
 		while (rs.next()) {
-			produto = new Produto();
 			produto.setCodigoProduto(rs.getLong("id_produto"));
 			produto.setNomeProduto(rs.getString("nome"));
 			produto.setFornecedor(rs.getString("fornecedor"));
@@ -78,13 +79,12 @@ public class ProdutoDao implements ProductRepository {
 	
 	
 	public List<Produto> pesquisarProdutoID(Long id_produto) throws ClassNotFoundException, SQLException {
-		Connection con = MySQLConnection.getConnection();
-		PreparedStatement statement = con.prepareStatement("SELECT * FROM produto WHERE id_produto = ?");
+		connection = MySQLConnection.getConnection();
+		statement = connection.prepareStatement("SELECT * FROM produto WHERE id_produto = ?");
 		statement.setLong(1, id_produto);
 		ResultSet rs = 	statement.executeQuery();		
 		List<Produto> product = new ArrayList<>();
 		while (rs.next()) {
-			produto = new Produto();
 			produto.setCodigoProduto(rs.getLong("id_produto"));
 			produto.setNomeProduto(rs.getString("nome"));
 			produto.setFornecedor(rs.getString("fornecedor"));
