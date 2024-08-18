@@ -1,5 +1,4 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.JTextField;
@@ -28,6 +27,7 @@ public class TelaEstoque {
 	}
 	
 	private void initialize() {
+
 		estoquePanel = new JPanel();
 		estoquePanel.setSize(1020, 680);
 		estoquePanel.setLayout(null);
@@ -92,6 +92,7 @@ public class TelaEstoque {
 		JLabel filtroLabel = new JLabel("Filtrar por:");
 		filtroLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		filtroLabel.setBounds(756, 90, 76, 19);
+
 		estoquePanel.add(filtroLabel);
 		
 		JScrollPane scrollPane = new JScrollPane();

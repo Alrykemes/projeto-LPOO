@@ -1,5 +1,4 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -20,6 +19,7 @@ import java.awt.event.ActionEvent;
 
 public class TelaNovaVenda {
 
+
 	private JPanel novaVendaPanel;
 	private JTextField codField;
 	private JTextField qtdField;
@@ -32,6 +32,7 @@ public class TelaNovaVenda {
 	
 	public JPanel getPanel() {
 		return this.novaVendaPanel;
+
 	}
 
 	public TelaNovaVenda() {
@@ -46,6 +47,7 @@ public class TelaNovaVenda {
 		JPanel PrincipalPanel = new JPanel();
 		PrincipalPanel.setBounds(10, 11, 984, 619);
 		novaVendaPanel.add(PrincipalPanel);
+
 		PrincipalPanel.setLayout(null);
 		
 		JPanel addProductPanel = new JPanel();
@@ -230,6 +232,7 @@ public class TelaNovaVenda {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(btnCancel, "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
 					Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+
 				}
 			}
 		});

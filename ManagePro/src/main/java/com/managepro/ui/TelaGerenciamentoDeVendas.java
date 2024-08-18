@@ -1,5 +1,4 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -23,6 +22,7 @@ import javax.swing.ImageIcon;
 
 public class TelaGerenciamentoDeVendas {
 
+
 	private JPanel gerenciamentoVendasPanel;
 	private JPanel PrincipalPanel;
 	private JPanel SearchPanel;
@@ -45,6 +45,7 @@ public class TelaGerenciamentoDeVendas {
 
 	public JPanel getPanel() {
 		return this.gerenciamentoVendasPanel;
+
 	}
 	
 	public TelaGerenciamentoDeVendas() {
@@ -52,6 +53,7 @@ public class TelaGerenciamentoDeVendas {
 	}
 		
 	private void initialize() {
+
 		gerenciamentoVendasPanel = new JPanel();
 		gerenciamentoVendasPanel.setSize(1020, 680);
 		gerenciamentoVendasPanel.setLayout(null);
@@ -154,7 +156,6 @@ public class TelaGerenciamentoDeVendas {
 		SalesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		SalesList.setBounds(10, 83, 307, 491);
 		SearchPanel.add(SalesList);
-		
 		
 		SalePanel = new JPanel();
 		SalePanel.setBounds(337, 0, 657, 630);

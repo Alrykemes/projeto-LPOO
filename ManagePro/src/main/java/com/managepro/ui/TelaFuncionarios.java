@@ -1,5 +1,4 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
@@ -19,6 +18,7 @@ import java.awt.event.FocusEvent;
 
 public class TelaFuncionarios {
 
+
 	private JPanel funcionariosPanel;
 	private JTextField txtNome;
 	private JTextField txtCpf;
@@ -35,6 +35,7 @@ public class TelaFuncionarios {
 	private JLabel lblDataAdmissaoLabel;
 	private JLabel lblFrequenciaLabel;
 
+
 	public JPanel getPanel() {
 		return this.funcionariosPanel;
 	}
@@ -45,6 +46,7 @@ public class TelaFuncionarios {
 
 	
 	private void initialize() {
+
 		funcionariosPanel = new JPanel();
 		funcionariosPanel.setSize(1020, 680);
 		funcionariosPanel.setLayout(null);
@@ -260,6 +262,7 @@ public class TelaFuncionarios {
 		btnComeback.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+
 			}
 		});
 		btnComeback.setBounds(20, 8, 120, 35);

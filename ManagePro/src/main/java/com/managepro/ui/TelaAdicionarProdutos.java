@@ -1,10 +1,8 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
-
 import java.awt.Panel;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -182,5 +180,6 @@ public class TelaAdicionarProdutos{
 		TituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		TituloTela.setBounds(10, 11, 295, 24);
 		adicionarProdutoPanel.add(TituloTela);
+
 	}
 }

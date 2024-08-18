@@ -1,5 +1,4 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -11,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class TelaEditarProdutos {
+
 
 	private JPanel editarProdutosPanel;
 	private JTextField textFieldNomeProduto;
@@ -54,6 +54,7 @@ public class TelaEditarProdutos {
 		Codigo.setBounds(312, 73, 70, 14);
 		editarProdutosPanel.add(Codigo);
 
+
 		textFieldCodigo = new JTextField();
 		textFieldCodigo.setColumns(10);
 		textFieldCodigo.setBounds(312, 98, 131, 35);
@@ -63,6 +64,7 @@ public class TelaEditarProdutos {
 		textFieldPrecoVenda.setColumns(10);
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		editarProdutosPanel.add(textFieldPrecoVenda);
+
 
 		JLabel PrecoDeVenda = new JLabel("Preço de Venda *");
 		PrecoDeVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -101,6 +103,7 @@ public class TelaEditarProdutos {
 		textFieldQuantidade.setColumns(10);
 		textFieldQuantidade.setBounds(34, 182, 131, 35);
 		editarProdutosPanel.add(textFieldQuantidade);
+
 
 		JLabel Quantidade = new JLabel("Quantidade *");
 		Quantidade.setFont(new Font("SansSerif", Font.PLAIN, 12));

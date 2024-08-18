@@ -1,6 +1,4 @@
 package com.managepro.ui;
-
-
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
@@ -27,6 +25,7 @@ public class TelaMenu {
 
 	public JPanel getPanel() {
 		return this.panelMenu;
+
 	}
 
 	public TelaMenu() {
@@ -90,6 +89,7 @@ public class TelaMenu {
 		panelMenu.add(novaVendaBotao);
 		
 		vendasBt = new JButton("Vendas        ");
+
 		vendasBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/VendasIcon.png")));
 		vendasBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		vendasBt.setBorder(new LineBorder(Color.GRAY, 2));
@@ -102,6 +102,7 @@ public class TelaMenu {
 		panelMenu.add(vendasBt);
 		
 		funcionariosBt = new JButton("Funcionários ");
+
 		funcionariosBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
 		funcionariosBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		funcionariosBt.setBorder(new LineBorder(Color.GRAY, 2));
@@ -124,5 +125,6 @@ public class TelaMenu {
 			}
 		});
 		panelMenu.add(contabilidadeBt);
+
 	}
 }

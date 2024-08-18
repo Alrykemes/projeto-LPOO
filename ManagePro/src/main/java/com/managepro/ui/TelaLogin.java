@@ -1,5 +1,4 @@
 package com.managepro.ui;
-
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -13,10 +12,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-
 import javax.swing.JPanel;
 
 public class TelaLogin {
+
 
 	private JPanel panelLogin;
 	private JTextField userLogin;
@@ -77,7 +76,6 @@ public class TelaLogin {
 			public void actionPerformed(ActionEvent e) {
 				
 					String usuario = userLogin.getText();
-				
 					String senha = new String(passwordLogin.getPassword());
 					
 					
@@ -121,6 +119,7 @@ public class TelaLogin {
 		logo.setIcon(new ImageIcon(TelaLogin.class.getResource("/com/managepro/assets/ManageProLogin.png")));
 		logo.setBounds(325, 94, 300, 107);
 		panelLogin.add(logo);
+
 		
 	}
 }

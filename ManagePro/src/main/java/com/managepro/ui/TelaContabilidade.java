@@ -1,5 +1,4 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -17,6 +16,7 @@ import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
 
 public class TelaContabilidade {
+
 
 	private JPanel contabilidadePanel;
 	private JLabel lblImage1;		//IMAGENS DOS GRÁFICOS (APAGAR DEPOIS: APENAS TESTE)
@@ -195,6 +195,7 @@ public class TelaContabilidade {
 			
 			if(dataInicial == null || dataFinal == null) {
 				JOptionPane.showMessageDialog(this.contabilidadePanel, "Por favor, preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+
 			} else {
 				showImage();
 			}
