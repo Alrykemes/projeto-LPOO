@@ -7,13 +7,14 @@ import java.sql.SQLException;
 
 public class MySQLConnection {
 
-	private static Connection Connection() throws ClassNotFoundException, SQLException {
+	private static Connection Connection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/ManagePro_BD", "root", "Senha do Seu LocalHost");
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/managepro_bd", "root", "Kemes123@45");
 	}
 	
-	public static Connection getConnection() throws ClassNotFoundException, SQLException {
+	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		return Connection();
 	}
+	
 	
 }

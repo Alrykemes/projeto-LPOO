@@ -19,8 +19,8 @@ import com.toedter.calendar.JDateChooser;
 public class TelaContabilidade {
 
 	private JPanel contabilidadePanel;
-	private JLabel lblImage1;		//IMAGENS DOS GRÁFICOS (APAGAR DEPOIS: APENAS TESTE)
-	private JLabel lblImage2;		//AVISO: NOMES GENÉRICOS CRIADOS PROPOSITALMENTE: APENAS TESTE
+	private JLabel lblImage1;		//IMAGENS DOS GRÃ�FICOS (APAGAR DEPOIS: APENAS TESTE)
+	private JLabel lblImage2;		//AVISO: NOMES GENÃ‰RICOS CRIADOS PROPOSITALMENTE: APENAS TESTE
 	private JLabel lblImage3;
 	private Panel painelGrafico;
 	private Panel painelGrafico2;
@@ -100,7 +100,7 @@ public class TelaContabilidade {
 		dateChooser_1.setBounds(366, 39, 161, 35);
 		painelOpcoes.add(dateChooser_1);
 		
-		//BOTÃO
+		//BOTÃƒO
 		gerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				validarData();
@@ -180,7 +180,7 @@ public class TelaContabilidade {
 		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnNewButton.setBounds(10, 26, 120, 35);
@@ -200,7 +200,7 @@ public class TelaContabilidade {
 			}
     }
 	
-		private void showImage() {	//MOSTRA AS IMAGENS DOS GRÁFICOS
+		private void showImage() {	//MOSTRA AS IMAGENS DOS GRÃ�FICOS
 			lblImage1.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
 			lblImage2.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
 			lblImage3.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));

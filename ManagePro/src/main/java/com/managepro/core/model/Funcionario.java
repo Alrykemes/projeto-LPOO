@@ -1,22 +1,23 @@
 package com.managepro.core.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Funcionario {
+	private Long id;
 	private String nome;
 	private String cpf;
+	private String telefone;
 	private Cargos funcao;
 	private BigDecimal salario;
-	private Date dataAdmissao;
+	private LocalDate dataAdmissao;
 	private String usuario;
 	private String senha;
 	
 	public Funcionario() {}
 	
 	public Funcionario(String nome, String cpf, Cargos funcao, BigDecimal salario,
-			Date dataAdmissao, String usuario, String senha) {
-		super();
+			LocalDate dataAdmissao, String usuario, String senha) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.funcao = funcao;
@@ -26,18 +27,38 @@ public class Funcionario {
 		this.senha = senha;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getCpf() {
 		return cpf;
 	}
+	
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+	
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
 	public String getUsuario() {
 		return usuario;
 	}
@@ -62,11 +83,12 @@ public class Funcionario {
 	public void setSalario(BigDecimal salario) {
 		this.salario = salario;
 	}
-	public Date getDataAdmissao() {
+	public LocalDate getDataAdmissao() {
 		return dataAdmissao;
 	}
-	public void setDataAdmissao(Date dataAdmissao) {
+	public void setDataAdmissao(LocalDate dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
 	}
+	
 	
 }
