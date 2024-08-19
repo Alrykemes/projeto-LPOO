@@ -1,5 +1,22 @@
 package com.managepro.repository;
 
-public interface SaleRepository {
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
+import com.managepro.core.model.Venda;
+
+public interface SaleRepository {
+	
+	public void cadastrarVenda(Venda venda) throws ClassNotFoundException, SQLException;
+	
+	public void pesquisarVendasPorId(Long Id) throws ClassNotFoundException, SQLException;
+	
+	public void deletarVendas(Long Id) throws ClassNotFoundException, SQLException;
+	
+	public List<Venda> listarVendaPorId(Long Id) throws ClassNotFoundException, SQLException;
+	
+	public List<Venda> listarVendaPorFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException;
+	
+	public List<Venda> listarVendasPorData(LocalDate dataVenda) throws ClassNotFoundException, SQLException;
 }

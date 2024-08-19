@@ -5,21 +5,23 @@ import java.time.LocalDate;
 public class Produto {
 	private Long id_produto;
 	private String nomeProduto;
-	private BigDecimal preco;
 	private int quantidade;
 	private String marca;
 	private String fornecedor;
+	private BigDecimal preco;
 	private LocalDate validade;
+	private Long codigoProduto; 
 	
 	public Produto() {}
-	
-	public Produto(Long id_produto, String nomeProduto, BigDecimal preco, int quantidade, String marca, String fornecedor, LocalDate validade) {
-		this.id_produto = id_produto;
+
+	public Produto(Long codigoProduto, String nomeProduto, int quantidade, String marca, String fornecedor,
+			BigDecimal preco, LocalDate validade) {
+		this.codigoProduto = codigoProduto;
 		this.nomeProduto = nomeProduto;
-		this.preco = preco;
 		this.quantidade = quantidade;
 		this.marca = marca;
 		this.fornecedor = fornecedor;
+		this.preco = preco;
 		this.validade = validade;
 	}
 
@@ -48,14 +50,6 @@ public class Produto {
 		this.nomeProduto = nomeProduto;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
-	}
-
 	public int getQuantidade() {
 		return quantidade;
 	}
@@ -79,13 +73,28 @@ public class Produto {
 	public void setFornecedor(String fornecedor) {
 		this.fornecedor = fornecedor;
 	}
-	
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
 	public LocalDate getValidade() {
 		return validade;
 	}
-	
+
 	public void setValidade(LocalDate validade) {
 		this.validade = validade;
 	}
+
+	@Override
+	public String toString() {
+		return "Produto [codigoProduto=" + codigoProduto + ", nomeProduto=" + nomeProduto + ", quantidade=" + quantidade
+				+ ", preco=" + preco + "]";
+	}
+	
 }
 

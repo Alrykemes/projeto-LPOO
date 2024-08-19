@@ -238,19 +238,19 @@ public class TelaFuncionarios {
 		lblCargoLabel.setBounds(500, 125, 115, 20);
 		panel_1.add(lblCargoLabel);
 		
-		lblSalarioLabel = new JLabel("Salário");
+		lblSalarioLabel = new JLabel("Sal�rio");
 		lblSalarioLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSalarioLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		lblSalarioLabel.setBounds(625, 125, 115, 20);
 		panel_1.add(lblSalarioLabel);
 		
-		lblDataAdmissaoLabel = new JLabel("Data Admissão");
+		lblDataAdmissaoLabel = new JLabel("Data Admiss�o");
 		lblDataAdmissaoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDataAdmissaoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		lblDataAdmissaoLabel.setBounds(750, 125, 115, 20);
 		panel_1.add(lblDataAdmissaoLabel);
 		
-		lblFrequenciaLabel = new JLabel("Frequência");
+		lblFrequenciaLabel = new JLabel("Frequ�ncia");
 		lblFrequenciaLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFrequenciaLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		lblFrequenciaLabel.setBounds(875, 125, 115, 20);
@@ -261,8 +261,7 @@ public class TelaFuncionarios {
 		btnComeback.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnComeback.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
-
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnComeback.setBounds(20, 8, 120, 35);

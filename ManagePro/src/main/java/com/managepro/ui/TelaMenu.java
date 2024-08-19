@@ -3,7 +3,10 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 
+import com.managepro.core.model.Cargos;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -56,9 +59,10 @@ public class TelaMenu {
 		sairBotao.setBackground(new Color(255, 0, 0));
 		sairBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getTelaLogin().getUserLoginField().setText("");
-				Janela.getInstace().getTelaLogin().getUserPasswordField().setText("");
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Login");
+				Janela.getInstance().getTelaLogin().getUserLoginField().setText("");
+				Janela.getInstance().getTelaLogin().getUserPasswordField().setText("");
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Login");
+				Janela.getInstance().getTelaLogin().setFuncionarioLogado(null);
 			}
 		});
 		sairBotao.setBounds(889, 27, 89, 27);
@@ -71,7 +75,13 @@ public class TelaMenu {
 		estoqueBotao.setBounds(381, 125, 249, 60);
 		estoqueBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ESTOQUISTA) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc� n�o tem premiss�o para acessar o Estoque.");
+				}
 			}
 		});
 		panelMenu.add(estoqueBotao);
@@ -83,7 +93,13 @@ public class TelaMenu {
 		novaVendaBotao.setBounds(381, 211, 249, 60);
 		novaVendaBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "NovaVenda");
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.VENDEDOR) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "NovaVenda");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc� n�o tem premiss�o para criar uma nova Venda.");
+				}
 			}
 		});
 		panelMenu.add(novaVendaBotao);
@@ -96,20 +112,33 @@ public class TelaMenu {
 		vendasBt.setBounds(381, 302, 249, 60);
 		vendasBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "GerenciamentoDeVendas");
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.VENDEDOR
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.CONTADOR
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "GerenciamentoDeVendas");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc� n�o tem premiss�o para acessar o gerenciamento de vendas.");
+				}
 			}
 		});
 		panelMenu.add(vendasBt);
 		
-		funcionariosBt = new JButton("Funcionários ");
-
+		funcionariosBt = new JButton("Funcion�rios ");
 		funcionariosBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
 		funcionariosBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		funcionariosBt.setBorder(new LineBorder(Color.GRAY, 2));
 		funcionariosBt.setBounds(381, 400, 249, 60);
 		funcionariosBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Funcionarios");
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Funcionarios");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc� n�o tem premiss�o para acessar o gerenciamento de funcion�rios.");
+				}
 			}
 		});
 		panelMenu.add(funcionariosBt);
@@ -121,7 +150,14 @@ public class TelaMenu {
 		contabilidadeBt.setBounds(381, 492, 249, 60);
 		contabilidadeBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Contabilidade");
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.CONTADOR) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Contabilidade");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc� n�o tem premiss�o para acessar a contabilidade.");
+				}
 			}
 		});
 		panelMenu.add(contabilidadeBt);

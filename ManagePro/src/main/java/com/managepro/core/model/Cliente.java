@@ -1,35 +1,35 @@
 package com.managepro.core.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Cliente {
 	private Long id;
 	private String nome;
 	private String cpf;
-	// private String endereco;
-	// private String telefone;
-	// private String email;
-	private Date dataCadastro;
+	private String telefone;
+	private LocalDate dataNascimento;
 
-	public Cliente(Long id, String nome, String cpf, /*String endereco, String telefone, String email,*/
-			Date dataCadastro) {
-		this.id = id;
+	public Cliente() {}
+
+	public Cliente(String nome, String cpf, String telefone, LocalDate dataNascimento) {
 		this.nome = nome;
 		this.cpf = cpf;
-		// this.endereco = endereco;
-		// this.telefone = telefone;
-		// this.email = email;
-		this.dataCadastro = dataCadastro;
+		this.telefone = telefone;
+		this.dataNascimento = dataNascimento;
 	}
 
 	public Long getId() {
 		return id;
 	}
-	
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getNome() {
 		return nome;
-	}	
-	
+	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -41,14 +41,6 @@ public class Cliente {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-/*
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
 
 	public String getTelefone() {
 		return telefone;
@@ -58,19 +50,11 @@ public class Cliente {
 		this.telefone = telefone;
 	}
 
-	public String getEmail() {
-		return email;
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
-*/
-	public Date getDataCadastro() {
-		return dataCadastro;
-	}
-
-	public void setDataCadastro(Date dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}		
 }
