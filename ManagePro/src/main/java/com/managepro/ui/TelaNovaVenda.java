@@ -17,7 +17,7 @@ import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
 import com.managepro.core.service.ClientService;
 import com.managepro.core.service.VendaService;
-import com.managepro.dao.ProdutoDAO;
+import com.managepro.core.service.ProdutoService;
 
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
@@ -146,11 +146,11 @@ public class TelaNovaVenda {
 		addProductPanel.add(btnAddProducts);
 		btnAddProducts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ProdutoDAO produtoDAO = new ProdutoDAO();
+				ProdutoService produtoService = new ProdutoService();
 				ProdutoVendaDetails produtoVendaDetails = new ProdutoVendaDetails();
 				
 				Long IDnovoProduto = Long.valueOf(codField.getText().replaceAll(" ", ""));
-				Produto produto = produtoDAO.findProductById(IDnovoProduto);
+				Produto produto = produtoService.getProductById(IDnovoProduto);
 				
 					if(produto == null) {
 						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto não encontrado na base de dados!");
