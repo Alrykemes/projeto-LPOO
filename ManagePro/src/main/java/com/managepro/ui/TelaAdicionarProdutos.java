@@ -51,7 +51,7 @@ public class TelaAdicionarProdutos{
 		adicionarProdutoPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
-		JLabel Codigo = new JLabel("Código *");
+		JLabel Codigo = new JLabel("C�digo *");
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
 		adicionarProdutoPanel.add(Codigo);
@@ -66,7 +66,7 @@ public class TelaAdicionarProdutos{
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		adicionarProdutoPanel.add(textFieldPrecoVenda);
 
-		JLabel PrecoVenda = new JLabel("Preço de Venda *");
+		JLabel PrecoVenda = new JLabel("Pre�o de Venda *");
 		PrecoVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoVenda.setBounds(501, 73, 110, 14);
 		adicionarProdutoPanel.add(PrecoVenda);
@@ -80,9 +80,9 @@ public class TelaAdicionarProdutos{
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
-				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
 			}
 		});
 		btnCancelar.setBounds(45, 11, 99, 41);
@@ -91,10 +91,11 @@ public class TelaAdicionarProdutos{
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
-				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
-				atualizarDescricaoProduto();
+
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
+
 			}
 		});
 		btnCadastrar.setBounds(539, 11, 99, 41);
@@ -147,7 +148,7 @@ public class TelaAdicionarProdutos{
 		Nome2.setBounds(25, 11, 46, 14);
 		panel_3.add(Nome2);
 
-		JLabel Codigo2 = new JLabel("Cód");
+		JLabel Codigo2 = new JLabel("C�d");
 		Codigo2.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo2.setBounds(104, 6, 46, 24);
 		panel_3.add(Codigo2);
@@ -172,6 +173,7 @@ public class TelaAdicionarProdutos{
 		Fornecedor2.setBounds(347, 11, 87, 14);
 		panel_3.add(Fornecedor2);
 
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(34, 241, 598, 24);
 		adicionarProdutoPanel.add(panel_2);
@@ -182,36 +184,5 @@ public class TelaAdicionarProdutos{
 		adicionarProdutoPanel.add(TituloTela);
 	}
 	
-		private void atualizarDescricaoProduto() {
-			
-			MostrarDescricao.removeAll();
-			
-			JLabelnomeProdutoLabel = newJLabel("Nome: " + textFieldNomeProduto.getText());
-			nomeProdutoLabel.setBounds(10, 50, 150, 14);
-			MostrarDescricao.add(nomeProdutoLabel);
-
-			JLabelcodigoProdutoLabel = newJLabel("Código: " + textFieldCodigo.getText());
-			codigoProdutoLabel.setBounds(170, 50, 150, 14);
-			MostrarDescricao.add(codigoProdutoLabel);
-
-			JLabelprecoVendaLabel = newJLabel("Preço: " + textFieldPrecoVenda.getText());
-			precoVendaLabel.setBounds(330, 50, 150, 14);
-			MostrarDescricao.add(precoVendaLabel);
-
-			JLabelquantidadeLabel = newJLabel("Quantidade: " + textFieldQuanditade.getText());
-			quantidadeLabel.setBounds(10, 80, 150, 14);
-			MostrarDescricao.add(quantidadeLabel);
-
-			JLabelmarcaLabel = newJLabel("Marca: " + textFieldMarca.getText());
-			marcaLabel.setBounds(170, 80, 150, 14);
-			MostrarDescricao.add(marcaLabel);
-
-			JLabelfornecedorLabel = newJLabel("Fornecedor: " + textFieldFornecedor.getText());
-			fornecedorLabel.setBounds(330, 80, 150, 14);
-			MostrarDescricao.add(fornecedorLabel);
-
-			
-			MostrarDescricao.revalidate();
-			MostrarDescricao.repaint();
-		}
+		
 }

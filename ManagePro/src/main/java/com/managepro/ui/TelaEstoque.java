@@ -53,9 +53,9 @@ public class TelaEstoque {
 		novoProduto.setBounds(256, 47, 131, 45);
 		novoProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "AdicionarProdutos");
-				Janela.getInstace().getFrame().setBounds(0, 0, 700, 500);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "AdicionarProdutos");
+				Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
 			}
 		});
 		estoquePanel.add(novoProduto);
@@ -65,9 +65,9 @@ public class TelaEstoque {
 		editarProduto.setBounds(408, 47, 131, 45);
 		editarProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "EditarProdutos");
-				Janela.getInstace().getFrame().setBounds(0, 0, 700, 500);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "EditarProdutos");
+				Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
 			}
 		});
 		estoquePanel.add(editarProduto);
@@ -111,7 +111,7 @@ public class TelaEstoque {
 		btnNewButton.setBounds(20, 8, 120, 35);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
 		estoquePanel.add(btnNewButton);

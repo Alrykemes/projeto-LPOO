@@ -1,21 +1,27 @@
 package com.managepro.core.model;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class Produto {
 	private Long IdProduto;
 	private String nomeProduto;
-	private BigDecimal preco;
 	private int quantidade;
 	private String marca;
 	private String fornecedor;
+	private BigDecimal preco;
+	private LocalDate validade; 
 	
-	public Produto(Long i, String nomeProduto, BigDecimal preco, int quantidade, String marca, String fornecedor) {
-		this.IdProduto = i;
+	public Produto() {}
+
+	public Produto(Long codigoProduto, String nomeProduto, int quantidade, String marca, String fornecedor,
+			BigDecimal preco, LocalDate validade) {
+		this.IdProduto = codigoProduto;
 		this.nomeProduto = nomeProduto;
-		this.preco = preco;
 		this.quantidade = quantidade;
 		this.marca = marca;
 		this.fornecedor = fornecedor;
+		this.preco = preco;
+		this.validade = validade;
 	}
 
 	public Long getIdProduto() {
@@ -32,14 +38,6 @@ public class Produto {
 
 	public void setNomeProduto(String nomeProduto) {
 		this.nomeProduto = nomeProduto;
-	}
-
-	public BigDecimal getPreco() {
-		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
 	}
 
 	public int getQuantidade() {
@@ -66,6 +64,27 @@ public class Produto {
 		this.fornecedor = fornecedor;
 	}
 
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
+	public LocalDate getValidade() {
+		return validade;
+	}
+
+	public void setValidade(LocalDate validade) {
+		this.validade = validade;
+	}
+
+	@Override
+	public String toString() {
+		return "Produto [codigoProduto=" + IdProduto + ", nomeProduto=" + nomeProduto + ", quantidade=" + quantidade
+				+ ", preco=" + preco + "]";
+	}
 	
 
 }
