@@ -1,26 +1,23 @@
 package com.managepro.core.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
-	public class Funcionario {
-	private String telefone;
+public class Funcionario {
+
 	private Long id;
 	private String nome;
 	private String cpf;
+	private String telefone;
 	private Cargos funcao;
 	private BigDecimal salario;
-	private Date dataAdmissao;
+	private LocalDate dataAdmissao;
 	private String usuario;
 	private String senha;
 	
 	public Funcionario() {}
-	
-	public Funcionario(String telefone, Long id, String nome, String cpf, Cargos funcao, BigDecimal salario,
-			Date dataAdmissao, String usuario, String senha) {
-		super();
-		this.telefone = telefone;
-		this.id = id;
+	public Funcionario(String nome, String cpf, Cargos funcao, BigDecimal salario,
+			LocalDate dataAdmissao, String usuario, String senha) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.funcao = funcao;
@@ -28,13 +25,6 @@ import java.util.Date;
 		this.dataAdmissao = dataAdmissao;
 		this.usuario = usuario;
 		this.senha = senha;
-	}
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
 	}
 	public Long getId() {
 		return id;
@@ -45,15 +35,27 @@ import java.util.Date;
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getCpf() {
 		return cpf;
 	}
+	
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+	
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
 	public String getUsuario() {
 		return usuario;
 	}
@@ -78,10 +80,10 @@ import java.util.Date;
 	public void setSalario(BigDecimal salario) {
 		this.salario = salario;
 	}
-	public Date getDataAdmissao() {
+	public LocalDate getDataAdmissao() {
 		return dataAdmissao;
 	}
-	public void setDataAdmissao(Date dataAdmissao) {
+	public void setDataAdmissao(LocalDate dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
 	}
 }
