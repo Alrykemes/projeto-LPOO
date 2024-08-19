@@ -259,7 +259,7 @@ public class TelaFuncionarios {
 		btnComeback.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnComeback.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnComeback.setBounds(20, 8, 120, 35);

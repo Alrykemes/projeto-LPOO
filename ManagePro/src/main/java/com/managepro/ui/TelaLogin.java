@@ -6,15 +6,14 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+
+import com.managepro.core.model.Funcionario;
+import com.managepro.core.service.LoginService;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-
 import javax.swing.JPanel;
 
 public class TelaLogin {
@@ -27,6 +26,7 @@ public class TelaLogin {
 	private JLabel txtUser;
 	private JLabel txtPassword;
 	private JLabel logo;
+	private Funcionario funcionarioLogado;
 	
 	public JPanel getPanel() {
 		return this.panelLogin;
@@ -40,6 +40,14 @@ public class TelaLogin {
 		return this.passwordLogin;
 	}
 	
+	public Funcionario getFuncionarioLogado() {
+		return funcionarioLogado;
+	}
+	
+	public void setFuncionarioLogado(Funcionario funcionario) {
+		funcionarioLogado = funcionario;
+	}
+	
 	public TelaLogin() {
 		this.initialize();
 	}
@@ -51,22 +59,10 @@ public class TelaLogin {
 		
 		userLogin = new JTextField();
 		userLogin.setBounds(317, 268, 320, 51);
-		userLogin.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				userLogin.setText("");
-				userLogin.setForeground(Color.black);
-			}
-			public void focusLost(FocusEvent e) {
-                if (userLogin.getText().isEmpty()) {
-                    userLogin.setText("Usuario");
-                    userLogin.setForeground(Color.LIGHT_GRAY);
-                }
-            }
-		});
 		
 		panelLogin.setLayout(null);
 		userLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		userLogin.setForeground(Color.LIGHT_GRAY);
+		userLogin.setForeground(Color.BLACK);
 		userLogin.setToolTipText("");
 		panelLogin.add(userLogin);
 		userLogin.setColumns(10);
@@ -76,22 +72,14 @@ public class TelaLogin {
 		botaoEntrar.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		botaoEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-					String usuario = userLogin.getText();
-				
-					String senha = new String(passwordLogin.getPassword());
-					
-					
-					if (usuario.equals("sa") && senha.equals("sa")) {
-						Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");	
-						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Bem vindo, " + usuario);
+					LoginService loginService = new LoginService();
+					if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
+						Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
+						Janela.getInstance().getPanelPrincipal().repaint();
 					}
-					else {
-						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(),"Usuário ou senha inv�lidos.");
-						 }
-					}
+					
 			}
-		);
+		});
 		panelLogin.add(botaoEntrar);
 		
 		txtLogin = new JLabel("LOGIN");
@@ -100,7 +88,7 @@ public class TelaLogin {
 		txtLogin.setFont(new Font("SansSerif", Font.PLAIN, 30));
 		panelLogin.add(txtLogin);
 		
-		txtUser = new JLabel("Usuário");
+		txtUser = new JLabel("Usu�rio");
 		txtUser.setBounds(318, 248, 60, 16);
 		txtUser.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUser.setFont(new Font("SansSerif", Font.PLAIN, 16));

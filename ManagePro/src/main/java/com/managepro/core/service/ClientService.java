@@ -16,31 +16,31 @@ public class ClientService {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void cadastrarCliente(String nome, String cpf, String telefone, LocalDate data_nascimento) throws Exception {
-		if (nome.length() >= 69) {
-			throw new Exception("Erro, Nome muito grande");
+	public void cadastrarCliente(Cliente cliente) throws Exception {
+		if (cliente.getNome().length() >= 69) {
+			throw new Exception("Erro, nome muito grande");
 		}
 
-		if (dataAtual.compareTo(data_nascimento) < 18) {
+		if (dataAtual.compareTo(cliente.getDataNascimento()) < 18) {
+			System.out.println(cliente.getDataNascimento().compareTo(dataAtual));
 			throw new Exception("Erro, Cliente menor de idade");
 		}
 		
-		if (clienteDAO.findClientByCpf(cpf) != null) {
-			Cliente cliente = new Cliente(nome, cpf, telefone, data_nascimento);
+		if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
 			clienteDAO.addCliente(cliente);
+			Janela.getInstance().getTelaNovaVenda().setCliente(cliente);
+			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstace().getFrame(), "CPF já cadastrado)");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF j� cadastrado)");
 		}
 	}
-
-	public Cliente ClientExist(String cpf) {
-		cpf = cpf.replaceAll(" ", "");
+	
+	public Cliente getClientCpf(String cpf) {
 		
-		if(cpf.length() != 14) {
-			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Número de CPF Invalido!");
+		if(cpf.replaceAll(" ", "").length() != 14) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "N�mero de CPF Invalido!");
 			return null;
 		}
 		return clienteDAO.findClientByCpf(cpf);
 	}
-
 }

@@ -1,7 +1,6 @@
 package com.managepro.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,15 +20,17 @@ public class ClienteDAO implements ClientRepository{
 	@Override
 	public void addCliente(Cliente cliente) {
 		try {
-			LocalDate data =  cliente.getDataNascimento();	
+			LocalDate data =  cliente.getDataNascimento();
 			Connection connection = MySQLConnection.getConnection();
 			Statement statement = connection.createStatement();
-			String sql = "INSERT INTO cliente(nome, cpf, data_nascimento) VALUES ('"+ cliente.getNome() +"', '"+ cliente.getCpf() +"', '"+ java.sql.Date.valueOf(data)+"')";
+			
+			String sql = "INSERT INTO cliente(nome, cpf, data_nascimento) VALUES ('" + cliente.getNome() + "', '"+ cliente.getCpf() +"', '"+ java.sql.Date.valueOf(data) +"')";
 			statement.execute(sql);
+			
 			statement.close();
 			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na Comunição do sistema, tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 		}
 		
@@ -38,10 +39,12 @@ public class ClienteDAO implements ClientRepository{
 	@Override
 	public Cliente findClientByCpf(String cpf){
 		try {
+			
 			Connection connection = MySQLConnection.getConnection();
 			Statement statement = connection.createStatement();
 			
-			String sql = "SELECT * FROM cliente c WHERE c.cpf = '" + cpf + "'";
+			String sql = "SELECT c.id_cliente, c.nome, c.cpf, c.data_nascimento, t.numero FROM cliente AS c "
+					+ "INNER JOIN telefone_cliente AS t ON t.id_cliente = c.id_cliente WHERE c.cpf = '" + cpf + "';";
 			ResultSet rs = statement.executeQuery(sql);
 			
 			if(rs.next()) {
@@ -49,31 +52,58 @@ public class ClienteDAO implements ClientRepository{
 				cliente.setId(rs.getLong("id_cliente"));
 				cliente.setNome(rs.getString("nome"));
 				cliente.setCpf(rs.getString("cpf"));
+				cliente.setTelefone(rs.getString("numero"));
 				cliente.setDataNascimento((rs.getDate("data_nascimento").toLocalDate()));
 			}
 				
 			if(cliente == null) {
-				return new Cliente(null, null, null,null);
+				return new Cliente(null, null, null, null);
 			}
 			
-			String sql2 = "SELECT numero FROM telefone_cliente t WHERE t.id_cliente = '" + cliente.getId() + "'";
-			ResultSet rs2 = statement.executeQuery(sql2);
-			
-			if(rs2.next()) {
-				cliente.setTelefone(rs2.getString("numero"));
-			}
-			
-			statement.close(); 
 			connection.close();
+			statement.close(); 
 			
 			return cliente;
 			
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Erro Na Comunição do sistema, tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		
 			return cliente;
+		}
+	}
+	
+	public Cliente findClientById(Long id){
+		try {
+			
+			Connection connection = MySQLConnection.getConnection();
+			Statement statement = connection.createStatement();
+			
+			String sql = "SELECT c.id_cliente, c.nome, c.cpf, c.data_nascimento, t.numero FROM cliente AS c "
+					+ "INNER JOIN telefone_cliente AS t ON t.id_cliente = c.id_cliente WHERE c.id_cliente = '" + id + "';";
+			ResultSet rs = statement.executeQuery(sql);
+			
+			if(rs.next()) {
+				cliente = new Cliente();
+				cliente.setId(rs.getLong("id_cliente"));
+				cliente.setNome(rs.getString("nome"));
+				cliente.setCpf(rs.getString("cpf"));
+				cliente.setTelefone(rs.getString("numero"));
+				cliente.setDataNascimento((rs.getDate("data_nascimento").toLocalDate()));
+			}
+			
+			connection.close();
+			statement.close(); 
+			
+			return cliente;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		
+			return null;
 		}
 	}
 }
