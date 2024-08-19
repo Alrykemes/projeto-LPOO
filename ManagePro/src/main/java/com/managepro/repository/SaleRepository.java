@@ -8,7 +8,7 @@ import com.managepro.core.model.Venda;
 
 public interface SaleRepository {
 	
-	public void adicionarVendas(Venda venda) throws ClassNotFoundException, SQLException;
+	public void cadastrarVenda(Venda venda) throws ClassNotFoundException, SQLException;
 	
 	public void pesquisarVendasPorId(Long Id) throws ClassNotFoundException, SQLException;
 	

@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import com.managepro.core.model.FormaPagamento;
-import com.managepro.core.model.Produto;
+import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
 import com.managepro.repository.MySQLConnection;
 import com.managepro.repository.SaleRepository;
@@ -20,23 +20,23 @@ import com.managepro.ui.Janela;
 
 public class VendaDAO implements SaleRepository {
 	
-	//private ProdutoDAO produtoDAO;
+	private ProdutoDAO produtoDAO;
 	private FuncionarioDAO funcionarioDAO;
 	private ClienteDAO clienteDAO;
 	
 	public VendaDAO() {
-		//produtoDAO = new ProdutoDAO();
+		produtoDAO = new ProdutoDAO();
 		funcionarioDAO = new FuncionarioDAO();
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void adicionarVendas(Venda venda) {
+	public void cadastrarVenda(Venda venda) {
 		   try {
 		        
 			   Connection connection = MySQLConnection.getConnection();
 			   PreparedStatement statementVenda = connection.prepareStatement("INSERT INTO venda (id_funcionario, id_cliente, forma_pagamento, data_venda, preco) VALUES (?, ?, ?, ?, ?)");
 			   PreparedStatement statementProdutoVenda = connection.prepareStatement("INSERT INTO produto_venda (id_venda, id_produto, quantidade, preco) VALUES (?, ?, ?, ?)");
-	
+			   
 		       statementVenda.setLong(1, venda.getFuncionario().getId());
 		       statementVenda.setLong(2, venda.getCliente().getId());
 		       statementVenda.setString(3, venda.getFormaDePagamentoEnum().name());
@@ -45,10 +45,23 @@ public class VendaDAO implements SaleRepository {
 		
 		       statementVenda.execute();
 		
-		       // Insere produtos na tabela produto_venda
-		       for (Produto produto : venda.getProdutosVendidos()) {
-		    	   statementProdutoVenda.setLong(1, venda.getId()); 
-		    	   // o id é auto incremento tem que chamar um metodo aqui dentro que sete isso puxando por id da venda.
+		       PreparedStatement stmtGetId = connection.prepareStatement("SELECT v.id_venda FROM venda v WHERE v.data_venda = ?");
+		   	
+		        stmtGetId.setDate(1, Date.valueOf(venda.getData()));
+		        
+		        ResultSet rs =  stmtGetId.executeQuery();
+		        
+		        Long idVenda = null;
+		        
+		        while(rs.next()) {
+		        	
+		       idVenda = rs.getLong("id_venda");
+		        	
+		        }
+		        
+		       for (ProdutoVendaDetails produto : venda.getProdutosVendidos()) {
+		    	   
+		    	   statementProdutoVenda.setLong(1, idVenda); 
 		           statementProdutoVenda.setLong(2, produto.getCodigoProduto());
 		           statementProdutoVenda.setInt(3, produto.getQuantidade());
 		           statementProdutoVenda.setBigDecimal(4, produto.getPreco());
@@ -228,7 +241,7 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	          //  venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId()));
+	            //venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId()));
 	
 	            vendas.add(venda);
 	        }
@@ -245,5 +258,6 @@ public class VendaDAO implements SaleRepository {
 	            return null;
 	        }
 		}
+
 	
 }

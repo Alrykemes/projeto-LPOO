@@ -67,10 +67,19 @@ CREATE TABLE produto_venda (
 );
 
 INSERT INTO funcionario (nome, cpf, cargo, salario, data_admissao, usuario, senha) 
-VALUES("admininastor", "123.456.789-12", "ADMINISTRADOR", 2.50, '2024-08-12', "admin", "123");
+VALUES("Administrador MANAGEPRO", "123.456.789-12", "ADMINISTRADOR", 10000.00, '2024-08-12', "admin", "123");
+
+INSERT INTO funcionario (nome, cpf, cargo, salario, data_admissao, usuario, senha) 
+VALUES("Vendedor Teste", "123.456.789-12", "VENDEDOR", 1352.30, '2024-08-12', "vendedor", "123");
+
+INSERT INTO telefone_funcionario (id_funcionario, numero) 
+VALUES(1, "(81)99256-7489");
+
+INSERT INTO telefone_funcionario (id_funcionario, numero) 
+VALUES(2, "(81)91654-3215");
 
 INSERT INTO cliente (nome, cpf, data_nascimento) 
-VALUES("Josepe Guacamole", "123.456.789-12", '2024-08-12');
+VALUES("Josepe Feitosa", "123.456.789-12", '2024-08-12');
 
 INSERT INTO telefone_cliente (id_cliente, numero) 
 VALUES(1, "(81)99929-4959");
@@ -82,4 +91,7 @@ INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade)
 VALUES("Arroz", "7.32", 20, "Emoções", 'Cadan Distribuição', '2027-12-18');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
-VALUES("Feijão", "2.29", 20, "Turquesa", 'Cadan Distribuição', '2026-07-26');
+VALUES("Feijão", "5.29", 20, "Turquesa", 'Cadan Distribuição', '2026-07-26');
+
+INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
+VALUES("Azeite de Oliva", "46.90", 20, "Gallo", 'Cadan Distribuição', '2026-03-17');

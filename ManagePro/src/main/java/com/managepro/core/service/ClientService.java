@@ -16,19 +16,20 @@ public class ClientService {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void cadastrarCliente(String nome, String cpf, String telefone, LocalDate data_nascimento) throws Exception {
-		if (nome.length() >= 69) {
+	public void cadastrarCliente(Cliente cliente) throws Exception {
+		if (cliente.getNome().length() >= 69) {
 			throw new Exception("Erro, nome muito grande");
 		}
 
-		if (dataAtual.compareTo(data_nascimento) < 18) {
-			System.out.println(data_nascimento.compareTo(dataAtual));
+		if (dataAtual.compareTo(cliente.getDataNascimento()) < 18) {
+			System.out.println(cliente.getDataNascimento().compareTo(dataAtual));
 			throw new Exception("Erro, Cliente menor de idade");
 		}
 		
-		if (clienteDAO.findClientByCpf(cpf) != null) {
-			Cliente cliente = new Cliente(nome, cpf, telefone, data_nascimento);
+		if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
 			clienteDAO.addCliente(cliente);
+			Janela.getInstance().getTelaNovaVenda().setCliente(cliente);
+			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
 		} else {
 			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já¡ cadastrado)");
 		}

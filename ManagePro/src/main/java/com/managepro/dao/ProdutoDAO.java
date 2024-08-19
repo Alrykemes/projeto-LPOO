@@ -49,6 +49,8 @@ public class ProdutoDAO  implements ProductRepository{
 			return null;
 		}
 	}
+	
+	
 		
 		public void newProduct(Produto produto) {
 			try {
@@ -156,11 +158,37 @@ public class ProdutoDAO  implements ProductRepository{
 		}
 
 		@Override
-		public List<Produto> getProductsForSale(Long idVenda) throws ClassNotFoundException, SQLException {
-			connection = MySQLConnection.getConnection();
-			//PreparedStatement stmt = connection.prepareStatement("SELECT");
+		public List<Produto> getProductsForSale(Long idVenda) {
 			
-			return null;
+			try {
+				
+				List<Produto> produtos = new ArrayList<>();
+				connection = MySQLConnection.getConnection();
+				PreparedStatement stmt = connection.prepareStatement("SELECT pv.id_venda, pv.id_produto, pv.quantidade, p.nome, p.preco, p.marca, p.fornecedor, p.validade FROM produto_venda AS pv"
+						+ " INNER JOIN produto AS p ON p.id_produto = pv.id_produto WHERE pv.id_venda = ?");
+				
+				stmt.setLong(1, idVenda);
+				
+				ResultSet rs = stmt.executeQuery();
+				
+				while (rs.next()) {
+					produto = new Produto();
+					produto.setCodigoProduto(rs.getLong("id_produto"));
+					produto.setNomeProduto(rs.getString("nome"));
+					produto.setFornecedor(rs.getString("fornecedor"));
+					produto.setQuantidade(rs.getInt("quantidade"));
+					produto.setMarca(rs.getString("marca"));
+					produto.setPreco(rs.getBigDecimal("preco"));;
+					produto.setValidade(rs.getDate("validade").toLocalDate());
+					produtos.add(produto);
+				}
+				
+					return null;
+			} catch (ClassNotFoundException | SQLException e) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				System.out.println(e.getMessage());
+				return null;
+			}
 		}
 		
 		

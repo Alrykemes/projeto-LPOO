@@ -14,13 +14,13 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
 import java.awt.event.ActionListener;
-import java.util.Date;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.awt.event.ActionEvent;
 
+import com.managepro.core.model.Cliente;
 import com.managepro.core.service.ClientService;
 import com.toedter.calendar.JDateChooser;
 
@@ -31,6 +31,7 @@ public class TelaAdicionarCliente{
 	private JFormattedTextField textFieldCPF;
 	private JFormattedTextField textFieldNumero;
 	private JDateChooser dateChooser;
+	private Cliente cliente;
 
 	public JPanel getPanel() {
 		return this.adicionarProdutoPanel;
@@ -41,6 +42,7 @@ public class TelaAdicionarCliente{
 	}
 
 	private void initialize() throws ParseException {
+		
 		adicionarProdutoPanel = new JPanel();
 		adicionarProdutoPanel.setSize(500, 500);
 		adicionarProdutoPanel.setLayout(null);
@@ -133,27 +135,30 @@ public class TelaAdicionarCliente{
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "NovaVenda");
 				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
 				Janela.getInstance().getFrame().setLocationRelativeTo(null);
+				
+				cliente = new Cliente();
+				
+				Instant instant = dateChooser.getDate().toInstant();
+				LocalDate dataNascimentoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+				
+				cliente.setNome(textFieldNomeCliente.getText());
+				cliente.setCpf(textFieldCPF.getText()); 
+				cliente.setTelefone(textFieldNumero.getText()); 
+				cliente.setDataNascimento(dataNascimentoLD);
 
-				String nome = textFieldNomeCliente.getText();	
-				String cpf = textFieldCPF.getText();
-				String numero = textFieldNumero.getText();
-				Date dataNascimento = dateChooser.getDate();
 
-				Instant instant = dataNascimento.toInstant();
-			    LocalDate dataNascimentoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-
-				ClientService cliente = new ClientService();
+				ClientService clienteService = new ClientService();
 				try {
-					cliente.cadastrarCliente(nome, cpf, numero, dataNascimentoLD);
+					clienteService.cadastrarCliente(cliente);
 					JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso", "Success", JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Erro ao cadastrar cliente: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				} finally {
 					textFieldNomeCliente.setText("");
 					textFieldCPF.setText("");
 					textFieldNumero.setText("");
 					dateChooser.setDate(null);
-
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Erro ao cadastrar cliente: " + e1.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
 				}
 
 			};

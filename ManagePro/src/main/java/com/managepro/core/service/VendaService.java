@@ -20,7 +20,7 @@ public class VendaService {
 	public void cadastrarVenda(Venda venda) {
 		if(venda != null) {
 			if(situacaoPagamento == true) {
-				vendaDAO.adicionarVendas(venda);
+				vendaDAO.cadastrarVenda(venda);
 			} else {
 				
 			}

@@ -61,21 +61,26 @@ public class TelaNovaVenda {
 	private JLabel txtNomeCliente;
 	private static JLabel nomeFuncionario;
 	private Cliente cliente;
+	private JButton btnPesquisaClient;
 	private JList<ProdutoVendaDetails> listProdutos;
 	private JLabel unitPrice;
 	private JLabel totalPrice;
 	private JLabel totalPriceSale;
 	private BigDecimal totalPriceOfSale;
 	private List<BigDecimal> priceOfProducts;
-	private List<Produto> listaProdutosVenda;
+	private List<ProdutoVendaDetails> listaProdutosVenda;
 	private JComboBox<String> PagamentocomboBox;
 	
 	public JPanel getPanel() {
 		return this.novaVendaPanel;
 	}
 	
-	public static JLabel getLabelFuncionarioJLabel() {
+	public JLabel getLabelFuncionarioJLabel() {
 		return nomeFuncionario;
+	}
+	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public TelaNovaVenda() throws ParseException {
@@ -85,6 +90,8 @@ public class TelaNovaVenda {
 	private void initialize() throws ParseException {
 		totalPriceOfSale = BigDecimal.ZERO;
 		priceOfProducts = new ArrayList<>();
+		listaProdutosVenda = new ArrayList<>();
+
 		
 		novaVendaPanel = new JPanel();
 		novaVendaPanel.setSize(1020, 680);
@@ -133,15 +140,14 @@ public class TelaNovaVenda {
 		scrollPane.setBounds(0, 11, 689, 389);
 		PrincipalPanel.add(scrollPane, BorderLayout.CENTER);
 		
-		JButton btnPesquisaClient_1 = new JButton("");
-		btnPesquisaClient_1.setIcon(new ImageIcon(TelaNovaVenda.class.getResource("/com/managepro/assets/NovoProdutoIcon.png")));
-		btnPesquisaClient_1.setBounds(260, 234, 30, 30);
-		addProductPanel.add(btnPesquisaClient_1);
-		btnPesquisaClient_1.addActionListener(new ActionListener() {
+		JButton btnAddProducts = new JButton("");
+		btnAddProducts.setIcon(new ImageIcon(TelaNovaVenda.class.getResource("/com/managepro/assets/NovoProdutoIcon.png")));
+		btnAddProducts.setBounds(260, 234, 30, 30);
+		addProductPanel.add(btnAddProducts);
+		btnAddProducts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProdutoDAO produtoDAO = new ProdutoDAO();
 				ProdutoVendaDetails produtoVendaDetails = new ProdutoVendaDetails();
-				listaProdutosVenda = new ArrayList<Produto>();
 				
 				Long IDnovoProduto = Long.valueOf(codField.getText().replaceAll(" ", ""));
 				Produto produto = produtoDAO.findProductById(IDnovoProduto);
@@ -149,7 +155,6 @@ public class TelaNovaVenda {
 					if(produto == null) {
 						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto não encontrado na base de dados!");
 					} else {
-						listaProdutosVenda.add(produto);
 						
 						produtoVendaDetails.setCodigoProduto(produto.getCodigoProduto());
 						produtoVendaDetails.setNomeProduto(produto.getNomeProduto());
@@ -171,6 +176,8 @@ public class TelaNovaVenda {
 					                .reduce(BigDecimal.ZERO, BigDecimal::add);
 							
 							listModel.addElement(produtoVendaDetails);
+							listaProdutosVenda.add(produtoVendaDetails);
+		
 						} else {
 							JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Insira a quantidade de produtos desejada");
 						}
@@ -230,6 +237,19 @@ public class TelaNovaVenda {
 				newVenda.setPreco(totalPriceOfSale);
 				
 				vendaService.cadastrarVenda(newVenda);
+				
+				cliente = null;
+				SaleConfigPanel.add(cpfField);
+				SaleConfigPanel.remove(txtClientName);
+				SaleConfigPanel.remove(txtClientCpf);
+				SaleConfigPanel.add(btnPesquisaClient);
+				listModel.clear();
+				priceOfProducts.clear();
+				listaProdutosVenda.clear();
+				unitPrice.setText("R$ 0,00");
+				totalPrice.setText("R$ 0,00");
+				totalPriceSale.setText("R$ 0,00");
+				SaleConfigPanel.repaint();
 			}
 		});
 		btnFinalizar.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -277,7 +297,7 @@ public class TelaNovaVenda {
 		SaleConfigPanel.add(cpfField);
 		cpfField.setColumns(10);
 		
-		JButton btnPesquisaClient = new JButton("");
+		btnPesquisaClient = new JButton("");
 		btnPesquisaClient.setIcon(new ImageIcon(TelaNovaVenda.class.getResource("/com/managepro/assets/LupaIcon.png")));
 		btnPesquisaClient.setBounds(257, 40, 33, 30);
 		btnPesquisaClient.addActionListener(new ActionListener() {
@@ -294,18 +314,11 @@ public class TelaNovaVenda {
 								Janela.getInstance().getFrame().setLocationRelativeTo(null);
 								Janela.getInstance().getTelaAdicionarCliente().setCpfField(cpfCliente);
 								Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "AdicionarCliente");
-								// TO DO: colocar cpf e nome do cliente na tela
-							}	 
+							}	 	
 						} else if(cliente.getCpf() != null){
 							
-							SaleConfigPanel.remove(cpfField);
-							SaleConfigPanel.add(txtClientName);
-							SaleConfigPanel.add(txtClientCpf);
-							txtClientName.setText(cliente.getNome());
-							txtClientCpf.setText(cliente.getCpf());	
-							SaleConfigPanel.remove(btnPesquisaClient);
+							setClienteNaTela();
 						}
-						SaleConfigPanel.repaint();
 					}
 			}
 		});
@@ -414,6 +427,7 @@ public class TelaNovaVenda {
 					SaleConfigPanel.add(btnPesquisaClient);
 					listModel.clear();
 					priceOfProducts.clear();
+					listaProdutosVenda.clear();
 					unitPrice.setText("R$ 0,00");
 					totalPrice.setText("R$ 0,00");
 					totalPriceSale.setText("R$ 0,00");
@@ -426,5 +440,15 @@ public class TelaNovaVenda {
 		addProductPanel.add(btnCancel);
 		
 		
+	}
+	
+	public void setClienteNaTela() {
+		SaleConfigPanel.remove(cpfField);
+		SaleConfigPanel.add(txtClientName);
+		SaleConfigPanel.add(txtClientCpf);
+		txtClientName.setText(cliente.getNome());
+		txtClientCpf.setText(cliente.getCpf());	
+		SaleConfigPanel.remove(btnPesquisaClient);
+		SaleConfigPanel.repaint();
 	}
 }

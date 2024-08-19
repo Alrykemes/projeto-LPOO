@@ -47,6 +47,10 @@ public class Janela {
 	    return this.telaAdicionarCliente;
 	}
 	
+	public TelaNovaVenda getTelaNovaVenda() {
+		return this.telaNovaVenda;
+	}
+	
 	public JFrame getFrame() {
 		return this.frame;
 	}

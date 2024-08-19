@@ -5,7 +5,6 @@ import javax.swing.JOptionPane;
 import com.managepro.core.model.Funcionario;
 import com.managepro.dao.*;
 import com.managepro.ui.Janela;
-import com.managepro.ui.TelaNovaVenda;
 
 public class LoginService {
     private FuncionarioDAO FuncionarioDAO;
@@ -21,7 +20,7 @@ public class LoginService {
         	return false;
         }
         Janela.getInstance().getTelaLogin().setFuncionarioLogado(funcionario);
-        TelaNovaVenda.getLabelFuncionarioJLabel().setText(funcionario.getNome());
+        Janela.getInstance().getTelaNovaVenda().getLabelFuncionarioJLabel().setText(funcionario.getNome());
         return funcionario.getSenha().equals(senha);
     }
 }
