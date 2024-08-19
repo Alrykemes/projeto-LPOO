@@ -20,6 +20,15 @@ import java.awt.event.FocusEvent;
 
 public class TelaFuncionarios {
 
+	private void limparCampos() {
+	    txtNome.setText("");
+	    txtCpf.setText("");
+	    txtEmail.setText("");
+	    txtSenha.setText("");
+	    txtCargo.setText("");
+	    // Se houver mais campos, limpar também
+	}
+	
 	private JFrame frmManagePro;
 	private JTextField txtNome;
 	private JTextField txtCpf;
@@ -40,11 +49,34 @@ public class TelaFuncionarios {
 		return this.frmManagePro;
 	}
 	
+	private FuncionarioService funcionarioService;
+
 	public TelaFuncionarios() {
-		initialize();
+	    this.funcionarioService = new FuncionarioService();
+	    initialize();
+	}
+	
+	private void atualizarTabela() {
+	    // Limpar a tabela existente
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    model.setRowCount(0);
+	    
+	    // Aqui você precisará obter todos os funcionários do banco de dados e adicionar à tabela
+	    List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+	    
+	    for (Funcionario funcionario : funcionarios) {
+	        model.addRow(new Object[]{
+	            funcionario.getNome(),
+	            funcionario.getCpf(),
+	            funcionario.getEmail(),
+	            funcionario.getSenha(),
+	            funcionario.getCargo(),
+	            funcionario.getSalario(),
+	            // Adicione aqui mais campos conforme necessário
+	        });
+	    }
 	}
 
-	
 	private void initialize() {
 		frmManagePro = new JFrame();
 		frmManagePro.setTitle("ManagePro");
@@ -159,6 +191,69 @@ public class TelaFuncionarios {
 		btnNewButton.setFont(new Font("SansSerif", Font.BOLD, 20));
 		btnNewButton.setBounds(867, 66, 123, 27);
 		panel_1.add(btnNewButton);
+
+		btnNewButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        // Captura os dados dos campos de texto
+		        String nome = txtNome.getText().trim();
+		        String cpf = txtCpf.getText().trim();
+		        String email = txtEmail.getText().trim();
+		        String senha = txtSenha.getText().trim();
+		        String cargo = txtCargo.getText().trim();
+		        BigDecimal salario = new BigDecimal(0); // Exemplo: você precisará capturar o salário real da interface
+		        
+		        // Validação dos campos obrigatórios
+		        if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || senha.isEmpty() || cargo.isEmpty()) {
+		            System.out.println("Erro: Todos os campos obrigatórios devem ser preenchidos.");
+		            return;
+		        }
+		        
+		        // Criar um objeto Funcionario
+		        Funcionario funcionario = new Funcionario();
+		        funcionario.setNome(nome);
+		        funcionario.setCpf(cpf);
+		        funcionario.setEmail(email);
+		        funcionario.setSenha(senha);
+		        funcionario.setCargo(cargo);
+		        funcionario.setSalario(salario);
+		        
+		        // Tentar adicionar o funcionário usando o serviço
+		        boolean sucesso = funcionarioService.adicionarFuncionario(funcionario);
+		        if (sucesso) {
+		            System.out.println("Funcionário adicionado com sucesso!");
+		            atualizarTabela();  // Atualizar a tabela na interface gráfica
+		            limparCampos();     // Limpar os campos após a inserção
+		        } else {
+		            System.out.println("Erro: Funcionário com o mesmo CPF já existe.");
+		        }
+		        
+		        if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || senha.isEmpty() || cargo.isEmpty()) {
+		            mostrarMensagem("Erro: Todos os campos obrigatórios devem ser preenchidos.");
+		            return;
+		        }
+		        
+		        Funcionario funcionario = new Funcionario();
+		        funcionario.setNome(nome);
+		        funcionario.setCpf(cpf);
+		        funcionario.setEmail(email);
+		        funcionario.setSenha(senha);
+		        funcionario.setCargo(cargo);
+		        funcionario.setSalario(salario);
+		        
+		        try {
+		            boolean sucesso = funcionarioService.adicionarFuncionario(funcionario);
+		            if (sucesso) {
+		                mostrarMensagem("Funcionário adicionado com sucesso!");
+		                atualizarTabela();
+		                limparCampos();
+		            } else {
+		                mostrarMensagem("Erro: Funcionário com o mesmo CPF já existe.");
+		            }
+		        } catch (Exception ex) {
+		            mostrarMensagem("Erro ao adicionar funcionário: " + ex.getMessage());
+		        }
+		    }
+		});
 		
 		table = new JTable();
 		table.setFont(new Font("SansSerif", Font.PLAIN, 10));

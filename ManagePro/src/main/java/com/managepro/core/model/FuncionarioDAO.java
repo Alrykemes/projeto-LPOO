@@ -16,6 +16,29 @@ public class FuncionarioDAO {
             throw new SQLException("JDBC Driver not found.", e);
         }
     }
+    
+    public List<Funcionario> getAllFuncionarios() {
+        List<Funcionario> funcionarios = new ArrayList<>();
+        try {
+            Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM funcionario");
+            ResultSet result = stmt.executeQuery();
+
+            while (result.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setNome(result.getString("nome"));
+                funcionario.setCpf(result.getString("cpf"));
+                funcionario.setEmail(result.getString("email"));
+                funcionario.setSenha(result.getString("senha"));
+                funcionario.setCargo(result.getString("cargo"));
+                funcionario.setSalario(BigDecimal.valueOf(result.getDouble("salario")));
+                funcionarios.add(funcionario);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error trying to access database.", e);
+        }
+        return funcionarios;
+    }
 
     public boolean hasFuncionario(String cpf) {
         try {

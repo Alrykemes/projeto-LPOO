@@ -1,10 +1,19 @@
 package com.managepro.core.model;
 
+import com.managepro.core.model.Funcionario;
+import com.managepro.core.model.FuncionarioDAO;
+import com.managepro.core.service.FuncionarioService;
+import java.math.BigDecimal;
+
 public class FuncionarioService {
 	private FuncionarioDAO funcionarioDAO;
 
     public FuncionarioService() {
         this.funcionarioDAO = new FuncionarioDAO();
+    }
+    
+    public List<Funcionario> obterTodosFuncionarios() {
+        return funcionarioDAO.getAllFuncionarios();
     }
 
     public boolean adicionarFuncionario(String nome, String cpf, String email, String cargo, double salario) {
