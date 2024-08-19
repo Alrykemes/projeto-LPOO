@@ -28,8 +28,8 @@ public void adicionarVendas(Venda venda) throws ClassNotFoundException, SQLExcep
 
 	   try {
 	        
-	    	connection = MySQLConnection.getConnection();
-	        statementVenda = connection.prepareStatement("INSERT INTO venda (id_venda, id_funcionario, id_cliente, forma_pagamento, data_venda, preco) VALUES (?, ?, ?, ?, ?, ?)");
+	    connection = MySQLConnection.getConnection();
+	    statementVenda = connection.prepareStatement("INSERT INTO venda (id_venda, id_funcionario, id_cliente, forma_pagamento, data_venda, preco) VALUES (?, ?, ?, ?, ?, ?)");
         statementProdutoVenda = connection.prepareStatement("INSERT INTO produto_venda (id_venda, id_produto, quantidade, preco) VALUES (?, ?, ?, ?)");
 
         statementVenda.setLong(1, venda.getId());

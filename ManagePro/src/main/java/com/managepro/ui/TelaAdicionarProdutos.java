@@ -20,7 +20,9 @@ public class TelaAdicionarProdutos{
 	private JTextField textFieldQuanditade;
 	private JTextField textFieldMarca;
 	private JTextField textFieldFornecedor;
+	private JPanel MostrarDescricao;
 
+	
 	public JPanel getPanel() {
 		return this.adicionarProdutoPanel;
 	}
@@ -92,6 +94,7 @@ public class TelaAdicionarProdutos{
 				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
 				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
 				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+				atualizarDescricaoProduto();
 			}
 		});
 		btnCadastrar.setBounds(539, 11, 99, 41);
@@ -127,7 +130,7 @@ public class TelaAdicionarProdutos{
 		textFieldFornecedor.setBounds(415, 182, 217, 35);
 		adicionarProdutoPanel.add(textFieldFornecedor);
 
-		JPanel MostrarDescricao = new JPanel();
+		MostrarDescricao = new JPanel();
 		MostrarDescricao.setBackground(new Color(255, 255, 255));
 		MostrarDescricao.setBounds(34, 241, 598, 140);
 		adicionarProdutoPanel.add(MostrarDescricao);
@@ -178,4 +181,37 @@ public class TelaAdicionarProdutos{
 		TituloTela.setBounds(10, 11, 295, 24);
 		adicionarProdutoPanel.add(TituloTela);
 	}
+	
+		private void atualizarDescricaoProduto() {
+			
+			MostrarDescricao.removeAll();
+			
+			JLabelnomeProdutoLabel = newJLabel("Nome: " + textFieldNomeProduto.getText());
+			nomeProdutoLabel.setBounds(10, 50, 150, 14);
+			MostrarDescricao.add(nomeProdutoLabel);
+
+			JLabelcodigoProdutoLabel = newJLabel("Código: " + textFieldCodigo.getText());
+			codigoProdutoLabel.setBounds(170, 50, 150, 14);
+			MostrarDescricao.add(codigoProdutoLabel);
+
+			JLabelprecoVendaLabel = newJLabel("Preço: " + textFieldPrecoVenda.getText());
+			precoVendaLabel.setBounds(330, 50, 150, 14);
+			MostrarDescricao.add(precoVendaLabel);
+
+			JLabelquantidadeLabel = newJLabel("Quantidade: " + textFieldQuanditade.getText());
+			quantidadeLabel.setBounds(10, 80, 150, 14);
+			MostrarDescricao.add(quantidadeLabel);
+
+			JLabelmarcaLabel = newJLabel("Marca: " + textFieldMarca.getText());
+			marcaLabel.setBounds(170, 80, 150, 14);
+			MostrarDescricao.add(marcaLabel);
+
+			JLabelfornecedorLabel = newJLabel("Fornecedor: " + textFieldFornecedor.getText());
+			fornecedorLabel.setBounds(330, 80, 150, 14);
+			MostrarDescricao.add(fornecedorLabel);
+
+			
+			MostrarDescricao.revalidate();
+			MostrarDescricao.repaint();
+		}
 }
