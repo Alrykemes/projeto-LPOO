@@ -180,7 +180,7 @@ public class TelaContabilidade {
 		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnNewButton.setBounds(10, 26, 120, 35);

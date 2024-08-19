@@ -11,8 +11,11 @@ import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
 import com.managepro.core.model.Cliente;
+import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.Produto;
 import com.managepro.core.model.ProdutoVendaDetails;
+import com.managepro.core.model.Venda;
+import com.managepro.core.service.ClientService;
 import com.managepro.core.service.VendaService;
 import com.managepro.dao.ProdutoDAO;
 
@@ -27,6 +30,7 @@ import javax.swing.DefaultListModel;
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ItemEvent;
@@ -55,6 +59,7 @@ public class TelaNovaVenda {
 	private JLabel txtClientCpf;
 	private JLabel txtClientName;
 	private JLabel txtNomeCliente;
+	private static JLabel nomeFuncionario;
 	private Cliente cliente;
 	private JList<ProdutoVendaDetails> listProdutos;
 	private JLabel unitPrice;
@@ -62,9 +67,15 @@ public class TelaNovaVenda {
 	private JLabel totalPriceSale;
 	private BigDecimal totalPriceOfSale;
 	private List<BigDecimal> priceOfProducts;
+	private List<Produto> listaProdutosVenda;
+	private JComboBox<String> PagamentocomboBox;
 	
 	public JPanel getPanel() {
 		return this.novaVendaPanel;
+	}
+	
+	public static JLabel getLabelFuncionarioJLabel() {
+		return nomeFuncionario;
 	}
 
 	public TelaNovaVenda() throws ParseException {
@@ -130,13 +141,16 @@ public class TelaNovaVenda {
 			public void actionPerformed(ActionEvent e) {
 				ProdutoDAO produtoDAO = new ProdutoDAO();
 				ProdutoVendaDetails produtoVendaDetails = new ProdutoVendaDetails();
+				listaProdutosVenda = new ArrayList<Produto>();
 				
 				Long IDnovoProduto = Long.valueOf(codField.getText().replaceAll(" ", ""));
 				Produto produto = produtoDAO.findProductById(IDnovoProduto);
 				
 					if(produto == null) {
-						JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Produto não encontrado na base de dados!");
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto não encontrado na base de dados!");
 					} else {
+						listaProdutosVenda.add(produto);
+						
 						produtoVendaDetails.setCodigoProduto(produto.getCodigoProduto());
 						produtoVendaDetails.setNomeProduto(produto.getNomeProduto());
 						
@@ -158,7 +172,7 @@ public class TelaNovaVenda {
 							
 							listModel.addElement(produtoVendaDetails);
 						} else {
-							JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Insira a quantidade de produtos desejada");
+							JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Insira a quantidade de produtos desejada");
 						}
 						totalPriceSale.setText(String.format("R$ %.2f", totalPriceOfSale));
 					}
@@ -203,6 +217,21 @@ public class TelaNovaVenda {
 		addProductPanel.add(totalPriceSale);
 		
 		JButton btnFinalizar = new JButton("Finalizar");
+		btnFinalizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// implementar adicao no bd apos confirmacao de venda pela lib do mercado pago
+				VendaService vendaService = new VendaService();
+				Venda newVenda = new Venda();
+				newVenda.setFuncionario(Janela.getInstance().getTelaLogin().getFuncionarioLogado());
+				newVenda.setCliente(cliente);
+				newVenda.setData(LocalDate.now());
+				newVenda.setProdutosVendidos(listaProdutosVenda);
+				newVenda.setFormaDePagamentoEnum(FormaPagamento.valueOf(PagamentocomboBox.getSelectedItem().toString().replaceAll(" ",   "")));
+				newVenda.setPreco(totalPriceOfSale);
+				
+				vendaService.cadastrarVenda(newVenda);
+			}
+		});
 		btnFinalizar.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		btnFinalizar.setBackground(new Color(50, 205, 50));
 		btnFinalizar.setBounds(79, 533, 150, 37);
@@ -253,17 +282,19 @@ public class TelaNovaVenda {
 		btnPesquisaClient.setBounds(257, 40, 33, 30);
 		btnPesquisaClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VendaService service = new VendaService();
+				ClientService service = new ClientService();
 				String cpfCliente = cpfField.getText();
 				cliente = service.getClientCpf(cpfCliente);
 				
 					if(cliente != null) {
 						if (cliente.getCpf() == null) {
 							
-							if(JOptionPane.showConfirmDialog(Janela.getInstace().getPanelPrincipal(), "Deseja Cadastrar um novo Cliente?", "Cadastrar Cliente", JOptionPane.YES_NO_OPTION) == 0) {
-								Janela.getInstace().getFrame().setBounds(0, 0, 500, 500);
-								Janela.getInstace().getFrame().setLocationRelativeTo(null);
-								Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "AdicionarCliente");
+							if(JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(), "Deseja Cadastrar um novo Cliente?", "Cadastrar Cliente", JOptionPane.YES_NO_OPTION) == 0) {
+								Janela.getInstance().getFrame().setBounds(0, 0, 500, 500);
+								Janela.getInstance().getFrame().setLocationRelativeTo(null);
+								Janela.getInstance().getTelaAdicionarCliente().setCpfField(cpfCliente);
+								Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "AdicionarCliente");
+								// TO DO: colocar cpf e nome do cliente na tela
 							}	 
 						} else if(cliente.getCpf() != null){
 							
@@ -274,6 +305,7 @@ public class TelaNovaVenda {
 							txtClientCpf.setText(cliente.getCpf());	
 							SaleConfigPanel.remove(btnPesquisaClient);
 						}
+						SaleConfigPanel.repaint();
 					}
 			}
 		});
@@ -297,14 +329,14 @@ public class TelaNovaVenda {
 		txtNomeFuncionario.setBounds(10, 146, 105, 24);
 		SaleConfigPanel.add(txtNomeFuncionario);
 		
-		JLabel lblNomeFuncionario = new JLabel("Alrykemes Peso PLENO");
-		lblNomeFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNomeFuncionario.setBounds(10, 168, 242, 26);
-		SaleConfigPanel.add(lblNomeFuncionario);
+		nomeFuncionario = new JLabel();
+		nomeFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		nomeFuncionario.setBounds(10, 168, 280, 26);
+		SaleConfigPanel.add(nomeFuncionario);
 		
-		JComboBox<String> PagamentocomboBox = new JComboBox<>();
+		PagamentocomboBox = new JComboBox<>();
 		PagamentocomboBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		PagamentocomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Dinheiro", "Pix", "Cartão de Crédito", "Cartão de Débito", "Ticket Alimentação"}));
+		PagamentocomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"DINHEIRO", "PIX", "CARTAO DE CREDITO", "CARTAO DE DEBITO", "TICKET DE ALIMENTACAO"}));
 		PagamentocomboBox.setBounds(321, 45, 282, 30);
 		PagamentocomboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -387,7 +419,7 @@ public class TelaNovaVenda {
 					totalPriceSale.setText("R$ 0,00");
 					
 					
-					Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 				}
 			}
 		});

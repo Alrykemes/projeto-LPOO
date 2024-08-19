@@ -78,9 +78,9 @@ public class TelaAdicionarProdutos{
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
-				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
 			}
 		});
 		btnCancelar.setBounds(45, 11, 99, 41);
@@ -89,9 +89,9 @@ public class TelaAdicionarProdutos{
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Estoque");
-				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
 			}
 		});
 		btnCadastrar.setBounds(539, 11, 99, 41);

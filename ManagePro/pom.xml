@@ -37,7 +37,12 @@
 	<artifactId>core</artifactId>
 	<version>3.5.3</version>
 	</dependency>
-
+	<!-- Mercado Pago -->
+	<dependency>
+  	<groupId>com.mercadopago</groupId>
+  	<artifactId>sdk-java</artifactId>
+  	<version>2.1.27</version>
+	</dependency>
   </dependencies>
 
 </project>

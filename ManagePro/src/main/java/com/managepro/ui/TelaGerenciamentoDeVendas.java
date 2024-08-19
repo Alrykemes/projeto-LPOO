@@ -124,16 +124,19 @@ public class TelaGerenciamentoDeVendas {
 					SearchPanel.remove(textDateFrom);
 					SearchPanel.remove(dateChooserTo);
 					SearchPanel.remove(textDateTo);
+					SearchPanel.repaint();
 					
 				}
 				
 				if(e.getItem().equals("Data")) {
 					FieldSearch.setBounds(0, 0, 0, 0);
 					SearchPanel.remove(FieldSearch);
+					SearchPanel.repaint();
 					SearchPanel.add(dateChooserFrom);
 					SearchPanel.add(textDateFrom);
 					SearchPanel.add(dateChooserTo);
 					SearchPanel.add(textDateTo);
+					SearchPanel.repaint();
 				}
 				
 				if(e.getItem().equals("Funcionario")) {
@@ -144,6 +147,7 @@ public class TelaGerenciamentoDeVendas {
 					SearchPanel.remove(textDateFrom);
 					SearchPanel.remove(dateChooserTo);
 					SearchPanel.remove(textDateTo);
+					SearchPanel.repaint();
 				}
 			}
 		});
@@ -257,7 +261,7 @@ public class TelaGerenciamentoDeVendas {
 		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "Menu");
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnNewButton.setBounds(20, 8, 120, 35);

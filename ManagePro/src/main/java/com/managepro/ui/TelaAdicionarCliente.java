@@ -2,6 +2,8 @@ package com.managepro.ui;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
@@ -12,8 +14,14 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.awt.event.ActionEvent;
+
+import com.managepro.core.service.ClientService;
 import com.toedter.calendar.JDateChooser;
 
 public class TelaAdicionarCliente{
@@ -75,32 +83,6 @@ public class TelaAdicionarCliente{
 		adicionarProdutoPanel.add(panel);
 		panel.setLayout(null);
 
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				textFieldCPF.setText(" ");
-				textFieldNomeCliente.setText(null);
-				
-				dateChooser.setDate(null);
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "NovaVenda");
-				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
-			}
-		});
-		btnCancelar.setBounds(10, 11, 99, 41);
-		panel.add(btnCancelar);
-
-		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Janela.getInstace().getCardLayout().show(Janela.getInstace().getPanelPrincipal(), "NovaVenda");
-				Janela.getInstace().getFrame().setBounds(0, 0, 1020, 680);
-				Janela.getInstace().getFrame().setLocationRelativeTo(null);
-			}
-		});
-		btnCadastrar.setBounds(391, 11, 99, 41);
-		panel.add(btnCadastrar);
-
 		JLabel DataNascimento = new JLabel("Data de Nascimento *");
 		DataNascimento.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		DataNascimento.setBounds(137, 284, 158, 14);
@@ -129,5 +111,58 @@ public class TelaAdicionarCliente{
 		textFieldNumero.setColumns(10);
 		textFieldNumero.setBounds(137, 238, 217, 35);
 		adicionarProdutoPanel.add(textFieldNumero);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textFieldCPF.setText(" ");
+				textFieldNomeCliente.setText(null);
+
+				dateChooser.setDate(null);
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "NovaVenda");
+				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
+			}
+		});
+		btnCancelar.setBounds(10, 11, 99, 41);
+		panel.add(btnCancelar);
+
+		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "NovaVenda");
+				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
+
+				String nome = textFieldNomeCliente.getText();	
+				String cpf = textFieldCPF.getText();
+				String numero = textFieldNumero.getText();
+				Date dataNascimento = dateChooser.getDate();
+
+				Instant instant = dataNascimento.toInstant();
+			    LocalDate dataNascimentoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+
+				ClientService cliente = new ClientService();
+				try {
+					cliente.cadastrarCliente(nome, cpf, numero, dataNascimentoLD);
+					JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso", "Success", JOptionPane.INFORMATION_MESSAGE);
+					textFieldNomeCliente.setText("");
+					textFieldCPF.setText("");
+					textFieldNumero.setText("");
+					dateChooser.setDate(null);
+
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao cadastrar cliente: " + e1.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+
+			};
+		});
+		btnCadastrar.setBounds(391, 11, 99, 41);
+		panel.add(btnCadastrar);
+		
+	}
+	public void setCpfField(String cpf) {
+		textFieldCPF.setText(cpf);
 	}
 }

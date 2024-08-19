@@ -24,7 +24,7 @@ public class Janela {
 	private TelaContabilidade telaContabilidade;
 	
 	
-	public static Janela getInstace() {
+	public static Janela getInstance() {
 		if(instance == null) {
 			instance = new Janela();
 		}
@@ -43,6 +43,10 @@ public class Janela {
 		return this.telaLogin;
 	}
 	
+	public TelaAdicionarCliente getTelaAdicionarCliente() {
+	    return this.telaAdicionarCliente;
+	}
+	
 	public JFrame getFrame() {
 		return this.frame;
 	}
@@ -58,7 +62,6 @@ public class Janela {
 		frame.setBounds(0, 0, 1020, 680);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		
 		panelPrincipal = new JPanel(new CardLayout());

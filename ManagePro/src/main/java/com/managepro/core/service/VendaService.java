@@ -1,28 +1,34 @@
 package com.managepro.core.service;
 
+
+
 import javax.swing.JOptionPane;
 
-import com.managepro.core.model.Cliente;
-import com.managepro.dao.ClienteDAO;
+import com.managepro.core.model.Venda;
+import com.managepro.dao.VendaDAO;
 import com.managepro.ui.Janela;
 
 public class VendaService {
 	
-	private ClienteDAO clienteDao;
-	
-	//private LoginService loginService;
+	private VendaDAO vendaDAO;
+	private Boolean situacaoPagamento = true;
 	
 	public VendaService() {
-		clienteDao = new ClienteDAO();
+		vendaDAO = new VendaDAO();
 	}
 	
-	public Cliente getClientCpf(String cpf) {
-		
-		if(cpf.replaceAll(" ", "").length() != 14) {
-			JOptionPane.showMessageDialog(Janela.getInstace().getPanelPrincipal(), "Número de CPF Invalido!");
-			return null;
+	public void cadastrarVenda(Venda venda) {
+		if(venda != null) {
+			if(situacaoPagamento == true) {
+				vendaDAO.adicionarVendas(venda);
+			} else {
+				
+			}
+		} else {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "teste");
 		}
-		return clienteDao.findClientByCpf(cpf);
+		
+		
 	}
 
 
