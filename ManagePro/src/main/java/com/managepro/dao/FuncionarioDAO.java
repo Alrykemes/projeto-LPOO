@@ -1,9 +1,12 @@
 package com.managepro.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
@@ -46,7 +49,7 @@ public class FuncionarioDAO implements EmployeeRepository{
 			return funcionario;
 			
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 				return null;
@@ -81,10 +84,71 @@ public class FuncionarioDAO implements EmployeeRepository{
 			return funcionario;
 			
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 				return null;
 			}
 	}
+		
+		public Funcionario encontrarFuncionarioPeloCpf(String cpf) {
+			try {
+				Connection connection = MySQLConnection.getConnection();
+				Statement stmt = connection.createStatement();
+				
+				String sql = "SELECT f.id_funcionario, f.nome, f.cpf, t.numero, f.cargo, f.salario, f.data_admissao, f.usuario , f.senha "
+						+ "FROM funcionario AS f INNER JOIN telefone_funcionario AS t ON f.id_funcionario = t.id_funcionario "
+						+ "WHERE cpf = '" + cpf + "';";
+				
+				 
+				 
+				ResultSet rs = stmt.executeQuery(sql);
+				
+				
+				
+				while(rs.next()) {
+					funcionario = new Funcionario();
+					funcionario.setId(rs.getLong("id_funcionario"));
+					funcionario.setNome(rs.getString("nome"));
+					funcionario.setCpf(rs.getString("cpf"));
+					funcionario.setTelefone(rs.getString("numero"));
+					funcionario.setFuncao(Cargos.valueOf(rs.getString("cargo")));
+					funcionario.setSalario(rs.getBigDecimal("salario"));
+					funcionario.setDataAdmissao((rs.getDate("data_admissao").toLocalDate()));
+					funcionario.setUsuario(rs.getString("usuario"));
+					funcionario.setSenha(rs.getString("senha"));
+				}	
+				
+				return funcionario;
+				
+				} catch (ClassNotFoundException | SQLException e) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+					return null;
+				}
+			
+	}
+
+		@Override
+		public void adicionarFuncionario(Funcionario funcionario) {
+			try {
+				PreparedStatement statement;
+				Connection connection = MySQLConnection.getConnection();
+				statement = connection.prepareStatement("INSERT INTO funcionario(nome, cpf, cargo, salario, data_admissao, usuario, senha) VALUES (?, ?, ?, ?, ?, ? ,?)");
+				statement.setString(1, funcionario.getNome());
+				statement.setString(2, funcionario.getCpf());
+				statement.setString(3, funcionario.getFuncao().name());
+				statement.setBigDecimal(4, funcionario.getSalario());
+				statement.setDate(5, Date.valueOf(funcionario.getDataAdmissao()));
+				statement.setString(6, funcionario.getUsuario());
+				statement.setString(7, funcionario.getSenha());
+				statement.execute();
+				connection.close();
+			} catch (ClassNotFoundException | SQLException e) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				System.out.println(e.getMessage());
+			}
+			
+		}
 }

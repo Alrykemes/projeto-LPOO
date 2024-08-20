@@ -26,6 +26,11 @@ public class Funcionario {
 		this.usuario = usuario;
 		this.senha = senha;
 	}
+	
+	public Funcionario(String nome, String cpf) {
+		this.nome = nome;
+		this.cpf = cpf;
+	}
 
 	public Long getId() {
 		return id;
