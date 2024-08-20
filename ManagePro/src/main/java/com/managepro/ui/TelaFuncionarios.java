@@ -7,6 +7,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import com.managepro.core.model.Funcionario;
+import com.managepro.core.model.FuncionarioService;
+
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
+import java.util.List;
 
 public class TelaFuncionarios {
 
@@ -200,7 +206,7 @@ public class TelaFuncionarios {
 		        String email = txtEmail.getText().trim();
 		        String senha = txtSenha.getText().trim();
 		        String cargo = txtCargo.getText().trim();
-		        BigDecimal salario = new BigDecimal(0); // Exemplo: você precisará capturar o salário real da interface
+		        double salario = new BigDecimal(0); // Exemplo: você precisará capturar o salário real da interface
 		        
 		        // Validação dos campos obrigatórios
 		        if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || senha.isEmpty() || cargo.isEmpty()) {
@@ -209,7 +215,7 @@ public class TelaFuncionarios {
 		        }
 		        
 		        // Criar um objeto Funcionario
-		        Funcionario funcionario = new Funcionario();
+		        Funcionario funcionario = new Funcionario(nome, cpf, email, senha, cargo, 0, null, 0);
 		        funcionario.setNome(nome);
 		        funcionario.setCpf(cpf);
 		        funcionario.setEmail(email);
@@ -232,7 +238,7 @@ public class TelaFuncionarios {
 		            return;
 		        }
 		        
-		        Funcionario funcionario = new Funcionario();
+		        Funcionario funcionario = new Funcionario(nome, cpf, email, senha, cargo, 0, null, 0);
 		        funcionario.setNome(nome);
 		        funcionario.setCpf(cpf);
 		        funcionario.setEmail(email);
@@ -241,8 +247,8 @@ public class TelaFuncionarios {
 		        funcionario.setSalario(salario);
 		        
 		        try {
-		            boolean sucesso = funcionarioService.adicionarFuncionario(funcionario);
-		            if (sucesso) {
+		            boolean sucesso1 = FuncionarioService.adicionarFuncionario(funcionario);
+		            if (sucesso1) {
 		                mostrarMensagem("Funcionário adicionado com sucesso!");
 		                atualizarTabela();
 		                limparCampos();
@@ -253,6 +259,11 @@ public class TelaFuncionarios {
 		            mostrarMensagem("Erro ao adicionar funcionário: " + ex.getMessage());
 		        }
 		    }
+
+			private void mostrarMensagem(String string) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		
 		table = new JTable();

@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FuncionarioDAO {
     private Connection getConnection() throws SQLException {
@@ -25,7 +27,7 @@ public class FuncionarioDAO {
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {
-                Funcionario funcionario = new Funcionario();
+                Funcionario funcionario = new Funcionario(null, null, null, null, null, null, null, 0);
                 funcionario.setNome(result.getString("nome"));
                 funcionario.setCpf(result.getString("cpf"));
                 funcionario.setEmail(result.getString("email"));

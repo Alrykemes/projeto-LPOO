@@ -1,5 +1,7 @@
 package com.managepro.core.model;
 
+import javax.swing.JOptionPane;
+
 public class FuncionarioUI {
 	private FuncionarioService funcionarioService;
 

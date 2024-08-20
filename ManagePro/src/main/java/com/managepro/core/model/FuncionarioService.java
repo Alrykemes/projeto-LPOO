@@ -2,8 +2,8 @@ package com.managepro.core.model;
 
 import com.managepro.core.model.Funcionario;
 import com.managepro.core.model.FuncionarioDAO;
-import com.managepro.core.service.FuncionarioService;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class FuncionarioService {
 	private FuncionarioDAO funcionarioDAO;
@@ -40,9 +40,14 @@ public class FuncionarioService {
         }
 
         // Se todas as validações passarem, cria o objeto Funcionario
-        Funcionario funcionario = new Funcionario(nome, cpf, email, cargo, salario);
+        Funcionario funcionario = new Funcionario(nome, cpf, email, cargo, cargo, salario, null, 0);
 
         // Chama a DAO para salvar o funcionário no banco de dados
         return funcionarioDAO.inserirFuncionario(funcionario);
     }
+
+	public static boolean adicionarFuncionario(Funcionario funcionario) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
