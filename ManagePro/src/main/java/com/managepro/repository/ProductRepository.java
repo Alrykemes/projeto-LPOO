@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.managepro.core.model.Produto;
+import com.managepro.core.model.ProdutoVendaDetails;
 
 public interface ProductRepository {
 
@@ -17,5 +18,5 @@ public interface ProductRepository {
 	
 	public List<Produto> pesquisarProdutoNome (String nomeProduto) throws ClassNotFoundException, SQLException;
 	
-	public List<Produto> getProductsForSale(Long idVenda) throws ClassNotFoundException, SQLException;
+	public List<ProdutoVendaDetails> getProductsForSale(Long idVenda) throws ClassNotFoundException, SQLException;
 }

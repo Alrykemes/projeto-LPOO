@@ -15,18 +15,23 @@ import java.util.Date;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 public class TelaContabilidade {
 
 	private JPanel contabilidadePanel;
-	private JLabel lblImage1;		//IMAGENS DOS GRÃ�FICOS (APAGAR DEPOIS: APENAS TESTE)
-	private JLabel lblImage2;		//AVISO: NOMES GENÃ‰RICOS CRIADOS PROPOSITALMENTE: APENAS TESTE
-	private JLabel lblImage3;
 	private Panel painelGrafico;
 	private Panel painelGrafico2;
+	private Panel painelGrafico3; 
 	private Panel painelOpcoes;
-	private JDateChooser dateChooser;
-	private JDateChooser dateChooser_1;
+	private JDateChooser escolherDataInicial;
+	private JDateChooser escolherDataFinal;
 
 	public JPanel getPanel() {
 		return this.contabilidadePanel;
@@ -45,19 +50,19 @@ public class TelaContabilidade {
 		
 		painelGrafico = new Panel();
 		painelGrafico.setBackground(new Color(255, 255, 255));
-		painelGrafico.setBounds(132, 230, 510, 150);
+		painelGrafico.setBounds(132, 269, 510, 150);
 		contabilidadePanel.add(painelGrafico);
 		painelGrafico.setLayout(null);
 		
 		painelGrafico2 = new Panel();
 		painelGrafico2.setBackground(new Color(255, 255, 255));
-		painelGrafico2.setBounds(648, 230, 249, 300);
+		painelGrafico2.setBounds(648, 269, 249, 300);
 		contabilidadePanel.add(painelGrafico2);
 		painelGrafico2.setLayout(null);
 		
 		painelOpcoes = new Panel();
 		painelOpcoes.setBackground(new Color(153, 51, 153));
-		painelOpcoes.setBounds(0, 0, 1004, 93);
+		painelOpcoes.setBounds(0, 0, 1020, 93);
 		contabilidadePanel.add(painelOpcoes);
 		painelOpcoes.setLayout(null);
 		
@@ -92,15 +97,15 @@ public class TelaContabilidade {
 		gerarRelatorio.setBounds(826, 41, 145, 31);
 		painelOpcoes.add(gerarRelatorio);
 		
-		dateChooser = new JDateChooser();
-		dateChooser.setBounds(163, 39, 155, 35);
-		painelOpcoes.add(dateChooser);
+		escolherDataInicial = new JDateChooser();
+		escolherDataInicial.setBounds(163, 39, 155, 35);
+		painelOpcoes.add(escolherDataInicial);
 		
-		dateChooser_1 = new JDateChooser();
-		dateChooser_1.setBounds(366, 39, 161, 35);
-		painelOpcoes.add(dateChooser_1);
+		escolherDataFinal = new JDateChooser();
+		escolherDataFinal.setBounds(366, 39, 161, 35);
+		painelOpcoes.add(escolherDataFinal);
 		
-		//BOTÃƒO
+		
 		gerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				validarData();
@@ -108,15 +113,15 @@ public class TelaContabilidade {
 		});	
 		
 		
-		Panel painelGrafico3 = new Panel();
+		painelGrafico3 = new Panel();
 		painelGrafico3.setBackground(new Color(255, 255, 255));
-		painelGrafico3.setBounds(132, 386, 510, 144);
+		painelGrafico3.setBounds(132, 425, 510, 144);
 		contabilidadePanel.add(painelGrafico3);
 		painelGrafico3.setLayout(null);
 		
 		Panel cardUm = new Panel();
 		cardUm.setBackground(new Color(255, 255, 255));
-		cardUm.setBounds(132, 108, 255, 116);
+		cardUm.setBounds(132, 126, 255, 116);
 		contabilidadePanel.add(cardUm);
 		cardUm.setLayout(null);
 		
@@ -130,23 +135,10 @@ public class TelaContabilidade {
 		lblNewLabel_2.setBounds(151, 68, 60, 26);
 		cardUm.add(lblNewLabel_2);
 		
-		
-		lblImage1 = new JLabel("fotoaqui");
-		lblImage1.setBounds(10, 11, 438, 170);
-		painelGrafico.add(lblImage1);
-		
-		lblImage2 = new JLabel("fotoaqui");
-		lblImage2.setBounds(15, 11, 208, 265);
-		painelGrafico2.add(lblImage2);
-		
-		lblImage3 = new JLabel("fotoaqui");
-		lblImage3.setBounds(10, -21, 438, 170);
-		painelGrafico3.add(lblImage3);
-		
 		Panel cardDois = new Panel();
 		cardDois.setLayout(null);
 		cardDois.setBackground(new Color(255, 255, 255));
-		cardDois.setBounds(394, 108, 248, 116);
+		cardDois.setBounds(393, 126, 248, 116);
 		contabilidadePanel.add(cardDois);
 		
 		JLabel lblNewLabel_5 = new JLabel("Vendas");
@@ -162,7 +154,7 @@ public class TelaContabilidade {
 		Panel cardTres = new Panel();
 		cardTres.setLayout(null);
 		cardTres.setBackground(new Color(255, 255, 255));
-		cardTres.setBounds(648, 108, 249, 116);
+		cardTres.setBounds(648, 126, 249, 116);
 		contabilidadePanel.add(cardTres);
 		
 		JLabel lblNewLabel_3 = new JLabel("Ganhos");
@@ -175,34 +167,116 @@ public class TelaContabilidade {
 		lblNewLabel_4.setBounds(104, 68, 111, 26);
 		cardTres.add(lblNewLabel_4);
 		
-		JButton btnNewButton = new JButton("Voltar   ");
-		btnNewButton.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/com/managepro/assets/BackToHome.png")));
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton botaoVoltar = new JButton("Voltar   ");
+		botaoVoltar.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/com/managepro/assets/BackToHome.png")));
+		botaoVoltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		botaoVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
-		btnNewButton.setBounds(10, 26, 120, 35);
-		painelOpcoes.add(btnNewButton);
+		botaoVoltar.setBounds(10, 26, 120, 35);
+		painelOpcoes.add(botaoVoltar);
+		
+		createAndDisplayCharts();
 		
 	}
 	
 	
 		private void validarData() { 
-			Date dataInicial = dateChooser.getDate();
-			Date dataFinal = dateChooser_1.getDate();
+			Date dataInicial = escolherDataInicial.getDate();
+			Date dataFinal = escolherDataFinal.getDate();
 			
 			if(dataInicial == null || dataFinal == null) {
 				JOptionPane.showMessageDialog(this.contabilidadePanel, "Por favor, preencha todos os campos obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
 			} else {
-				showImage();
+				gerarGraficos();
 			}
     }
+		
+		private void gerarGraficos() {
+	        createAndDisplayCharts();
+	    }
+		
+		private void createAndDisplayCharts() {
+	        // Gráfico de barras
+	        CategoryDataset datasetBar = createBarDataset();
+	        JFreeChart chartBar = ChartFactory.createBarChart(
+	            "Gráfico de Barras",
+	            "Categoria",
+	            "Valor",
+	            datasetBar,
+	            PlotOrientation.VERTICAL,
+	            true,
+	            true,
+	            false
+	        );
+	        ChartPanel chartPanelBar = new ChartPanel(chartBar);
+	        chartPanelBar.setPreferredSize(painelGrafico.getSize());
+	        painelGrafico.removeAll(); // Limpar o painel antes de adicionar o gráfico
+	        painelGrafico.add(chartPanelBar);
+	        painelGrafico.revalidate(); // Revalidar para atualizar a visualização
+	        painelGrafico.repaint(); // Repaint para garantir que o gráfico seja visível
+
+	        // Gráfico de colunas
+	        CategoryDataset datasetColumn = createColumnDataset();
+	        JFreeChart chartColumn = ChartFactory.createBarChart(
+	            "Gráfico de Colunas",
+	            "Categoria",
+	            "Valor",
+	            datasetColumn,
+	            PlotOrientation.VERTICAL,
+	            true,
+	            true,
+	            false
+	        );
+	        ChartPanel chartPanelColumn = new ChartPanel(chartColumn);
+	        chartPanelColumn.setPreferredSize(painelGrafico2.getSize());
+	        painelGrafico2.removeAll(); // Limpar o painel antes de adicionar o gráfico
+	        painelGrafico2.add(chartPanelColumn);
+	        painelGrafico2.revalidate(); // Revalidar para atualizar a visualização
+	        painelGrafico2.repaint(); // Repaint para garantir que o gráfico seja visível
+
+	        // Gráfico de pizza
+	        DefaultPieDataset datasetPie = createPieDataset();
+	        JFreeChart chartPie = ChartFactory.createPieChart(
+	            "Gráfico de Pizza",
+	            datasetPie,
+	            true,
+	            true,
+	            false
+	        );
+	        ChartPanel chartPanelPie = new ChartPanel(chartPie);
+	        chartPanelPie.setPreferredSize(painelGrafico3.getSize());
+	        painelGrafico3.removeAll(); // Limpar o painel antes de adicionar o gráfico
+	        painelGrafico3.add(chartPanelPie);
+	        painelGrafico3.revalidate(); // Revalidar para atualizar a visualização
+	        painelGrafico3.repaint(); // Repaint para garantir que o gráfico seja visível
+	    }
+		
+		private CategoryDataset createBarDataset() {
+	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	        dataset.addValue(1.0, "Categoria 1", "Item 1");
+	        dataset.addValue(4.0, "Categoria 1", "Item 2");
+	        dataset.addValue(3.0, "Categoria 1", "Item 3");
+	        return dataset;
+	    }
+		
+		private CategoryDataset createColumnDataset() {
+	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	        dataset.addValue(2.0, "Categoria A", "Item A");
+	        dataset.addValue(5.0, "Categoria A", "Item B");
+	        dataset.addValue(4.0, "Categoria A", "Item C");
+	        return dataset;
+	    }
+		
+		private DefaultPieDataset createPieDataset() {
+	        DefaultPieDataset dataset = new DefaultPieDataset();
+	        dataset.setValue("Item 1", 20);
+	        dataset.setValue("Item 2", 30);
+	        dataset.setValue("Item 3", 50);
+	        return dataset;
+	    }
 	
-		private void showImage() {	//MOSTRA AS IMAGENS DOS GRÃ�FICOS
-			lblImage1.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
-			lblImage2.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
-			lblImage3.setIcon(new ImageIcon(TelaContabilidade.class.getResource("/images/imagem-grafico.png")));
-    }
+		
 }

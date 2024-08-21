@@ -60,7 +60,7 @@ public class FuncionarioDAO implements EmployeeRepository{
 			
 			String sql = "SELECT f.id_funcionario, f.nome, f.cpf, t.numero, f.cargo, f.salario, f.data_admissao, f.usuario , f.senha "
 					+ "FROM funcionario AS f INNER JOIN telefone_funcionario AS t ON f.id_funcionario = t.id_funcionario "
-					+ "WHERE id_funcionario = '" + id + "';";
+					+ "WHERE f.id_funcionario = '" + id + "';";
 			 
 			 
 			ResultSet rs = stmt.executeQuery(sql);
