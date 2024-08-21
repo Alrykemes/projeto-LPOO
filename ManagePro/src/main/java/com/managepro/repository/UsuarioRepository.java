@@ -4,11 +4,11 @@ import java.sql.SQLException;
 
 import com.managepro.core.model.Funcionario;
 
-public interface EmployeeRepository {
+public interface UsuarioRepository {
 
-	public Funcionario findEmployeeByUser(String user) throws ClassNotFoundException, SQLException;
+	public Funcionario encontrarFuncionarioPeloUsuario(String user) throws ClassNotFoundException, SQLException;
 	
-	public Funcionario findEmployeeById(Long id) throws SQLException;
+	public Funcionario encontrarFuncionarioPeloId(Long id) throws SQLException;
 	
 	public Funcionario encontrarFuncionarioPeloCpf(String cpf) throws SQLException;
 	

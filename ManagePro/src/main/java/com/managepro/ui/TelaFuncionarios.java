@@ -2,6 +2,7 @@ package com.managepro.ui;
 
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -9,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.MaskFormatter;
 
 import com.managepro.core.model.Cargos;
@@ -24,13 +26,12 @@ import javax.swing.SwingConstants;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 
 import javax.swing.JComboBox;
 
@@ -39,18 +40,9 @@ public class TelaFuncionarios {
 	private JPanel funcionariosPanel;
 	private JTextField campoNome;
 	private JFormattedTextField campoCpf;
-//	private JTextField campoCargo;
 	private JComboBox<String> campoCargo;
 	private JTextField campoSalario;
-	private JFormattedTextField campoDataAdmissao;
 	private JTable tabela;
-	private JLabel lblNomeLabel;
-	private JLabel lblCPFLabel;
-	private JLabel lblEmailLabel;
-	private JLabel lblSenhaLabel;
-	private JLabel lblCargoLabel;
-	private JLabel lblSalarioLabel;
-	private JLabel lblDataAdmissaoLabel;
 	private JTextField campoUsuario;
 	private JTextField campoSenha;
 	private JLabel txtCpf;
@@ -107,7 +99,6 @@ public class TelaFuncionarios {
 		txtCpf.setBounds(211, 59, 70, 19);
 		panel_1.add(txtCpf);
 
-		campoCpf = new JFormattedTextField();
 		MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
 		maskCpf.setValidCharacters("0123456789");
 		maskCpf.setAllowsInvalid(false);
@@ -135,7 +126,10 @@ public class TelaFuncionarios {
 		txtSalario.setBounds(591, 59, 70, 19);
 		panel_1.add(txtSalario);
 
-		campoSalario = new JTextField();
+		MaskFormatter maskSalario = new MaskFormatter("######");
+		maskSalario.setValidCharacters("0123456789");
+		maskSalario.setAllowsInvalid(false);
+		campoSalario = new JFormattedTextField(maskSalario);
 		campoSalario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		campoSalario.setBounds(591, 82, 180, 38);
 		panel_1.add(campoSalario);
@@ -184,13 +178,11 @@ public class TelaFuncionarios {
 
 				String valorNome = campoNome.getText();
 				String valorCpf = campoCpf.getText();
-				Cargos valorCargo = Cargos.valueOf(campoCargo.getSelectedItem().toString().replaceAll(" ", ""));
+				Cargos valorCargo = Cargos.valueOf(campoCargo.getSelectedItem().toString());
 				BigDecimal valorSalario = new BigDecimal(campoSalario.getText());
 				LocalDate valorDataAdmissao = dataAdmissaoLD;
 				String valorUsuario = campoUsuario.getText();
 				String valorSenha = campoSenha.getText();
-				
-				System.out.println(valorSalario);
 
 				FuncionarioService funcionarioS = new FuncionarioService();
 				Funcionario funcionario = new Funcionario(valorNome, valorCpf, valorCargo, valorSalario,
@@ -199,6 +191,17 @@ public class TelaFuncionarios {
 				try {
 					funcionarioS.validarCampos(funcionario);
 					funcionarioS.criarFuncionario(funcionario);
+
+					campoNome.setText("");
+					campoCpf.setText("");
+					campoCargo.setSelectedItem("ADMINISTRADOR");;
+					campoSalario.setText("");
+					dateChooser.setDate(null);
+					campoUsuario.setText("");
+					campoSenha.setText("");
+
+					carregarFuncionariosNaTabela();
+
 				} catch (Exception e1) {
 					System.out.println("Erro ao criar funcionário");
 					e1.printStackTrace();
@@ -206,50 +209,9 @@ public class TelaFuncionarios {
 			}
 		});
 
-		lblNomeLabel = new JLabel("Nome");
-		lblNomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNomeLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblNomeLabel.setBounds(50, 218, 115, 20);
-		panel_1.add(lblNomeLabel);
-
-		lblCPFLabel = new JLabel("CPF");
-		lblCPFLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCPFLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblCPFLabel.setBounds(175, 218, 115, 20);
-		panel_1.add(lblCPFLabel);
-
-		lblEmailLabel = new JLabel("Usuário");
-		lblEmailLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmailLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblEmailLabel.setBounds(715, 218, 115, 20);
-		panel_1.add(lblEmailLabel);
-
-		lblSenhaLabel = new JLabel("Senha");
-		lblSenhaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSenhaLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblSenhaLabel.setBounds(840, 218, 115, 20);
-		panel_1.add(lblSenhaLabel);
-
-		lblCargoLabel = new JLabel("Cargo");
-		lblCargoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCargoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblCargoLabel.setBounds(311, 218, 115, 20);
-		panel_1.add(lblCargoLabel);
-
-		lblSalarioLabel = new JLabel("Salário");
-		lblSalarioLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSalarioLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblSalarioLabel.setBounds(444, 218, 115, 20);
-		panel_1.add(lblSalarioLabel);
-
-		lblDataAdmissaoLabel = new JLabel("Data Admissão");
-		lblDataAdmissaoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDataAdmissaoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblDataAdmissaoLabel.setBounds(578, 218, 115, 20);
-		panel_1.add(lblDataAdmissaoLabel);
-
 		tabela = new JTable();
-		tabela.setFont(new Font("SansSerif", Font.PLAIN, 10));
+		tabela.setEnabled(false);
+		tabela.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		tabela.setBorder(new LineBorder(new Color(0, 0, 0)));
 		tabela.setToolTipText("");
 		tabela.setModel(new DefaultTableModel(
@@ -258,14 +220,35 @@ public class TelaFuncionarios {
 						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
 						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
 						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
-						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null },
 						{ null, null, null, null, null, null, null }, { null, null, null, null, null, null, null }, },
-				new String[] { "New column", "New column", "New column", "New column", "New column", "New column",
-						"New column" }));
-		tabela.setBounds(39, 248, 929, 305);
-		panel_1.add(tabela);
+				new String[] { "Nome", "CPF", "Cargo", "Salário", "Data Admissão", "Usuário", "Senha" }));
+		tabela.setBounds(50, 248, 905, 200);
+
+		JTableHeader tableHeader = tabela.getTableHeader();
+		tableHeader.setFont(new Font("SansSerif", Font.BOLD, 17));
+
+		tabela.getTableHeader().setReorderingAllowed(false);
+
+		JScrollPane scrollPane = new JScrollPane(tabela);
+		scrollPane.setLocation(50, 335);
+		scrollPane.setSize(905, 200);
+
+		panel_1.add(scrollPane);
+
+		carregarFuncionariosNaTabela();
+	}
+
+	private void carregarFuncionariosNaTabela() {
+		FuncionarioService funcionarioService = new FuncionarioService();
+		List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+
+		DefaultTableModel model = (DefaultTableModel) tabela.getModel();
+		model.setRowCount(0);
+
+		for (Funcionario funcionario : funcionarios) {
+			model.addRow(new Object[] { funcionario.getNome(), funcionario.getCpf(), funcionario.getFuncao(),
+					funcionario.getSalario(), funcionario.getDataAdmissao(), funcionario.getUsuario(),
+					funcionario.getSenha() });
+		}
 	}
 }
