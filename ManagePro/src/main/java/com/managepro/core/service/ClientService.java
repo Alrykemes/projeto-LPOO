@@ -31,14 +31,14 @@ public class ClientService {
 			Janela.getInstance().getTelaNovaVenda().setCliente(cliente);
 			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já¡ cadastrado)");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF jÃ¡ cadastrado)");
 		}
 	}
 	
 	public Cliente getClientCpf(String cpf) {
 		
 		if(cpf.replaceAll(" ", "").length() != 14) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Número de CPF Invalido!");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "NÃºmero de CPF Invalido!");
 			return null;
 		}
 		return clienteDAO.findClientByCpf(cpf);

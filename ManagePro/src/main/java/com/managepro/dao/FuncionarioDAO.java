@@ -46,7 +46,7 @@ public class FuncionarioDAO implements EmployeeRepository{
 			return funcionario;
 			
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 				return null;
@@ -81,7 +81,7 @@ public class FuncionarioDAO implements EmployeeRepository{
 			return funcionario;
 			
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 				return null;

@@ -45,6 +45,14 @@
   	<artifactId>sdk-java</artifactId>
   	<version>2.1.27</version>
 	</dependency>
+	
+	<!-- JFreeChart Graphs -->
+	<dependency>
+    <groupId>org.jfree</groupId>
+    <artifactId>jfreechart</artifactId>
+    <version>1.5.3</version> 
+	</dependency>
+
 
   </dependencies>
 

@@ -1,2 +1,3 @@
-pacote para criação de exceções apaguem esse txt, vou deixar cada classe que precisa de algo com to-do`s para serem feitos peso pleno?
+pacote para criaÃ§Ã£o de exceÃ§Ãµes 
+apaguem esse txt, vou deixar cada classe que precisa de algo com to-do`s para serem feitos peso pleno?
 certifiquem-se de que nenhuma tela use o DAO apenas as classes de service.

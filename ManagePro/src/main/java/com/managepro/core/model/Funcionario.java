@@ -90,13 +90,5 @@ public class Funcionario {
 		this.dataAdmissao = dataAdmissao;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	
 }
