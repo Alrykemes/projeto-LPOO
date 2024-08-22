@@ -1,6 +1,9 @@
 package com.managepro.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -44,15 +47,15 @@ public class FuncionarioDAO implements EmployeeRepository{
 			}	
 			
 			return funcionario;
-			
-			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-				e.printStackTrace();
-				return null;
-			}
-	}
-
+					
+		} catch (ClassNotFoundException | SQLException e) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	} 
+	
 	public Funcionario findEmployeeById(Long id) {
 		try {
 			Connection connection = MySQLConnection.getConnection();
@@ -81,10 +84,11 @@ public class FuncionarioDAO implements EmployeeRepository{
 			return funcionario;
 			
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 				return null;
 			}
 	}
+
 }

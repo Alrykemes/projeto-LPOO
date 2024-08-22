@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import com.managepro.core.model.Funcionario;
@@ -16,6 +17,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TelaLogin {
 
@@ -51,6 +54,7 @@ public class TelaLogin {
 	
 	public TelaLogin() {
 		this.initialize();
+		
 	}
 
 	private void initialize() {
@@ -71,25 +75,20 @@ public class TelaLogin {
 		botaoEntrar = new JButton("Entrar");
 		botaoEntrar.setBounds(419, 455, 113, 39);
 		botaoEntrar.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		botaoEntrar.addActionListener(new ActionListener() {
+		botaoEntrar.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e) {
-					LoginService loginService = new LoginService();
-					if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
-						Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
-						Janela.getInstance().getPanelPrincipal().repaint();
-					}
-					
+				logar();
 			}
-		});
-		panelLogin.add(botaoEntrar);
-		
+		});		
+			
 		txtLogin = new JLabel("LOGIN");
 		txtLogin.setBounds(419, 24, 120, 32);
 		txtLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		txtLogin.setFont(new Font("SansSerif", Font.PLAIN, 30));
 		panelLogin.add(txtLogin);
 		
-		txtUser = new JLabel("Usu�rio");
+		txtUser = new JLabel("Usuário");
 		txtUser.setBounds(318, 248, 60, 16);
 		txtUser.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUser.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -105,11 +104,40 @@ public class TelaLogin {
 		passwordLogin.setForeground(new Color(0, 0, 0));
 		passwordLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		passwordLogin.setBounds(317, 372, 320, 51);
+		passwordLogin.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				logar();
+					}
+			}
+		});
+
 		panelLogin.add(passwordLogin);
 		
 		logo = new JLabel("");
 		logo.setIcon(new ImageIcon(TelaLogin.class.getResource("/com/managepro/assets/ManageProLogin.png")));
 		logo.setBounds(325, 94, 300, 107);
 		panelLogin.add(logo);
+		panelLogin.add(botaoEntrar);
+		
 	}
-}
+	private void logar () {
+		String usuario = userLogin.getText().trim();
+		String senha = new String(passwordLogin.getPassword()).trim();
+		
+		if(usuario.isEmpty() || senha.isEmpty()) {
+			 JOptionPane.showMessageDialog(panelLogin, "Usuário e/ou senha não podem estar vazios.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
+	            return;
+		}
+	LoginService loginService = new LoginService();
+	
+		if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
+							Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
+							Janela.getInstance().getPanelPrincipal().repaint();
+		}	else {
+			 JOptionPane.showMessageDialog(panelLogin, "Usuário ou senha inválidos.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+}	
+
