@@ -73,7 +73,7 @@ public class VendaDAO implements SaleRepository {
 		       statementVenda.close();
 		       statementProdutoVenda.close();
 	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace();
 	    }
@@ -93,7 +93,7 @@ public class VendaDAO implements SaleRepository {
 	        connection.close();
 	        
 	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace(); 
 	    }
@@ -120,7 +120,7 @@ public class VendaDAO implements SaleRepository {
 	        connection.close();
 	        
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace();  
 	    } 
@@ -146,12 +146,12 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById((resultSet.getLong("id_funcionario")))); // Implementar método TO DO
-	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); // Implementar método
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario")))); // Implementar mï¿½todo TO DO
+	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); // Implementar mï¿½todo
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	           // venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId())); // Implementar método
+	           // venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId())); // Implementar mï¿½todo
 	
 	            vendas.add(venda);
 	        }
@@ -163,7 +163,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	    
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace(); 
 	        return null;
@@ -192,7 +192,7 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
@@ -208,7 +208,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace();  
 	        return null;
@@ -236,7 +236,7 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	        	venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
@@ -252,7 +252,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 	            e.printStackTrace();  
 	            return null;

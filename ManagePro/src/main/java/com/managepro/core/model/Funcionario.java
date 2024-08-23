@@ -17,12 +17,13 @@ public class Funcionario {
 	public Funcionario() {}
 	
 	public Funcionario(String nome, String cpf, Cargos funcao, BigDecimal salario,
-			LocalDate dataAdmissao, String usuario, String senha) {
+			LocalDate dataAdmissao, String telefone, String usuario, String senha) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.funcao = funcao;
 		this.salario = salario;
 		this.dataAdmissao = dataAdmissao;
+		this.telefone = telefone;
 		this.usuario = usuario;
 		this.senha = senha;
 	}
