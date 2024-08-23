@@ -32,11 +32,11 @@ public class VendaService {
 				validarVenda(venda);
 			} catch (Exception e) {
 				e.printStackTrace();
-				if(situacaoPagamento == true) {	
-					vendaDAO.cadastrarVenda(venda);
-				} else {
-				//	
-				}
+			}
+			if(situacaoPagamento == true) {	
+				vendaDAO.cadastrarVenda(venda);
+			} else {
+				//
 			}
 		} else {
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Venda é Null");

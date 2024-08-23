@@ -3,35 +3,26 @@ package com.managepro.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
@@ -323,6 +314,182 @@ public class TelaGerenciamentoDeVendas {
 		vendaPanel.add(scrollPaneProdutos, BorderLayout.CENTER);
 		
 		buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
+		buttonNotaFiscal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Escolha onde salvar a nota fiscal");
+				
+				Venda vendaNota = listaVendas.getSelectedValue();
+				
+				fileChooser.setSelectedFile(new File("ID_" + vendaNota.getId() + "_" + vendaNota.getData() + ".pdf"));
+				
+				int userSelection = fileChooser.showSaveDialog(Janela.getInstance().getFrame());
+				
+				if(userSelection == JFileChooser.APPROVE_OPTION) {
+					File arquivoSalvo = fileChooser.getSelectedFile();
+					
+					if (arquivoSalvo.exists()) {
+	                    int resposta = JOptionPane.showConfirmDialog(
+	                            Janela.getInstance().getFrame(),
+	                            "O arquivo já existe. Deseja sobrescrevê-lo?",
+	                            "Arquivo existente",
+	                            JOptionPane.YES_NO_OPTION,
+	                            JOptionPane.WARNING_MESSAGE
+	                    );
+
+	                    if (resposta == JOptionPane.NO_OPTION) {
+	                        JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Por favor, escolha outro nome para o arquivo.");
+	                        return;
+	                    }
+	                }
+					
+					try (PDDocument documento = new PDDocument()){
+						PDPage pagina = new PDPage();
+						documento.addPage(pagina);
+						
+						try (PDPageContentStream contentStream = new PDPageContentStream(documento, pagina)){
+							// Centralizando e mostrando titulo da pagina
+							String titulo = "ManagePro";
+							float calcDoTexto = PDType1Font.HELVETICA_BOLD.getStringWidth(titulo) / 1000 * 20;
+							float centro = (pagina.getMediaBox().getWidth() - calcDoTexto) / 2;
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+							contentStream.newLineAtOffset(centro, pagina.getMediaBox().getHeight() - 50);
+ 							contentStream.showText(titulo);
+							contentStream.endText();
+							// Dados da compra e da empresa
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 100);
+ 							contentStream.showText("CNPJ: 93.157.244/0001-33");
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 120);
+ 							contentStream.showText("ENDEREÇO: Av. Prefeito Geraldo Pinho Alves, Nº 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 140);
+ 							contentStream.showText("DATA: " + vendaNota.getData().format(formatoData));
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 160);
+ 							contentStream.showText("------------------------------------------------------------------------------------------"
+ 									+ "---------------------------------------------------------");
+							contentStream.endText();
+							
+							String cliente = "Cliente";
+							float calcDoTexto2 = PDType1Font.HELVETICA_BOLD.getStringWidth(cliente) / 1000 * 20;
+							float centro2 = (pagina.getMediaBox().getWidth() - calcDoTexto2) / 2;
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 22);
+ 							contentStream.newLineAtOffset(centro2, pagina.getMediaBox().getHeight() - 180);
+ 							contentStream.showText(cliente);
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 210);
+ 							contentStream.showText("CLIENTE: " + vendaNota.getCliente().getNome());
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 230);
+ 							contentStream.showText("CPF: " + vendaNota.getCliente().getCpf());
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 250);
+ 							contentStream.showText("DATA DE NASCIMENTO: " + vendaNota.getCliente().getDataNascimento().format(formatoData));
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 270);
+ 							contentStream.showText("TELEFONE: " + vendaNota.getCliente().getTelefone());
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 290);
+ 							contentStream.showText("------------------------------------------------------------------------------------------"
+ 									+ "---------------------------------------------------------");
+							contentStream.endText();
+							
+							String txtCupomFiscal = "Cupom Fiscal";
+							float calcDoTexto3 = PDType1Font.HELVETICA_BOLD.getStringWidth(txtCupomFiscal) / 1000 * 20;
+							float centro3 = (pagina.getMediaBox().getWidth() - calcDoTexto3) / 2;
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 22);
+ 							contentStream.newLineAtOffset(centro3, pagina.getMediaBox().getHeight() - 310);
+ 							contentStream.showText(txtCupomFiscal);
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(140, pagina.getMediaBox().getHeight() - 340);
+ 							contentStream.showText("CÓD.  |             NOME             |   QUANTIDADE     "
+ 									+ "  |   VALOR");
+ 							contentStream.endText();
+ 							
+							int inicioLinha = 360;
+							for (ProdutoVendaDetails pvd : vendaNota.getProdutosVendidos()) {	
+								contentStream.beginText();
+								contentStream.newLineAtOffset(150, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(pvd.getCodigoProduto().toString());
+								contentStream.endText();
+								
+								contentStream.beginText();
+								contentStream.newLineAtOffset(198, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(pvd.getNomeProduto());
+								contentStream.endText();
+								
+								contentStream.beginText();
+								contentStream.newLineAtOffset(355, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(String.valueOf(pvd.getQuantidade()));
+								contentStream.endText();
+								
+								contentStream.beginText();
+								contentStream.newLineAtOffset(440, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(String.format("%.2f", pvd.getPreco()));
+								contentStream.endText();
+								
+								inicioLinha += 15;
+								
+							}
+							
+							inicioLinha += 25;
+							
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
+							contentStream.showText("MÉTODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
+							contentStream.endText();
+							inicioLinha += 15;
+							
+							contentStream.beginText();
+							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
+							contentStream.showText("TOTAL DA COMPRA: " + String.format("R$ %.2f", vendaNota.getPreco()));
+							contentStream.endText();
+			
+							
+						} 
+						
+						
+						
+						documento.save(arquivoSalvo.getAbsolutePath());
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nota Fiscal criada e salva em: " + arquivoSalvo.getAbsolutePath());
+					} catch (IOException ex) {
+	                    ex.printStackTrace();
+	                    JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro ao criar o PDF.");
+	                }
+				}
+				
+			}
+		});
 		buttonNotaFiscal.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		buttonNotaFiscal.setBounds(10, 578, 210, 41);
 		vendaPanel.add(buttonNotaFiscal);

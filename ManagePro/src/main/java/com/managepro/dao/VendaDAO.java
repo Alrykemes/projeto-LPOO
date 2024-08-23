@@ -25,13 +25,11 @@ public class VendaDAO implements SaleRepository {
 	private ProdutoDAO produtoDAO;
 	private FuncionarioDAO funcionarioDAO;
 	private ClienteDAO clienteDAO;
-//	private DateTimeFormatter formatter;
 	
 	public VendaDAO() {
 		produtoDAO = new ProdutoDAO();
 		funcionarioDAO = new FuncionarioDAO();
 		clienteDAO = new ClienteDAO();
-//		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	}
 	
 	public void cadastrarVenda(Venda venda) {

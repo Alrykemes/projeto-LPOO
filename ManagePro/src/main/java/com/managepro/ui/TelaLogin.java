@@ -3,9 +3,13 @@ package com.managepro.ui;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import com.managepro.core.model.Funcionario;
@@ -13,6 +17,8 @@ import com.managepro.core.service.LoginService;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 
@@ -72,12 +78,7 @@ public class TelaLogin {
 		botaoEntrar.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		botaoEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					LoginService loginService = new LoginService();
-					if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
-						Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
-						Janela.getInstance().getPanelPrincipal().repaint();
-					}
-					
+				logar();
 			}
 		});
 		panelLogin.add(botaoEntrar);
@@ -104,6 +105,14 @@ public class TelaLogin {
 		passwordLogin.setForeground(new Color(0, 0, 0));
 		passwordLogin.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		passwordLogin.setBounds(317, 372, 320, 51);
+		passwordLogin.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				logar();
+					}
+			}
+		});
 		panelLogin.add(passwordLogin);
 		
 		logo = new JLabel("");
@@ -111,5 +120,38 @@ public class TelaLogin {
 		logo.setBounds(325, 94, 300, 107);
 		panelLogin.add(logo);
 		
+		setEnterAsFocusTrigger(userLogin);
+		setEnterAsFocusTrigger(passwordLogin);
 	}
+	
+	private void logar () {
+		
+		String usuario = userLogin.getText().trim();
+		String senha = new String(passwordLogin.getPassword()).trim();
+
+		if(usuario.isEmpty() || senha.isEmpty()) {
+			JOptionPane.showMessageDialog(panelLogin, "Usuário e/ou senha não podem estar vazios.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
+	        return;
+		}
+		
+		LoginService loginService = new LoginService();
+
+		if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
+			Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
+			Janela.getInstance().getPanelPrincipal().repaint();
+		} else {
+			 JOptionPane.showMessageDialog(panelLogin, "Usuário ou senha inválidos.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	@SuppressWarnings("serial")
+	private static void setEnterAsFocusTrigger(JTextField textField) {
+	        textField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "moveFocus");
+
+	        textField.getActionMap().put("moveFocus", new AbstractAction() {
+	            public void actionPerformed(ActionEvent e) {
+	                textField.transferFocus(); // Move o foco para o próximo componente
+	            }
+	        });
+	    }
 }
