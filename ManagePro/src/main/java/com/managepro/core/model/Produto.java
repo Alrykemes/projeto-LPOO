@@ -3,7 +3,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Produto {
-	private Long id_produto;
 	private String nomeProduto;
 	private int quantidade;
 	private String marca;
@@ -26,7 +25,7 @@ public class Produto {
 	}
 
 	public Long getCodigoProduto() {
-		return id_produto;
+		return codigoProduto;
 	}
 
 	public Produto(String nomeProduto, BigDecimal preco, int quantidade, String marca, String fornecedor, LocalDate validade) {
@@ -39,7 +38,7 @@ public class Produto {
 	}
 
 	public void setCodigoProduto(Long codigoProduto) {
-		this.id_produto = codigoProduto;
+		this.codigoProduto = codigoProduto;
 	}
 
 	public String getNomeProduto() {
@@ -92,8 +91,8 @@ public class Produto {
 
 	@Override
 	public String toString() {
-		return "Produto [codigoProduto=" + codigoProduto + ", nomeProduto=" + nomeProduto + ", quantidade=" + quantidade
-				+ ", preco=" + preco + "]";
+		return "Código: " + codigoProduto + " | Nome: " + nomeProduto + " | Quantidade: " + quantidade
+				+ " | Preço: " + String.format("R$ %.2f",  preco);
 	}
 	
 }

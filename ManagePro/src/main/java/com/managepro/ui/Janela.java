@@ -43,8 +43,16 @@ public class Janela {
 		return this.telaLogin;
 	}
 	
+	public TelaEstoque getTelaEstoque() {
+		return this.telaEstoque;
+	}
+	
 	public TelaAdicionarCliente getTelaAdicionarCliente() {
 	    return this.telaAdicionarCliente;
+	}
+	
+	public TelaEditarProdutos getTelaEditarProdutos() {
+		return this.telaEditarProdutos;
 	}
 	
 	public TelaNovaVenda getTelaNovaVenda() {
