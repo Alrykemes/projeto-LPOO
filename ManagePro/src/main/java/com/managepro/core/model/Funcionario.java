@@ -1,30 +1,46 @@
 package com.managepro.core.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Funcionario {
+	private Long id;
 	private String nome;
 	private String cpf;
+	private String telefone;
+	private Cargos funcao;
+	private BigDecimal salario;
+	private LocalDate dataAdmissao;
+	private String usuario;
 	private String senha;
-	private String email;
-	private String cargo;
-	private double salario;
-	private Date dataAdmissao;
-	private int frequencia;
 	
-	public Funcionario(String nome, String cpf, String senha, String email, String cargo, invalid invalid, Date dataAdmissao, int frequencia) {
+	public Funcionario() {}
+	
+	public Funcionario(String nome, String cpf, Cargos funcao, BigDecimal salario,
+			LocalDate dataAdmissao, String telefone, String usuario, String senha) {
 		this.nome = nome;
 		this.cpf = cpf;
-		this.senha = senha;
-		this.email = email;
-		this.cargo = cargo;
-		this.salario = invalid;
+		this.funcao = funcao;
+		this.salario = salario;
 		this.dataAdmissao = dataAdmissao;
-		this.frequencia = frequencia;
+		this.telefone = telefone;
+		this.usuario = usuario;
+		this.senha = senha;
 	}
 	
-	// Getters e Setters
+	public Funcionario(String nome, String cpf) {
+		this.nome = nome;
+		this.cpf = cpf;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -41,51 +57,43 @@ public class Funcionario {
 		this.cpf = cpf;
 	}
 	
-	public String getEmail() {
-		return email;
+	public String getTelefone() {
+		return telefone;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
-	
+
+	public String getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
 	public String getSenha() {
 		return senha;
 	}
-	
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	public String getCargo() {
-		return cargo;
+	public Cargos getFuncao() {
+		return funcao;
 	}
-	
-	public void setCargo(String cargo) {
-		this.cargo = cargo;
+	public void setFuncao(Cargos funcao) {
+		this.funcao = funcao;
 	}
-	
-	public double getSalario() {
+	public BigDecimal getSalario() {
 		return salario;
 	}
-	
-	public void setSalario(double bigDecimal) {
-		this.salario = bigDecimal;
+	public void setSalario(BigDecimal salario) {
+		this.salario = salario;
 	}
-	
-	public Date getDataAdmissao() {
+	public LocalDate getDataAdmissao() {
 		return dataAdmissao;
 	}
-	
-	public void setDataAdmissao(Date dataAdmissao) {
+	public void setDataAdmissao(LocalDate dataAdmissao) {
 		this.dataAdmissao = dataAdmissao;
 	}
 	
-	public int getFrequencia() {
-		return frequencia;
-	}
-	
-	public void setFrequencia(int frequencia) {
-		this.frequencia = frequencia;
-	}
 }

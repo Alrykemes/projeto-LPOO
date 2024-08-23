@@ -1,133 +1,196 @@
 package com.managepro.ui;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
-import javax.swing.JTextField;
+
+import com.managepro.core.model.Produto;
+import com.managepro.core.service.ProdutoService;
+//import com.toedter.calendar.JDateChooser;
+
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class TelaEstoque {
 
-	private JFrame frmManagePro;
-	private JPanel contentPane;
-	private JTextField textField;
+	private JPanel estoquePanel;
+	private JTextField textPesquisaField;
+	private JList<Produto> listaProduto;
+	private ProdutoService produtoService;
+	private Produto produtoSelecionado;
+	private JScrollPane scrollPane;
+	private JComboBox<String> comboBox;
+	private DefaultListModel<Produto> listModel;
+	//private JDateChooser dateChooser;
 
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.estoquePanel;
 	}
 	
-	public TelaEstoque() {
+	public TelaEstoque() throws ParseException {
 		this.initialize();
 	}
 	
-	private void initialize() {
-		frmManagePro = new JFrame();
-		frmManagePro.setResizable(false);
-		frmManagePro.setLocationRelativeTo(null);
-		frmManagePro.setTitle("ManagePro");
-		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.setBounds(100, 100, 1020, 680);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	public void refresh () {
+		listaProduto.repaint();
+	}
+	
+	
+	private void initialize() throws ParseException{
 		
-
-		frmManagePro.setContentPane(contentPane);
-		contentPane.setLayout(null);
+		produtoService = new ProdutoService();
 		
-		textField = new JTextField();
-		textField.setFont(new Font("SansSerif", Font.PLAIN, 11));
-		textField.setBounds(756, 47, 167, 38);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		estoquePanel = new JPanel();
+		estoquePanel.setSize(1020, 680);
+		estoquePanel.setLayout(null);
+		
+		textPesquisaField = new JTextField();
+		textPesquisaField.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		textPesquisaField.setBounds(756, 47, 167, 38);
+		estoquePanel.add(textPesquisaField);
 		
 		JButton botaoPesquisa = new JButton("");
+		botaoPesquisa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox.getSelectedItem().equals("ID")) {
+					if (textPesquisaField.getText().matches(".*[a-zA-Z].*")) {
+	                    JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter apenas números.", "Erro", JOptionPane.ERROR_MESSAGE);
+	                }
+					else if (textPesquisaField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						listModel.clear();
+						listModel.addAll(produtoService.pesquisarProdutoPorId(Long.parseLong(textPesquisaField.getText())));
+					}
+				}
+				if (comboBox.getSelectedItem().equals("Nome")) {
+					listModel.clear();
+					listModel.addAll(produtoService.pesquisarProdutoPorNome(textPesquisaField.getText()));					
+				}
+			}
+		});
 		botaoPesquisa.setIcon(new ImageIcon(TelaEstoque.class.getResource("/com/managepro/assets/LupaIcon.png")));
 		botaoPesquisa.setBounds(933, 47, 40, 38);
-		contentPane.add(botaoPesquisa);
+		estoquePanel.add(botaoPesquisa);
 		
-		JList<?> list = new JList<>();
-		list.setFont(new Font("SansSerif", Font.PLAIN, 11));
-		list.setBounds(20, 165, 960, 374);
-		contentPane.add(list);
+		listModel = new DefaultListModel<>();
+		listModel.addAll(produtoService.listarProdutos());
+		listaProduto = new JList<>(listModel);
+		listaProduto.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		listaProduto.setLocation(10, 5);
+		listaProduto.setFont(new Font("SansSerif", Font.PLAIN, 25));
+		estoquePanel.add(listaProduto);
+		
+		scrollPane = new JScrollPane(listaProduto);
+		scrollPane.setBounds(20, 165, 960, 374);
+		estoquePanel.add(scrollPane);
 		
 		JButton novoProduto = new JButton("NOVO");
 		novoProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		novoProduto.setBounds(256, 47, 131, 45);
 		novoProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaAdicionarProdutos telaAddProdutos = new TelaAdicionarProdutos();
-				telaAddProdutos.getFrame().setVisible(true);
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "AdicionarProdutos");
+				Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
 			}
 		});
-		contentPane.add(novoProduto);
+		estoquePanel.add(novoProduto);
 		
 		JButton editarProduto = new JButton("EDITAR");
 		editarProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		editarProduto.setBounds(408, 47, 131, 45);
 		editarProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaEditarProdutos telaEditar = new TelaEditarProdutos();
-				telaEditar.getFrame().setVisible(true);
+				produtoSelecionado = listaProduto.getSelectedValue();
+				Janela.getInstance().getTelaEditarProdutos().setProdutoSelecionado(produtoSelecionado);
+				Janela.getInstance().getTelaEditarProdutos().setNomeProdutoField(produtoSelecionado.getNomeProduto());
+				Janela.getInstance().getTelaEditarProdutos().setPrecoVendaField(produtoSelecionado.getPreco().toString());
+				Janela.getInstance().getTelaEditarProdutos().setQuantidadeField(Integer.toString(produtoSelecionado.getQuantidade()));
+				Janela.getInstance().getTelaEditarProdutos().setMarcaField(produtoSelecionado.getMarca());
+				Janela.getInstance().getTelaEditarProdutos().setFornecedorField(produtoSelecionado.getFornecedor());
+				Janela.getInstance().getTelaEditarProdutos().setValidadeField(produtoSelecionado.getValidade());
+				Janela.getInstance().getTelaEditarProdutos().setCodigoProduto(produtoSelecionado.getCodigoProduto());
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "EditarProdutos");
+				Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
+				Janela.getInstance().getFrame().setLocationRelativeTo(null);
 			}
 		});
-		contentPane.add(editarProduto);
+		estoquePanel.add(editarProduto);
 		
 		JButton removerProduto = new JButton("REMOVER");
 		removerProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			if (JOptionPane.showConfirmDialog(removerProduto, "Deseja mesmo remover o(s) produto(s) ?","", JOptionPane.YES_NO_OPTION) == 0 ) {
-				JOptionPane.showMessageDialog(removerProduto, "Produto(s) removido.");
+			if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(), "Deseja mesmo remover o(s) produto(s) ?","", JOptionPane.YES_NO_OPTION) == 0 ) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto(s) removido.");
+				Produto produtoSelecionado = (Produto) listaProduto.getSelectedValue();
+				produtoService.removerProduto(produtoSelecionado.getCodigoProduto());
+				Janela.getInstance().getTelaEstoque().atualizarEstoque();
 			}
 			}});
 		removerProduto.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		removerProduto.setBounds(566, 47, 131, 45);
-		contentPane.add(removerProduto);
+		estoquePanel.add(removerProduto);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {		
+				if (comboBox.getSelectedItem().equals("Todos")) {
+					atualizarEstoque();
+					
+				}
+			}
+		});
 		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "Nome"}));
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "Nome", "Data de Validade", "Todos"}));
 		comboBox.setBounds(830, 89, 93, 22);
-		contentPane.add(comboBox);
+		estoquePanel.add(comboBox);
 		
 		JLabel filtroLabel = new JLabel("Filtrar por:");
 		filtroLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		filtroLabel.setBounds(756, 90, 76, 19);
-		contentPane.add(filtroLabel);
+		estoquePanel.add(filtroLabel);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(966, 166, 14, 373);
-		contentPane.add(scrollPane);
-		
-		
-		botaoPesquisa.addActionListener(new ActionListener() {
+		JButton Voltar = new JButton("Voltar   ");
+		Voltar.setIcon(new ImageIcon(TelaEstoque.class.getResource("/com/managepro/assets/BackToHome.png")));
+		Voltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		Voltar.setBounds(20, 8, 120, 35);
+		Voltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, textField.getText());
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
+		estoquePanel.add(Voltar);
 		
-		JButton btnNewButton = new JButton("Voltar   ");
-		btnNewButton.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton botaoAtualizar = new JButton("Atualizar");
+		botaoAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaMenu menu = new TelaMenu();
-				getFrame().setVisible(false);
-				menu.getFrame().setLocationRelativeTo(null);
-				menu.getFrame().setVisible(true);
+				atualizarEstoque();
 			}
 		});
-		btnNewButton.setBounds(20, 8, 120, 35);
-		contentPane.add(btnNewButton);
+		botaoAtualizar.setBounds(20, 131, 93, 23);
+		estoquePanel.add(botaoAtualizar);
 		
+		
+	}
+	
+	public void atualizarEstoque () {
+		listModel.clear();
+		listModel.addAll(produtoService.listarProdutos());
 	}
 }

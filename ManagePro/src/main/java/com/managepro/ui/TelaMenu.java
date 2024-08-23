@@ -1,13 +1,14 @@
 package com.managepro.ui;
 
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 
+import com.managepro.core.model.Cargos;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -16,130 +17,149 @@ import java.awt.Font;
 
 public class TelaMenu {
 
-	private JFrame frmManagePro;
-	private JPanel contentPane;
+	private JPanel panelMenu;
+	private JPanel panel;
+	private JLabel iconManagePro;
+	private JButton sairBotao;
+	private JButton estoqueBotao;
+	private JButton novaVendaBotao;
+	private JButton vendasBt;
+	private JButton funcionariosBt;
+	private JButton contabilidadeBt;
 	
 
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.panelMenu;
 	}
 
 	public TelaMenu() {
 		this.initialize();
-	}
+	}			
 	
 	public void initialize() {
-		frmManagePro = new JFrame();
-		frmManagePro.setResizable(false);
-		frmManagePro.setTitle("ManagePro");
-		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.setBounds(100, 100, 1020, 680);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		frmManagePro.setContentPane(contentPane);
-		contentPane.setLayout(null);
+		panelMenu = new JPanel();
+		panelMenu.setBackground(Color.WHITE);
+		panelMenu.setBounds(0, 0, 1024, 680);
+		panelMenu.setLayout(null);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel.setBackground(new Color(81, 81, 81));
-		panel.setBounds(0, 0, 1004, 83);
-		contentPane.add(panel);
+		panel.setBounds(0, 0, 1024, 83);
+		panelMenu.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(10, 0, 336, 81);
-		panel.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\vitor\\Downloads\\ManagePRO-removebg-preview 2.png"));
+		iconManagePro = new JLabel("");
+		iconManagePro.setBounds(10, 0, 336, 81);
+		panel.add(iconManagePro);
+		iconManagePro.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/ManageProLogin.png")));
 		
-		JButton btnNewButton = new JButton("Sair");
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		btnNewButton.setBackground(new Color(255, 0, 0));
-		btnNewButton.addActionListener(new ActionListener() {
+		sairBotao = new JButton("Sair");
+		sairBotao.setForeground(new Color(255, 255, 255));
+		sairBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		sairBotao.setBackground(new Color(255, 0, 0));
+		sairBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaLogin telaInicial = new TelaLogin();
-				getFrame().setVisible(false);
-				telaInicial.getFrame().setLocationRelativeTo(null);
-				telaInicial.getFrame().setVisible(true);
+				Janela.getInstance().getTelaLogin().getUserLoginField().setText("");
+				Janela.getInstance().getTelaLogin().getUserPasswordField().setText("");
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Login");
+				Janela.getInstance().getTelaLogin().setFuncionarioLogado(null);
 			}
 		});
-		btnNewButton.setBounds(889, 27, 89, 27);
-		panel.add(btnNewButton);
+		sairBotao.setBounds(889, 27, 89, 27);
+		panel.add(sairBotao);
 		
-		JButton estoqueBotao = new JButton("Estoque       ");
+		estoqueBotao = new JButton("Estoque       ");
 		estoqueBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/EstoqueIcon.png")));
 		estoqueBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		estoqueBotao.setBorder(new LineBorder(Color.GRAY, 2));
 		estoqueBotao.setBounds(381, 125, 249, 60);
 		estoqueBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaEstoque telaEstoque = new TelaEstoque();
-				getFrame().setVisible(false);
-				telaEstoque.getFrame().setLocationRelativeTo(null);
-				telaEstoque.getFrame().setVisible(true);
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ESTOQUISTA) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o Estoque.");
+				}
 			}
 		});
-		contentPane.add(estoqueBotao);
+		panelMenu.add(estoqueBotao);
 		
-		JButton novaVendaBotao = new JButton("Nova Venda   ");
+		novaVendaBotao = new JButton("Nova Venda   ");
 		novaVendaBotao.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/NovaVendaIcon.png")));
 		novaVendaBotao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		novaVendaBotao.setBorder(new LineBorder(Color.GRAY, 2));
 		novaVendaBotao.setBounds(381, 211, 249, 60);
 		novaVendaBotao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaNovaVenda telaNovaVenda = new TelaNovaVenda();
-				getFrame().setVisible(false);
-				telaNovaVenda.getFrame().setLocationRelativeTo(null);
-				telaNovaVenda.getFrame().setVisible(true);
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.VENDEDOR) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "NovaVenda");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para criar uma nova Venda.");
+				}
 			}
 		});
-		contentPane.add(novaVendaBotao);
+		panelMenu.add(novaVendaBotao);
 		
-		JButton vendasBt = new JButton("Vendas        ");
+		vendasBt = new JButton("Vendas        ");
 		vendasBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/VendasIcon.png")));
 		vendasBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		vendasBt.setBorder(new LineBorder(Color.GRAY, 2));
 		vendasBt.setBounds(381, 302, 249, 60);
 		vendasBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaGerenciamentoDeVendas telaVendas = new TelaGerenciamentoDeVendas();
-				getFrame().setVisible(false);
-				telaVendas.getFrame().setLocationRelativeTo(null);
-				telaVendas.getFrame().setVisible(true);
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.VENDEDOR
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.CONTADOR
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "GerenciamentoDeVendas");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o gerenciamento de vendas.");
+				}
 			}
 		});
-		contentPane.add(vendasBt);
+		panelMenu.add(vendasBt);
 		
-		JButton funcionariosBt = new JButton("FuncionÃ¡rios ");
+		funcionariosBt = new JButton("Funcionários ");
 		funcionariosBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
 		funcionariosBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		funcionariosBt.setBorder(new LineBorder(Color.GRAY, 2));
 		funcionariosBt.setBounds(381, 400, 249, 60);
 		funcionariosBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaFuncionarios telaFuncionarios = new TelaFuncionarios();
-				getFrame().setVisible(false);
-				telaFuncionarios.getFrame().setLocationRelativeTo(null);
-				telaFuncionarios.getFrame().setVisible(true);
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Funcionarios");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o gerenciamento de funcionários.");
+				}
 			}
 		});
-		contentPane.add(funcionariosBt);
+		panelMenu.add(funcionariosBt);
 		
-		JButton contabilidadeBt = new JButton("Contabilidade");
+		contabilidadeBt = new JButton("Contabilidade");
 		contabilidadeBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/ContabilidadeIcon.png")));
 		contabilidadeBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		contabilidadeBt.setBorder(new LineBorder(Color.GRAY, 2));
 		contabilidadeBt.setBounds(381, 492, 249, 60);
 		contabilidadeBt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaContabilidade telaContabilidade = new TelaContabilidade();
-				getFrame().setVisible(false);
-				telaContabilidade.getFrame().setLocationRelativeTo(null);
-				telaContabilidade.getFrame().setVisible(true);
+				if (Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ADMINISTRADOR 
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE
+						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.CONTADOR) {
+					
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Contabilidade");
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar a contabilidade.");
+				}
 			}
 		});
-		contentPane.add(contabilidadeBt);
+		panelMenu.add(contabilidadeBt);
 	}
 }

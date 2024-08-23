@@ -1,266 +1,656 @@
 package com.managepro.ui;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import java.awt.Font;
-import javax.swing.JButton;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.text.MaskFormatter;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import com.managepro.core.model.ProdutoVendaDetails;
+import com.managepro.core.model.Venda;
+import com.managepro.core.service.VendaService;
 import com.toedter.calendar.JDateChooser;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 
 public class TelaGerenciamentoDeVendas {
 
-	private JFrame frmManagePro;
+	private JPanel gerenciamentoVendasPanel;
 	private JPanel PrincipalPanel;
-	private JTextField FieldSearch;
-	private JDateChooser dateChooserFrom;
-	private JDateChooser dateChooserTo;
-	private JLabel textDateFrom;
-	private JLabel textDateTo;
+	private JPanel pesquisaPanel;
+	private JFormattedTextField FieldPesquisar;
+	private JButton btnPesquisaVenda;
+	private JDateChooser dateChooserDe;
+	private JDateChooser dateChooserAte;
+	private JComboBox<String> ComboBoxFiltro;
+	private JList<Venda> listaVendas;
+	private JPanel vendaPanel;
+	private JList<ProdutoVendaDetails> listaProdutos;
+	private JLabel textDateDe;
+	private JLabel textDateAte;
+	private JButton buttonNotaFiscal;
+	private JLabel funcionarioNome;
+	private JLabel idVenda;
+	private JLabel data;
+    private DateTimeFormatter formatoData;
+	private JLabel metodoPagamento;
+	private JLabel clienteNome;
+	private JLabel cpfCliente;
+	private JButton btnDeletar;
+	private JLabel totalCompra;
+	private DefaultListModel<Venda> listModelVendas;
+	private DefaultListModel<ProdutoVendaDetails> listModelProdutos;
+	
+	private VendaService vendaService;
+	
 
-	public JFrame getFrame() {
-		return this.frmManagePro;
+	public JPanel getPanel() {
+		return this.gerenciamentoVendasPanel;
 	}
 	
-	public TelaGerenciamentoDeVendas() {
+	public TelaGerenciamentoDeVendas() throws ParseException {
 		initialize();
 	}
 		
-	private void initialize() {
-		frmManagePro = new JFrame();
-		frmManagePro.setResizable(false);
-		frmManagePro.setLocationRelativeTo(null);
-		frmManagePro.setTitle("ManagePro");
-		frmManagePro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmManagePro.setBounds(100, 100, 1020, 680);
+	private void initialize() throws ParseException {
+		vendaService = new VendaService();
+		formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		listModelVendas = new DefaultListModel<>();
+		listModelProdutos = new DefaultListModel<>();
+		
+		gerenciamentoVendasPanel = new JPanel();
+		gerenciamentoVendasPanel.setSize(1020, 680);
+		gerenciamentoVendasPanel.setLayout(null);
 		PrincipalPanel = new JPanel();
+		PrincipalPanel.setLocation(0, 0);
 		PrincipalPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		frmManagePro.setContentPane(PrincipalPanel);
-
+		PrincipalPanel.setSize(1020, 680);
+		gerenciamentoVendasPanel.add(PrincipalPanel);
 		PrincipalPanel.setLayout(null);
 		
-		JPanel SearchPanel = new JPanel();
-		SearchPanel.setBounds(10, 45, 327, 585);
-		PrincipalPanel.add(SearchPanel);
-		SearchPanel.setLayout(null);
+		pesquisaPanel = new JPanel();
+		pesquisaPanel.setBounds(10, 45, 392, 585);
+		PrincipalPanel.add(pesquisaPanel);
+		pesquisaPanel.setLayout(null);
 		
-		JLabel lblSearch = new JLabel("Pesquisar");
-		lblSearch.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblSearch.setBounds(10, 11, 85, 20);
-		SearchPanel.add(lblSearch);
+		JLabel txtPesquisar = new JLabel("Pesquisar");
+		txtPesquisar.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtPesquisar.setBounds(10, 11, 85, 20);
+		pesquisaPanel.add(txtPesquisar);
 		
-		JLabel lblFor = new JLabel("Por:");
-		lblFor.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblFor.setBounds(159, 11, 39, 20);
-		SearchPanel.add(lblFor);
+		JLabel txtFiltrar = new JLabel("Filtrar:");
+		txtFiltrar.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtFiltrar.setBounds(211, 11, 52, 20);
+		pesquisaPanel.add(txtFiltrar);
 		
-		FieldSearch = new JTextField();
-		FieldSearch.setForeground(new Color(105, 105, 105));
-		FieldSearch.setText("Pesquise vendas por ID");
-		FieldSearch.setFont(new Font("SansSerif", Font.PLAIN, 17));
-		FieldSearch.setBounds(10, 42, 307, 30);
-		FieldSearch.setColumns(10);
-		FieldSearch.addFocusListener(new FocusAdapter() {
+		MaskFormatter maskPesquisa = new MaskFormatter("**********");
+		maskPesquisa.setValidCharacters("0123456789");
+		maskPesquisa.setAllowsInvalid(false);
+		FieldPesquisar = new JFormattedTextField(maskPesquisa);
+		FieldPesquisar.setFocusLostBehavior(JFormattedTextField.PERSIST);
+		FieldPesquisar.setForeground(new Color(105, 105, 105));
+		FieldPesquisar.setFont(new Font("SansSerif", Font.PLAIN, 17));
+		FieldPesquisar.setBounds(10, 42, 329, 30);
+		FieldPesquisar.setColumns(10);
+		FieldPesquisar.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
-				FieldSearch.setText("");
-				FieldSearch.setForeground(new Color(0, 0, 0));
+				FieldPesquisar.setForeground(new Color(0, 0, 0));
 			}
 			
 			public void focusLost(FocusEvent e) {
-				FieldSearch.setText("Digite para pesquisar");
-				FieldSearch.setForeground(new Color(105, 105, 105));
+				FieldPesquisar.setForeground(new Color(105, 105, 105));
 			}
 		});
-		SearchPanel.add(FieldSearch);
+		pesquisaPanel.add(FieldPesquisar);
 		
-		dateChooserFrom = new JDateChooser();
-		dateChooserFrom.setBounds(40, 42, 118, 25);
-		textDateFrom = new JLabel("De:");
-		textDateFrom.setBounds(10, 46, 30, 15);
-		textDateFrom.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		dateChooserDe = new JDateChooser();
+		dateChooserDe.setBounds(40, 42, 128, 30);
+		textDateDe = new JLabel("De:");
+		textDateDe.setBounds(10, 48, 30, 15);
+		textDateDe.setFont(new Font("SansSerif", Font.BOLD, 16));
 		
-		dateChooserTo = new JDateChooser();
-		dateChooserTo.setBounds(199, 42, 118, 25);
-		textDateTo = new JLabel("AtÃ©:");
-		textDateTo.setBounds(165, 46, 30, 15);
-		textDateTo.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		dateChooserAte = new JDateChooser();
+		dateChooserAte.setBounds(210, 42, 128, 30);
+		textDateAte = new JLabel("Até:");
+		textDateAte.setBounds(175, 48, 40, 15);
+		textDateAte.setFont(new Font("SansSerif", Font.BOLD, 16));
 		
 		
-		JComboBox<String> FilterComboBox = new JComboBox<String>();
-		FilterComboBox.setFont(new Font("SansSerif", Font.PLAIN, 17));
-		FilterComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "Funcionario", "Data"}));
-		FilterComboBox.setBounds(199, 10, 118, 22);
-		SearchPanel.add(FilterComboBox);
-		FilterComboBox.addItemListener(new ItemListener() {
+		ComboBoxFiltro = new JComboBox<String>();
+		ComboBoxFiltro.setFont(new Font("SansSerif", Font.PLAIN, 17));
+		ComboBoxFiltro.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "IDFuncionario", "Data", "Todas"}));
+		ComboBoxFiltro.setBounds(264, 10, 118, 22);
+		pesquisaPanel.add(ComboBoxFiltro);
+		ComboBoxFiltro.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				
 				if(e.getItem().equals("ID")) {
-					FieldSearch.setBounds(10, 42, 307, 30);
-					FieldSearch.setText("Pesquise vendas por ID");
-					SearchPanel.add(FieldSearch);
-					SearchPanel.remove(dateChooserFrom);
-					SearchPanel.remove(textDateFrom);
-					SearchPanel.remove(dateChooserTo);
-					SearchPanel.remove(textDateTo);
-					
+					FieldPesquisar.setBounds(10, 42, 329, 30);
+					FieldPesquisar.setEnabled(true);
+					FieldPesquisar.setText("");
+					btnPesquisaVenda.setEnabled(true);
+					dateChooserAte.cleanup();
+					dateChooserDe.cleanup();
+					pesquisaPanel.add(FieldPesquisar);
+					pesquisaPanel.remove(dateChooserDe);
+					pesquisaPanel.remove(textDateDe);
+					pesquisaPanel.remove(dateChooserAte);
+					pesquisaPanel.remove(textDateAte);
+					idVenda.setText("0");
+					funcionarioNome.setText("-");
+					data.setText("00/00/0000");
+					totalCompra.setText("R$ 0,00");
+					metodoPagamento.setText("-");
+					clienteNome.setText("-");
+					cpfCliente.setText("-");
+					listModelVendas.clear();
+					listModelProdutos.clear();
+					vendaPanel.repaint();
+					pesquisaPanel.repaint();
 				}
 				
 				if(e.getItem().equals("Data")) {
-					FieldSearch.setBounds(0, 0, 0, 0);
-					SearchPanel.remove(FieldSearch);
-					SearchPanel.add(dateChooserFrom);
-					SearchPanel.add(textDateFrom);
-					SearchPanel.add(dateChooserTo);
-					SearchPanel.add(textDateTo);
+					FieldPesquisar.setBounds(0, 0, 0, 0);
+					pesquisaPanel.remove(FieldPesquisar);
+					btnPesquisaVenda.setEnabled(true);
+					FieldPesquisar.setText("");
+					pesquisaPanel.repaint();
+					pesquisaPanel.add(dateChooserDe);
+					pesquisaPanel.add(textDateDe);
+					pesquisaPanel.add(dateChooserAte);
+					pesquisaPanel.add(textDateAte);
+					idVenda.setText("0");
+					funcionarioNome.setText("-");
+					data.setText("00/00/0000");
+					totalCompra.setText("R$ 0,00");
+					metodoPagamento.setText("-");
+					clienteNome.setText("-");
+					cpfCliente.setText("-");
+					listModelVendas.clear();
+					listModelProdutos.clear();
+					vendaPanel.repaint();
+					pesquisaPanel.repaint();
 				}
 				
-				if(e.getItem().equals("Funcionario")) {
-					FieldSearch.setBounds(10, 42, 307, 30);
-					FieldSearch.setText("Pesquise vendas por Funcionario");
-					SearchPanel.add(FieldSearch);
-					SearchPanel.remove(dateChooserFrom);
-					SearchPanel.remove(textDateFrom);
-					SearchPanel.remove(dateChooserTo);
-					SearchPanel.remove(textDateTo);
+				if(e.getItem().equals("IDFuncionario")) {
+					FieldPesquisar.setBounds(10, 42, 329, 30);
+					FieldPesquisar.setEnabled(true);
+					btnPesquisaVenda.setEnabled(true);
+					dateChooserAte.cleanup();
+					dateChooserDe.cleanup();
+					FieldPesquisar.setText("");
+					pesquisaPanel.add(FieldPesquisar);
+					pesquisaPanel.remove(dateChooserDe);
+					pesquisaPanel.remove(textDateDe);
+					pesquisaPanel.remove(dateChooserAte);
+					pesquisaPanel.remove(textDateAte);
+					idVenda.setText("0");
+					funcionarioNome.setText("-");
+					data.setText("00/00/0000");
+					totalCompra.setText("R$ 0,00");
+					metodoPagamento.setText("-");
+					clienteNome.setText("-");
+					cpfCliente.setText("-");
+					listModelVendas.clear();
+					listModelProdutos.clear();
+					vendaPanel.repaint();
+					pesquisaPanel.repaint();
+				}
+				
+				if(e.getItem().equals("Todas")) {
+					FieldPesquisar.setBounds(10, 42, 329, 30);
+					FieldPesquisar.setEnabled(false);
+					dateChooserAte.cleanup();
+					dateChooserDe.cleanup();
+					FieldPesquisar.setText("");
+					pesquisaPanel.add(FieldPesquisar);
+					btnPesquisaVenda.setEnabled(false);
+					pesquisaPanel.remove(dateChooserDe);
+					pesquisaPanel.remove(textDateDe);
+					pesquisaPanel.remove(dateChooserAte);
+					pesquisaPanel.remove(textDateAte);
+					idVenda.setText("0");
+					funcionarioNome.setText("-");
+					data.setText("00/00/0000");
+					totalCompra.setText("R$ 0,00");
+					metodoPagamento.setText("-");
+					clienteNome.setText("-");
+					cpfCliente.setText("-");
+					listModelVendas.clear();
+					listModelProdutos.clear();
+					listModelVendas.addAll(vendaService.getTodasVendas());
+					vendaPanel.repaint();
+					pesquisaPanel.repaint();
 				}
 			}
 		});
-
-		JList<?> SalesList = new JList<Object>();
-		SalesList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-		SalesList.setValueIsAdjusting(true);
-		SalesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		SalesList.setBounds(10, 83, 307, 491);
-		SearchPanel.add(SalesList);
 		
-		
-		JPanel SalePanel = new JPanel();
-		SalePanel.setBounds(337, 0, 657, 630);
-		PrincipalPanel.add(SalePanel);
-		SalePanel.setLayout(null);
-		
-		JLabel lblIdSale = new JLabel("165198");
-		lblIdSale.setToolTipText("");
-		lblIdSale.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblIdSale.setBounds(42, 23, 72, 29);
-		SalePanel.add(lblIdSale);
-		
-		JLabel lblTextID = new JLabel("ID:");
-		lblTextID.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblTextID.setBounds(10, 23, 33, 29);
-		SalePanel.add(lblTextID);
-		
-		JLabel lblTextDate = new JLabel("Data:");
-		lblTextDate.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblTextDate.setBounds(489, 23, 58, 29);
-		SalePanel.add(lblTextDate);
-		
-		JLabel lblDate = new JLabel("17/06/2021");
-		lblDate.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblDate.setBounds(547, 23, 100, 29);
-		SalePanel.add(lblDate);
-		
-		JList<?> productsList = new JList<Object>();
-		productsList.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-		productsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		productsList.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		productsList.setBounds(10, 75, 637, 342);
-		SalePanel.add(productsList);
-		
-		JButton buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
-		buttonNotaFiscal.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		buttonNotaFiscal.setBounds(10, 578, 210, 41);
-		SalePanel.add(buttonNotaFiscal);
-		
-		JLabel lblEmployeeName = new JLabel("AlguÃ©m da Silva");
-		lblEmployeeName.setToolTipText("");
-		lblEmployeeName.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblEmployeeName.setBounds(275, 23, 204, 29);
-		SalePanel.add(lblEmployeeName);
-		
-		JLabel lblTextEmployee = new JLabel("FuncionÃ¡rio:");
-		lblTextEmployee.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblTextEmployee.setBounds(169, 23, 108, 29);
-		SalePanel.add(lblTextEmployee);
-		
-		JButton btnDelete = new JButton("Deletar");
-		btnDelete.setForeground(new Color(255, 255, 255));
-		btnDelete.setBackground(new Color(255, 0, 0));
-		btnDelete.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnDelete.setBounds(518, 578, 129, 41);
-		SalePanel.add(btnDelete);
-		
-		JButton btnEdit = new JButton("Editar");
-		btnEdit.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnEdit.setBounds(316, 578, 129, 41);
-		SalePanel.add(btnEdit);
-		
-		JLabel lblNewLabel = new JLabel("Total da Compra:");
-		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel.setBounds(10, 428, 146, 29);
-		SalePanel.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("R$ 186,60");
-		lblNewLabel_1.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(154, 428, 119, 29);
-		SalePanel.add(lblNewLabel_1);
-		
-		JLabel lblMtodoDePagamento = new JLabel("MÃ©todo de Pagamento:");
-		lblMtodoDePagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblMtodoDePagamento.setBounds(10, 458, 195, 29);
-		SalePanel.add(lblMtodoDePagamento);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Dinheiro");
-		lblNewLabel_1_1.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel_1_1.setBounds(201, 458, 182, 29);
-		SalePanel.add(lblNewLabel_1_1);
-		
-		JLabel lblCliente = new JLabel("Cliente:");
-		lblCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblCliente.setBounds(10, 488, 61, 32);
-		SalePanel.add(lblCliente);
-		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Alrykemes");
-		lblNewLabel_1_1_1.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel_1_1_1.setBounds(74, 490, 182, 29);
-		SalePanel.add(lblNewLabel_1_1_1);
-		
-		JLabel lblCpf = new JLabel("CPF:");
-		lblCpf.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblCpf.setBounds(10, 517, 46, 29);
-		SalePanel.add(lblCpf);
-		
-		JLabel lblNewLabel_1_1_2 = new JLabel("123.456.789-12");
-		lblNewLabel_1_1_2.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		lblNewLabel_1_1_2.setBounds(55, 517, 135, 29);
-		SalePanel.add(lblNewLabel_1_1_2);
-		
-		JButton btnNewButton = new JButton("Voltar   ");
-		btnNewButton.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaMenu menu = new TelaMenu();
-				getFrame().setVisible(false);
-				menu.getFrame().setLocationRelativeTo(null);
-				menu.getFrame().setVisible(true);
+		listaVendas = new JList<Venda>(listModelVendas);
+		listaVendas.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()) {
+					Venda vendaSelecionada = (Venda) listaVendas.getSelectedValue();
+					if(vendaSelecionada != null) {
+						idVenda.setText(vendaSelecionada.getId().toString());
+						funcionarioNome.setText(vendaSelecionada.getFuncionario().getNome());
+						data.setText(vendaSelecionada.getData().format(formatoData));
+						totalCompra.setText(String.format("R$ %.2f", vendaSelecionada.getPreco()));
+						metodoPagamento.setText(vendaSelecionada.getFormaDePagamentoEnum().toString());
+						clienteNome.setText(vendaSelecionada.getCliente().getNome());
+						cpfCliente.setText(vendaSelecionada.getCliente().getCpf());
+						listModelProdutos.clear();
+						listModelProdutos.addAll(vendaSelecionada.getProdutosVendidos());
+					}
+				}
 			}
 		});
-		btnNewButton.setBounds(20, 8, 120, 35);
-		PrincipalPanel.add(btnNewButton);
+		listaVendas.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		listaVendas.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		listaVendas.setValueIsAdjusting(true);
+		listaVendas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane scrollPaneVendas = new JScrollPane(listaVendas);
+		scrollPaneVendas.setBounds(10, 83, 372, 491);
+		pesquisaPanel.add(scrollPaneVendas, BorderLayout.CENTER);
+		
+		btnPesquisaVenda = new JButton("");
+		btnPesquisaVenda.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/LupaIcon.png")));
+		btnPesquisaVenda.setBounds(349, 42, 33, 30);
+		btnPesquisaVenda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					atualizarListModels();
+				}
+			});
+		pesquisaPanel.add(btnPesquisaVenda);
+		
+		
+		vendaPanel = new JPanel();
+		vendaPanel.setBounds(402, 0, 592, 630);
+		PrincipalPanel.add(vendaPanel);
+		vendaPanel.setLayout(null);
+		
+		idVenda = new JLabel("0");
+		idVenda.setToolTipText("");
+		idVenda.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		idVenda.setBounds(10, 23, 72, 29);
+		vendaPanel.add(idVenda);
+		
+		JLabel TextID = new JLabel("ID:");
+		TextID.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		TextID.setBounds(10, 0, 33, 29);
+		vendaPanel.add(TextID);
+		
+		JLabel txtData = new JLabel("Data:");
+		txtData.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		txtData.setBounds(466, 0, 116, 29);
+		vendaPanel.add(txtData);
+		
+		data = new JLabel("00/00/0000");
+		data.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		data.setBounds(466, 23, 116, 29);
+		vendaPanel.add(data);
+		
+		listaProdutos = new JList<ProdutoVendaDetails>(listModelProdutos);
+		listaProdutos.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		listaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listaProdutos.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		JScrollPane scrollPaneProdutos = new JScrollPane(listaProdutos);
+		scrollPaneProdutos.setBounds(10, 75, 572, 342);
+		vendaPanel.add(scrollPaneProdutos, BorderLayout.CENTER);
+		
+		buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
+		buttonNotaFiscal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Escolha onde salvar a nota fiscal");
+				
+				Venda vendaNota = listaVendas.getSelectedValue();
+				
+				fileChooser.setSelectedFile(new File("ID_" + vendaNota.getId() + "_" + vendaNota.getData() + ".pdf"));
+				
+				int userSelection = fileChooser.showSaveDialog(Janela.getInstance().getFrame());
+				
+				if(userSelection == JFileChooser.APPROVE_OPTION) {
+					File arquivoSalvo = fileChooser.getSelectedFile();
+					
+					if (arquivoSalvo.exists()) {
+	                    int resposta = JOptionPane.showConfirmDialog(
+	                            Janela.getInstance().getFrame(),
+	                            "O arquivo já existe. Deseja sobrescrevê-lo?",
+	                            "Arquivo existente",
+	                            JOptionPane.YES_NO_OPTION,
+	                            JOptionPane.WARNING_MESSAGE
+	                    );
+
+	                    if (resposta == JOptionPane.NO_OPTION) {
+	                        JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Por favor, escolha outro nome para o arquivo.");
+	                        return;
+	                    }
+	                }
+					
+					try (PDDocument documento = new PDDocument()){
+						PDPage pagina = new PDPage();
+						documento.addPage(pagina);
+						
+						try (PDPageContentStream contentStream = new PDPageContentStream(documento, pagina)){
+							// Centralizando e mostrando titulo da pagina
+							String titulo = "ManagePro";
+							float calcDoTexto = PDType1Font.HELVETICA_BOLD.getStringWidth(titulo) / 1000 * 20;
+							float centro = (pagina.getMediaBox().getWidth() - calcDoTexto) / 2;
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+							contentStream.newLineAtOffset(centro, pagina.getMediaBox().getHeight() - 50);
+ 							contentStream.showText(titulo);
+							contentStream.endText();
+							// Dados da compra e da empresa
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 100);
+ 							contentStream.showText("CNPJ: 93.157.244/0001-33");
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 120);
+ 							contentStream.showText("ENDEREÇO: Av. Prefeito Geraldo Pinho Alves, Nº 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 140);
+ 							contentStream.showText("DATA: " + vendaNota.getData().format(formatoData));
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 160);
+ 							contentStream.showText("------------------------------------------------------------------------------------------"
+ 									+ "---------------------------------------------------------");
+							contentStream.endText();
+							
+							String cliente = "Cliente";
+							float calcDoTexto2 = PDType1Font.HELVETICA_BOLD.getStringWidth(cliente) / 1000 * 20;
+							float centro2 = (pagina.getMediaBox().getWidth() - calcDoTexto2) / 2;
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 22);
+ 							contentStream.newLineAtOffset(centro2, pagina.getMediaBox().getHeight() - 180);
+ 							contentStream.showText(cliente);
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 210);
+ 							contentStream.showText("CLIENTE: " + vendaNota.getCliente().getNome());
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 230);
+ 							contentStream.showText("CPF: " + vendaNota.getCliente().getCpf());
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 250);
+ 							contentStream.showText("DATA DE NASCIMENTO: " + vendaNota.getCliente().getDataNascimento().format(formatoData));
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 270);
+ 							contentStream.showText("TELEFONE: " + vendaNota.getCliente().getTelefone());
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+ 							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 290);
+ 							contentStream.showText("------------------------------------------------------------------------------------------"
+ 									+ "---------------------------------------------------------");
+							contentStream.endText();
+							
+							String txtCupomFiscal = "Cupom Fiscal";
+							float calcDoTexto3 = PDType1Font.HELVETICA_BOLD.getStringWidth(txtCupomFiscal) / 1000 * 20;
+							float centro3 = (pagina.getMediaBox().getWidth() - calcDoTexto3) / 2;
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 22);
+ 							contentStream.newLineAtOffset(centro3, pagina.getMediaBox().getHeight() - 310);
+ 							contentStream.showText(txtCupomFiscal);
+ 							contentStream.endText();
+ 							
+ 							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+ 							contentStream.newLineAtOffset(140, pagina.getMediaBox().getHeight() - 340);
+ 							contentStream.showText("CÓD.  |             NOME             |   QUANTIDADE     "
+ 									+ "  |   VALOR");
+ 							contentStream.endText();
+ 							
+							int inicioLinha = 360;
+							for (ProdutoVendaDetails pvd : vendaNota.getProdutosVendidos()) {	
+								contentStream.beginText();
+								contentStream.newLineAtOffset(150, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(pvd.getCodigoProduto().toString());
+								contentStream.endText();
+								
+								contentStream.beginText();
+								contentStream.newLineAtOffset(198, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(pvd.getNomeProduto());
+								contentStream.endText();
+								
+								contentStream.beginText();
+								contentStream.newLineAtOffset(355, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(String.valueOf(pvd.getQuantidade()));
+								contentStream.endText();
+								
+								contentStream.beginText();
+								contentStream.newLineAtOffset(440, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText(String.format("%.2f", pvd.getPreco()));
+								contentStream.endText();
+								
+								inicioLinha += 15;
+								
+							}
+							
+							inicioLinha += 25;
+							
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
+							contentStream.showText("MÉTODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
+							contentStream.endText();
+							inicioLinha += 15;
+							
+							contentStream.beginText();
+							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
+							contentStream.showText("TOTAL DA COMPRA: " + String.format("R$ %.2f", vendaNota.getPreco()));
+							contentStream.endText();
+			
+							
+						} 
+						
+						
+						
+						documento.save(arquivoSalvo.getAbsolutePath());
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nota Fiscal criada e salva em: " + arquivoSalvo.getAbsolutePath());
+					} catch (IOException ex) {
+	                    ex.printStackTrace();
+	                    JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro ao criar o PDF.");
+	                }
+				}
+				
+			}
+		});
+		buttonNotaFiscal.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		buttonNotaFiscal.setBounds(10, 578, 210, 41);
+		vendaPanel.add(buttonNotaFiscal);
+		
+		funcionarioNome = new JLabel("");
+		funcionarioNome.setToolTipText("");
+		funcionarioNome.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		funcionarioNome.setBounds(125, 23, 331, 29);
+		vendaPanel.add(funcionarioNome);
+		
+		JLabel txtFuncionario = new JLabel("Funcionário:");
+		txtFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtFuncionario.setBounds(125, 1, 331, 29);
+		vendaPanel.add(txtFuncionario);
+		
+		btnDeletar = new JButton("Deletar");
+		btnDeletar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!listaVendas.isSelectionEmpty()) {
+					vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
+					atualizarListModels();
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+							"Você precisa selecionar alguma das vendas antes de deletar!");
+				}
+			}
+		});
+		btnDeletar.setForeground(new Color(255, 255, 255));
+		btnDeletar.setBackground(new Color(255, 0, 0));
+		btnDeletar.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		btnDeletar.setBounds(453, 578, 129, 41);
+		vendaPanel.add(btnDeletar);
+		
+		JLabel txtTotalCompra = new JLabel("Total da Compra:");
+		txtTotalCompra.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtTotalCompra.setBounds(10, 428, 146, 29);
+		vendaPanel.add(txtTotalCompra);
+		
+		totalCompra = new JLabel("R$ 0,00");
+		totalCompra.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		totalCompra.setBounds(154, 428, 119, 29);
+		vendaPanel.add(totalCompra);
+		
+		JLabel txtMetodoPagamento = new JLabel("Método de Pagamento:");
+		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtMetodoPagamento.setBounds(10, 458, 195, 29);
+		vendaPanel.add(txtMetodoPagamento);
+		
+		metodoPagamento = new JLabel("");
+		metodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		metodoPagamento.setBounds(201, 458, 182, 29);
+		vendaPanel.add(metodoPagamento);
+		
+		JLabel txtCliente = new JLabel("Cliente:");
+		txtCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtCliente.setBounds(10, 488, 61, 32);
+		vendaPanel.add(txtCliente);
+		
+		clienteNome = new JLabel("");
+		clienteNome.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		clienteNome.setBounds(74, 490, 245, 29);
+		vendaPanel.add(clienteNome);
+		
+		JLabel txtCpf = new JLabel("CPF:");
+		txtCpf.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtCpf.setBounds(10, 517, 46, 29);
+		vendaPanel.add(txtCpf);
+		
+		cpfCliente = new JLabel("000.000.000-00");
+		cpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		cpfCliente.setBounds(55, 517, 135, 29);
+		vendaPanel.add(cpfCliente);
+		
+		JButton btnVoltar = new JButton("Voltar   ");
+		btnVoltar.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
+		btnVoltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listModelVendas.clear();
+				listModelProdutos.clear();
+				idVenda.setText("0");
+				funcionarioNome.setText("-");
+				data.setText("00/00/0000");
+				totalCompra.setText("R$ 0,00");
+				metodoPagamento.setText("-");
+				clienteNome.setText("-");
+				cpfCliente.setText("-");
+				dateChooserAte.cleanup();
+				dateChooserDe.cleanup();
+				
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
+			}
+		});
+		btnVoltar.setBounds(10, 11, 120, 35);
+		PrincipalPanel.add(btnVoltar);
 	}
+	
+	private void atualizarListModels() {
+		
+		if (ComboBoxFiltro.getSelectedItem().equals("IDFuncionario")) {
+			String pesquisaString = FieldPesquisar.getText().replaceAll(" ", "");
+			if(!pesquisaString.isEmpty()) {
+				listModelVendas.clear();
+				try {																	
+					listModelVendas.addAll(vendaService.getVendasPorFuncionarioId(Long.valueOf(pesquisaString)));											
+				} catch (Exception e2) {
+					System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+				}
+			} else {
+				listModelVendas.clear();
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+						"Você precisa digitar antes de Pesquisar");
+			}
+		}
+		
+		if (ComboBoxFiltro.getSelectedItem().equals("ID")) {
+			String pesquisaString = FieldPesquisar.getText().replaceAll(" ", "");
+			if(!pesquisaString.isEmpty()) {
+				listModelVendas.clear();
+				try {
+					listModelVendas.addAll(vendaService.getVendasPorId(Long.valueOf(pesquisaString)));																		
+				} catch (Exception e2) {
+					System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+				}
+			} else {
+				listModelVendas.clear();
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+						"Você precisa digitar antes de Pesquisar");
+			}
+		}
+		
+		if (ComboBoxFiltro.getSelectedItem().equals("Todas")) {
+			listModelVendas.clear();
+			listModelVendas.addAll(vendaService.getTodasVendas());
+		}
+		
+		if (ComboBoxFiltro.getSelectedItem().equals("Data")) {
+			
+			Instant instantDe = dateChooserDe.getDate().toInstant();
+			LocalDate de = instantDe.atZone(ZoneId.systemDefault()).toLocalDate();
+			Instant instantAte = dateChooserAte.getDate().toInstant();
+			LocalDate ate = instantAte.atZone(ZoneId.systemDefault()).toLocalDate();
+			if (de.compareTo(ate) >= 0) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+						"Você precisa selecionar as datas antes de Pesquisar");
+			} else {
+				
+				if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
+					listModelVendas.clear();
+					try {
+						listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));																		
+					} catch (Exception e2) {
+						System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+					}
+				} else {
+					listModelVendas.clear();
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+							"Você precisa selecionar as datas antes de Pesquisar");
+				}
+			}
+		}
+	}
+	
 }
