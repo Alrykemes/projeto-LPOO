@@ -51,6 +51,14 @@ public class Janela {
 		return this.telaNovaVenda;
 	}
 	
+	public TelaEstoque getTelaEstoque() {
+		return this.telaEstoque;
+	}
+	
+	public TelaEditarProdutos getTelaEditarProdutos() {
+		return this.telaEditarProdutos;
+	}
+	
 	public JFrame getFrame() {
 		return this.frame;
 	}

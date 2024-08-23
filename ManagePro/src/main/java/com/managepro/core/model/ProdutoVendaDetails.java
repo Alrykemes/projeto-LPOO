@@ -52,7 +52,7 @@ public class ProdutoVendaDetails {
 
 	@Override
 	public String toString() {
-        return nomeProduto + " - Quantidade: " + quantidade + " - Preço: R$ " + String.format("%.2f", preco);
+        return nomeProduto + " | Quantidade: " + quantidade + " | Preço: R$ " + String.format("%.2f", preco);
     }
 	
 }

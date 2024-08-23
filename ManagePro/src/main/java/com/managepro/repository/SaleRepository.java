@@ -10,13 +10,13 @@ public interface SaleRepository {
 	
 	public void cadastrarVenda(Venda venda) throws ClassNotFoundException, SQLException;
 	
-	public void pesquisarVendasPorId(Long Id) throws ClassNotFoundException, SQLException;
+	public void deletarVenda(Long Id) throws ClassNotFoundException, SQLException;
+
+	public List<Venda> listarTodasAsVendas() throws ClassNotFoundException, SQLException;
 	
-	public void deletarVendas(Long Id) throws ClassNotFoundException, SQLException;
+	public List<Venda> pesquisarVendaPorId(Long Id) throws ClassNotFoundException, SQLException;
 	
-	public List<Venda> listarVendaPorId(Long Id) throws ClassNotFoundException, SQLException;
+	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException;
 	
-	public List<Venda> listarVendaPorFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException;
-	
-	public List<Venda> listarVendasPorData(LocalDate dataVenda) throws ClassNotFoundException, SQLException;
+	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ClassNotFoundException, SQLException;
 }

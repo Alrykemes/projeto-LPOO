@@ -2,6 +2,11 @@ package com.managepro.core.service;
 
 
 
+import java.security.InvalidParameterException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import com.managepro.core.model.Venda;
@@ -17,31 +22,107 @@ public class VendaService {
 		vendaDAO = new VendaDAO();
 	}
 	
-	/*
-	 * ajustar essas excecoes criar ela no pacote e tratalas em codigo,
-	 * criar validação baseada na UI de gerenciamento de login e novaVenda e conecta-la deixem todas 
-	 * as iteraçoes de tela funcionando e testadas obs: testar como usuario 
-	 * nao precisa criar testes, vamos decidir se deixaremos tudo em 
-	 * ingles ou portugues no grupo entao por favor siga o padrao
-	 * e mude o que for preciso para ficar no padrao por favor nao quebre 
-	 * nenhuma funcionalidade tente mudar apenas o nome das variaveis.
-	 * apague esse comentario e veja se tem outros pelo commit apaguem 
-	 * todos os comentarios para evitar conflitos de merging. 
-	 */
-	
 	public void cadastrarVenda(Venda venda) {
 		/*
 		 * necessita de verificação de situacao de pagamento apos implementar lib de pagamento.
 		 * esse comentario nao precisa apagar! 
 		 */
 		if(venda != null) {
-			if(situacaoPagamento == true) {
+			try {
+				validarVenda(venda);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if(situacaoPagamento == true) {	
 				vendaDAO.cadastrarVenda(venda);
 			} else {
-				
+				//
 			}
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "teste");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Venda é Null");
+		}
+	}
+	
+	public List<Venda> getTodasVendas() {
+		
+			try {
+				if(vendaDAO.listarTodasAsVendas() != null) {
+					return vendaDAO.listarTodasAsVendas();					
+				}
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nenhuma Venda realizada até o momento");
+				return null;
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+	}
+	
+	public List<Venda> getVendasPorFuncionarioId(Long id) {
+		try {
+			if(vendaDAO.listarVendasPorIdFuncionario(id).isEmpty()) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+						"Não há vendas realizadas por esse funcionário ou o mesmo não existe.");
+			} else {				
+				return vendaDAO.listarVendasPorIdFuncionario(id);					
+			}
+			return null;
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Venda> getVendasPorId(Long id) {
+		try {
+			if(vendaDAO.pesquisarVendaPorId(id).isEmpty()) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Não há vendas com esse ID.");				
+				return null;
+			} else {
+				return vendaDAO.pesquisarVendaPorId(id);					
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Venda> getVendasPorIntervaloDeDatas(LocalDate de, LocalDate ate) {
+		try {
+			if(vendaDAO.listarVendasPorIntervaloDeData(de, ate).isEmpty()) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+						"Não há vendas entre esse intervalo de datas.");				
+				return null;
+			} else {
+				return vendaDAO.listarVendasPorIntervaloDeData(de, ate);				
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public void deletarVendaPorId(Long id) {
+		try {
+			if (vendaDAO.pesquisarVendaPorId(id) != null) {
+				vendaDAO.deletarVenda(id);
+			} else {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Venda não encontrada!");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void validarVenda(Venda venda) throws Exception {
+		
+		if(venda.getData() == null) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Data é Null");
+			throw new InvalidParameterException("Data da Compra é null", null);
+		}
+		
+		if(venda.getProdutosVendidos() == null) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Produtos é Null");
+			throw new InvalidParameterException("A lista de produtos da Compra são null", null);
 		}
 	}
 }
