@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class ProdutoDAO  implements ProductRepository{
 		return produto;
 		
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			return null;
 		}
@@ -66,7 +67,7 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.setDate(6, Date.valueOf(produto.getValidade()));
 				statement.execute();
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 			}
 		}
@@ -85,7 +86,7 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.execute();
 				return produto;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}
@@ -99,7 +100,7 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.setLong(1, id);
 				statement.execute();
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 			}
 		}
@@ -126,7 +127,7 @@ public class ProdutoDAO  implements ProductRepository{
 			
 				return product;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}
@@ -135,7 +136,7 @@ public class ProdutoDAO  implements ProductRepository{
 		public List<Produto> pesquisarProdutoID(Long id_produto) {
 			try {	
 				connection = MySQLConnection.getConnection();
-				statement = connection.prepareStatement("SELECT * FROM produto WHERE id_produto = ?");
+				statement = connection.prepareStatement("SELECT * FROM produto WHERE id_produto = LIKE ?%");
 				statement.setLong(1, id_produto);
 				ResultSet rs = 	statement.executeQuery();		
 				List<Produto> product = new ArrayList<>();
@@ -153,7 +154,7 @@ public class ProdutoDAO  implements ProductRepository{
 						
 				return product;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}
@@ -184,7 +185,66 @@ public class ProdutoDAO  implements ProductRepository{
 				
 					return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÃ§Ã£o do sistema tente novamente mais tarde");
+				System.out.println(e.getMessage());
+				return null;
+			}
+		}
+
+
+
+		@Override
+		public List<Produto> getTodosProdutos() throws ClassNotFoundException, SQLException {
+			try {	
+				connection = MySQLConnection.getConnection();
+				statement = connection.prepareStatement("SELECT * FROM produto;");
+				ResultSet rs = 	statement.executeQuery();		
+				List<Produto> product = new ArrayList<>();
+				while (rs.next()) {
+					produto = new Produto();
+					produto.setCodigoProduto(rs.getLong("id_produto"));
+					produto.setNomeProduto(rs.getString("nome"));
+					produto.setFornecedor(rs.getString("fornecedor"));
+					produto.setQuantidade(rs.getInt("quantidade"));
+					produto.setMarca(rs.getString("marca"));
+					produto.setPreco(rs.getBigDecimal("preco"));;
+					produto.setValidade(rs.getDate("validade").toLocalDate());
+					product.add(produto);
+				}
+						
+				return product;
+			} catch (ClassNotFoundException | SQLException e) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
+				System.out.println(e.getMessage());
+				return null;
+			}
+		}
+
+
+
+		@Override
+		public List<Produto> pesquisarProdutoValidade(LocalDate validade) throws ClassNotFoundException, SQLException {
+			try {	
+				connection = MySQLConnection.getConnection();
+				statement = connection.prepareStatement("SELECT * FROM produto WHERE validade = ?");
+				statement.setDate(1, Date.valueOf(validade));
+				ResultSet rs = 	statement.executeQuery();		
+				List<Produto> product = new ArrayList<>();
+				while (rs.next()) {
+					produto.setCodigoProduto(rs.getLong("id_produto"));
+					produto.setNomeProduto(rs.getString("nome"));
+					produto.setFornecedor(rs.getString("fornecedor"));
+					produto.setQuantidade(rs.getInt("quantidade"));
+					produto.setMarca(rs.getString("marca"));
+					produto.setPreco(rs.getBigDecimal("preco"));;
+					produto.setValidade(rs.getDate("validade").toLocalDate());
+					product.add(produto);
+					
+				}
+						
+				return product;
+			} catch (ClassNotFoundException | SQLException e) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}

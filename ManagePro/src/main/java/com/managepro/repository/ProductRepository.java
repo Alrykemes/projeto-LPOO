@@ -1,6 +1,7 @@
 package com.managepro.repository;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.managepro.core.model.Produto;
@@ -19,4 +20,9 @@ public interface ProductRepository {
 	public List<Produto> pesquisarProdutoNome (String nomeProduto) throws ClassNotFoundException, SQLException;
 	
 	public List<ProdutoVendaDetails> getProductsForSale(Long idVenda) throws ClassNotFoundException, SQLException;
+	
+	public List<Produto> getTodosProdutos() throws ClassNotFoundException, SQLException;
+	
+	public List<Produto> pesquisarProdutoValidade(LocalDate validade) throws ClassNotFoundException, SQLException;
+
 }

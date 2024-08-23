@@ -238,7 +238,7 @@ public class TelaContabilidade {
 	        painelGrafico2.repaint(); // Repaint para garantir que o gráfico seja visível
 
 	        // Gráfico de pizza
-	        DefaultPieDataset datasetPie = createPieDataset();
+	        DefaultPieDataset<String> datasetPie = createPieDataset();
 	        JFreeChart chartPie = ChartFactory.createPieChart(
 	            "Gráfico de Pizza",
 	            datasetPie,
@@ -270,8 +270,8 @@ public class TelaContabilidade {
 	        return dataset;
 	    }
 		
-		private DefaultPieDataset createPieDataset() {
-	        DefaultPieDataset dataset = new DefaultPieDataset();
+		private DefaultPieDataset<String> createPieDataset() {
+	        DefaultPieDataset<String> dataset = new DefaultPieDataset<String>();
 	        dataset.setValue("Item 1", 20);
 	        dataset.setValue("Item 2", 30);
 	        dataset.setValue("Item 3", 50);

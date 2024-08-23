@@ -124,7 +124,7 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById((resultSet.getLong("id_funcionario")))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario")))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
@@ -169,7 +169,7 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
@@ -212,7 +212,7 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	        	venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
@@ -252,7 +252,7 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	        	venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
