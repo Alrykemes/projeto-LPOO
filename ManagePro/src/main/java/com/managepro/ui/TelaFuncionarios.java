@@ -1,6 +1,7 @@
 package com.managepro.ui;
 
 import javax.swing.JPanel;
+
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -12,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import com.managepro.core.model.Cargos;
 import com.managepro.core.model.Funcionario;
@@ -22,12 +24,13 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.JOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -42,7 +45,6 @@ public class TelaFuncionarios {
 	private JTextField campoNome;
 	private JFormattedTextField campoCpf;
 	private JComboBox<String> campoCargo;
-	private JTextField campoSalario;
 	private JTable tabela;
 	private JTextField campoUsuario;
 	private JTextField campoSenha;
@@ -54,6 +56,8 @@ public class TelaFuncionarios {
 	private JLabel txtSenha;
 	private JDateChooser dateChooser;
 	private JTextField campoTelefone;
+	private JFormattedTextField campoSalario;
+	private JButton botaoRemover;
 
 	public JPanel getPanel() {
 		return this.funcionariosPanel;
@@ -80,6 +84,14 @@ public class TelaFuncionarios {
 		botaoVoltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		botaoVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				campoNome.setText("");
+				campoCpf.setText("");
+				campoCargo.setSelectedItem("ADMINISTRADOR");
+				campoSalario.setValue(BigDecimal.ZERO);
+				dateChooser.setDate(null);
+				campoTelefone.setText("");
+				campoUsuario.setText("");
+				campoSenha.setText("");
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
@@ -129,7 +141,14 @@ public class TelaFuncionarios {
 		txtSalario.setBounds(591, 59, 70, 19);
 		panel_1.add(txtSalario);
 
-		campoSalario = new JTextField();
+		NumberFormat format = new DecimalFormat("#,##0.00");
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(BigDecimal.class);
+		formatter.setAllowsInvalid(false);
+		formatter.setMinimum(new BigDecimal("0.00"));
+		formatter.setMaximum(new BigDecimal("99999999.99"));
+		campoSalario = new JFormattedTextField(formatter);
+		campoSalario.setColumns(10);
 		campoSalario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		campoSalario.setBounds(591, 82, 180, 38);
 		panel_1.add(campoSalario);
@@ -140,23 +159,25 @@ public class TelaFuncionarios {
 		panel_1.add(txtDataAdmissao);
 
 		dateChooser = new JDateChooser();
+		JTextField textField = (JTextField) dateChooser.getComponent(1);
+		textField.setEditable(false);
 		dateChooser.setBounds(21, 155, 180, 38);
 		dateChooser.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		panel_1.add(dateChooser);
+		
+		JLabel textTelefone = new JLabel("Telefone:");
+		textTelefone.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		textTelefone.setBounds(211, 136, 45, 13);
+		panel_1.add(textTelefone);
 		
 		MaskFormatter maskTelefone = new MaskFormatter("(##)#####-####");
 		maskTelefone.setValidCharacters("0123456789");
 		maskTelefone.setAllowsInvalid(false);
 		campoTelefone = new JFormattedTextField(maskTelefone);
 		campoTelefone.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        campoTelefone.setBounds(211, 155, 180, 38);
-        panel_1.add(campoTelefone);
-        campoTelefone.setColumns(10);
-        
-        JLabel textTelefone = new JLabel("Telefone:");
-        textTelefone.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        textTelefone.setBounds(211, 136, 45, 13);
-        panel_1.add(textTelefone);
+		campoTelefone.setBounds(211, 155, 180, 38);
+		panel_1.add(campoTelefone);
+		campoTelefone.setColumns(10);
 
 		txtUsuario = new JLabel("Usuário:");
 		txtUsuario.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -183,17 +204,33 @@ public class TelaFuncionarios {
 		JButton botaoAdicionarFuncionario = new JButton("Adicionar");
 		botaoAdicionarFuncionario.setBackground(new Color(255, 255, 255));
 		botaoAdicionarFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
-		botaoAdicionarFuncionario.setBounds(797, 127, 171, 47);
+		botaoAdicionarFuncionario.setBounds(797, 77, 170, 40);
 		panel_1.add(botaoAdicionarFuncionario);
+
 		botaoAdicionarFuncionario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Instant instant = dateChooser.getDate().toInstant();
-				LocalDate dataAdmissaoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+				LocalDate dataAdmissaoLD = null;
+				BigDecimal valorSalario = BigDecimal.ZERO;
+
+				try {
+					Instant instant = dateChooser.getDate().toInstant();
+					dataAdmissaoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Data inválida");
+				}
 
 				String valorNome = campoNome.getText();
 				String valorCpf = campoCpf.getText();
 				Cargos valorCargo = Cargos.valueOf(campoCargo.getSelectedItem().toString());
-				BigDecimal valorSalario = new BigDecimal(campoSalario.getText());
+
+				try {
+					campoSalario.commitEdit();
+					valorSalario = (BigDecimal) campoSalario.getValue();
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Salário inválido");
+
+				}
+
 				LocalDate valorDataAdmissao = dataAdmissaoLD;
 				String valorTelefone = campoTelefone.getText();
 				String valorUsuario = campoUsuario.getText();
@@ -209,8 +246,8 @@ public class TelaFuncionarios {
 
 					campoNome.setText("");
 					campoCpf.setText("");
-					campoCargo.setSelectedItem("ADMINISTRADOR");;
-					campoSalario.setText("");
+					campoCargo.setSelectedItem("ADMINISTRADOR");
+					campoSalario.setValue(BigDecimal.ZERO);
 					dateChooser.setDate(null);
 					campoTelefone.setText("");
 					campoUsuario.setText("");
@@ -219,19 +256,42 @@ public class TelaFuncionarios {
 					carregarFuncionariosNaTabela();
 
 				} catch (Exception e1) {
-					System.out.println("Erro ao criar funcionário");
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+							"Erro ao cadastrar funcionário, tente novamente mais tarde", "Erro",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
+
+		JButton botaoEditarFuncionario = new JButton("Editar");
+		botaoEditarFuncionario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int linhaSelecionada = tabela.getSelectedRow();
+				if (linhaSelecionada != -1) {
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(),
+							"EditarFuncionario");
+					Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
+					Janela.getInstance().getFrame().setLocationRelativeTo(null);
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+							"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",
+							JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+		});
+
+		botaoEditarFuncionario.setBackground(new Color(255, 255, 255));
+		botaoEditarFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
+		botaoEditarFuncionario.setBounds(274, 269, 170, 40);
+		panel_1.add(botaoEditarFuncionario);
 
 		tabela = new JTable();
 		tabela.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		tabela.setBorder(new LineBorder(new Color(0, 0, 0)));
 		tabela.setToolTipText("");
-		tabela.setModel(new DefaultTableModel(
-				new Object[][] {{ null, null, null, null, null, null, null, null }},
-				new String[] { "Nome", "CPF", "Cargo", "Salário", "Data Admissão", "Telefone",  "Usuário", "Senha" }));
+		tabela.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null } },
+				new String[] { "Nome", "CPF", "Cargo", "Salário", "Data Admissão", "Telefone", "Usuário", "Senha" }));
 		tabela.setBounds(50, 248, 930, 200);
 
 		JTableHeader tableHeader = tabela.getTableHeader();
@@ -239,75 +299,43 @@ public class TelaFuncionarios {
 
 		tabela.getTableHeader().setReorderingAllowed(false);
 
-		JScrollPane scrollPane = new JScrollPane(tabela);
+		JScrollPane scrollPane =  new JScrollPane(tabela);
 		scrollPane.setLocation(10, 335);
 		scrollPane.setSize(986, 200);
 
 		panel_1.add(scrollPane);
+		
+		botaoRemover = new JButton("Remover");
+		botaoRemover.setForeground(new Color(0, 0, 0));
+		botaoRemover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		botaoRemover.setFont(new Font("SansSerif", Font.BOLD, 20));
+		botaoRemover.setBackground(new Color(255, 255, 255));
+		botaoRemover.setBounds(525, 269, 170, 40);
+		panel_1.add(botaoRemover);
 
 		carregarFuncionariosNaTabela();
-		tabela.getSelectionModel().addListSelectionListener(event -> {
-		    if (!event.getValueIsAdjusting() && tabela.getSelectedRow() != -1) {
-		        int selectedRow = tabela.getSelectedRow();
-
-		        campoNome.setText(tabela.getValueAt(selectedRow, 0).toString());
-		        campoCpf.setText(tabela.getValueAt(selectedRow, 1).toString());
-		        campoCargo.setSelectedItem(tabela.getValueAt(selectedRow, 2).toString());
-		        campoSalario.setText(tabela.getValueAt(selectedRow, 3).toString());
-		        dateChooser.setDate(Date.from(((LocalDate) tabela.getValueAt(selectedRow, 4)).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-		        campoTelefone.setText(tabela.getValueAt(selectedRow, 5).toString());
-		        campoUsuario.setText(tabela.getValueAt(selectedRow, 6).toString());
-		        campoSenha.setText(tabela.getValueAt(selectedRow, 7).toString());       
-		    }
-		});
-		
-		 JButton salvar = new JButton("Salvar Alterações");
-	        salvar.addActionListener(new ActionListener() {
-	        	public void actionPerformed(ActionEvent e) {
-	        		
-	        		Instant instant = dateChooser.getDate().toInstant();
-					LocalDate dataAdmissaoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
-
-					String valorNome = campoNome.getText();
-					String valorCpf = campoCpf.getText();
-					Cargos valorCargo = Cargos.valueOf(campoCargo.getSelectedItem().toString());
-					BigDecimal valorSalario = new BigDecimal(campoSalario.getText());
-					LocalDate valorDataAdmissao = dataAdmissaoLD;
-					String valorTelefone = campoTelefone.getText();
-					String valorUsuario = campoUsuario.getText();
-					String valorSenha = campoSenha.getText();
-
-					FuncionarioService funcionarioS = new FuncionarioService();
-					Funcionario funcionario = new Funcionario(valorNome, valorCpf, valorCargo, valorSalario,
-							valorDataAdmissao, valorTelefone, valorUsuario, valorSenha);
-
-	        		try {
-						funcionarioS.funcionarioExiste(funcionario);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-	        	}
-	        });
-	        salvar.setFont(new Font("SansSerif", Font.BOLD, 20));
-	        salvar.setBounds(748, 211, 220, 47);
-	        panel_1.add(salvar);
 	}
 
 	private void carregarFuncionariosNaTabela() {
 		try {
 			FuncionarioService funcionarioService = new FuncionarioService();
 			List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
-			
+
 			DefaultTableModel model = (DefaultTableModel) tabela.getModel();
 			model.setRowCount(0);
-			
+
 			for (Funcionario funcionario : funcionarios) {
 				model.addRow(new Object[] { funcionario.getNome(), funcionario.getCpf(), funcionario.getFuncao(),
-						funcionario.getSalario(), funcionario.getDataAdmissao(), funcionario.getTelefone(), funcionario.getUsuario(),
-						funcionario.getSenha() });
+						funcionario.getSalario(), funcionario.getDataAdmissao(), funcionario.getTelefone(),
+						funcionario.getUsuario(), funcionario.getSenha() });
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+					"Erro ao inserir funcionários na tabela, tente novamente mais tarde", "Erro",
+					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 }

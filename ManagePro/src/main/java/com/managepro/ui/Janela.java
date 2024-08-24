@@ -20,6 +20,7 @@ public class Janela {
 	private TelaNovaVenda telaNovaVenda;
 	private TelaAdicionarCliente telaAdicionarCliente;
 	private TelaGerenciamentoDeVendas telaGerenciamentoDeVendas;
+	private TelaEditarFuncionario telaEditarFuncionario;
 	private TelaFuncionarios telaFuncionarios;
 	private TelaContabilidade telaContabilidade;
 	
@@ -82,6 +83,7 @@ public class Janela {
 			telaGerenciamentoDeVendas = new TelaGerenciamentoDeVendas();
 			telaFuncionarios = new TelaFuncionarios();
 			telaContabilidade = new TelaContabilidade();
+			telaEditarFuncionario = new TelaEditarFuncionario();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -93,6 +95,7 @@ public class Janela {
 		panelPrincipal.add(telaNovaVenda.getPanel(), "NovaVenda");
 		panelPrincipal.add(telaAdicionarProdutos.getPanel(), "AdicionarProdutos");
 		panelPrincipal.add(telaEditarProdutos.getPanel(), "EditarProdutos");
+		panelPrincipal.add(telaEditarFuncionario.getPanel(), "EditarFuncionario");
 		panelPrincipal.add(telaEstoque.getPanel(), "Estoque");
 		panelPrincipal.add(telaMenu.getPanel(), "Menu");
 		panelPrincipal.add(telaLogin.getPanel(), "Login");
