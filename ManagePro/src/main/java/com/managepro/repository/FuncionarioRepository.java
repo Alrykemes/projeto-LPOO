@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import com.managepro.core.model.Funcionario;
 
-public interface UsuarioRepository {
+public interface FuncionarioRepository {
 
 	public Funcionario encontrarFuncionarioPeloUsuario(String user) throws ClassNotFoundException, SQLException;
 	
@@ -13,4 +13,8 @@ public interface UsuarioRepository {
 	public Funcionario encontrarFuncionarioPeloCpf(String cpf) throws SQLException;
 	
 	public void adicionarFuncionario(Funcionario funcionario);
+	
+	public void editarFuncionario(Funcionario funcionario, Funcionario funcionario2);
+	
+	public void apagarFuncionario(Funcionario funcionario);
 }

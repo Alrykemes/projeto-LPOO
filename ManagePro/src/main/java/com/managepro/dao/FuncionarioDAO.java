@@ -1,6 +1,7 @@
 package com.managepro.dao;
 
 import java.sql.Connection;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,15 +14,14 @@ import javax.swing.JOptionPane;
 
 import com.managepro.core.model.Cargos;
 import com.managepro.core.model.Funcionario;
-import com.managepro.repository.UsuarioRepository;
+import com.managepro.repository.FuncionarioRepository;
 import com.managepro.repository.MySQLConnection;
 import com.managepro.ui.Janela;
 
-public class FuncionarioDAO implements UsuarioRepository {
+public class FuncionarioDAO implements FuncionarioRepository {
 
 	private Funcionario funcionario;
 
-	@Override
 	public Funcionario encontrarFuncionarioPeloUsuario(String user) {
 		try {
 			Connection connection = MySQLConnection.getConnection();
@@ -128,7 +128,6 @@ public class FuncionarioDAO implements UsuarioRepository {
 
 	}
 
-	@Override
 	public void adicionarFuncionario(Funcionario funcionario) {
 		try {
 			Connection connection = MySQLConnection.getConnection();
@@ -151,8 +150,6 @@ public class FuncionarioDAO implements UsuarioRepository {
 			if (rs.next()) {
 				Long funcionarioId = rs.getLong(1);
 
-				System.out.println(funcionarioId);
-
 				statementTelefone.setLong(1, funcionarioId);
 				statementTelefone.setString(2, funcionario.getTelefone());
 				statementTelefone.execute();
@@ -168,6 +165,51 @@ public class FuncionarioDAO implements UsuarioRepository {
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
 					"Erro Na Comunicação do sistema tente novamente mais tarde");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void editarFuncionario(Funcionario funcionarioEditado, Funcionario funcionarioOriginal) {
+		try {
+			Connection connection = MySQLConnection.getConnection();
+
+			String updateFuncionarioQuery = "UPDATE funcionario SET nome = ?, cpf = ?, cargo = ?, salario = ?, data_admissao = ?, usuario = ?, senha = ? WHERE id_funcionario = ?";
+			PreparedStatement statementFuncionario = connection.prepareStatement(updateFuncionarioQuery);
+
+			statementFuncionario.setString(1, funcionarioEditado.getNome());
+			statementFuncionario.setString(2, funcionarioEditado.getCpf());
+			statementFuncionario.setString(3, funcionarioEditado.getFuncao().name());
+			statementFuncionario.setBigDecimal(4, funcionarioEditado.getSalario());
+			statementFuncionario.setDate(5, Date.valueOf(funcionarioEditado.getDataAdmissao()));
+			statementFuncionario.setString(6, funcionarioEditado.getUsuario());
+			statementFuncionario.setString(7, funcionarioEditado.getSenha());
+			statementFuncionario.setLong(8, funcionarioOriginal.getId()); 
+
+			int linhasAfetadas = statementFuncionario.executeUpdate();
+			System.out.println(linhasAfetadas);
+
+			if (linhasAfetadas == 0) {
+				throw new SQLException("Falha ao Atualizar Funcionário, nenhum registro foi modificado!");
+			}
+
+			// Atualiza o telefone do funcionário
+			String updateTelefoneQuery = "UPDATE telefone_funcionario SET numero = ? WHERE id_funcionario = ?";
+			PreparedStatement statementTelefone = connection.prepareStatement(updateTelefoneQuery);
+
+			statementTelefone.setString(1, funcionarioEditado.getTelefone());
+			statementTelefone.setLong(2, funcionarioOriginal.getId()); 
+
+			statementTelefone.executeUpdate();
+
+			statementFuncionario.close();
+			statementTelefone.close();
+			connection.close();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+					"Erro ao edi, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
@@ -210,9 +252,10 @@ public class FuncionarioDAO implements UsuarioRepository {
 		return funcionarios;
 	}
 
-	public Funcionario editarFuncionario(Funcionario funcionario) {
-
-		return funcionario;
+	@Override
+	public void apagarFuncionario(Funcionario funcionario) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

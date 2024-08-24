@@ -23,7 +23,7 @@ public class FuncionarioService {
 				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário já cadastrado");
 			} else {
 				funcionarioDAO.adicionarFuncionario(funcionario);
-				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário cadastrado");
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário cadastrado com sucesso!");
 			}
 		} else {
 			throw new Exception("Erro");
@@ -59,29 +59,33 @@ public class FuncionarioService {
 					"Nome de usuário muito curto, adicione mais caracteres");
 			return false;
 		} else if (funcionario.getUsuario().length() > 20) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-					"Nome de usuário muito extenso - MAX(20)");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Nome de usuário muito extenso - MAX(20)");
 			return false;
 		}
 
-		if (funcionario.getSenha().length() < 4 ) {
+		if (funcionario.getSenha().length() < 4) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
 					"Senha muito curta, adicione mais caracteres");
 			return false;
 		} else if (funcionario.getSenha().length() > 20) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-					"Senha muito extensa - MAX(20(");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Senha muito extensa - MAX(20(");
 			return false;
 		}
 
 		return true;
 	}
 
-	public void funcionarioExiste(Funcionario funcionario) throws Exception {
+	public void criarFuncionario(Funcionario funcionario, String cpfOriginal) throws Exception {
 		if (validarCampos(funcionario)) {
-			Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(funcionario.getCpf());
+			Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(cpfOriginal);
 			if (funcionarioRetornoBanco != null) {
-				System.out.println(funcionarioRetornoBanco.getId());
+				FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+				funcionarioDAO.editarFuncionario(funcionario, funcionarioRetornoBanco);
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário editado com sucesso!");
+			} else {
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+						"Erro ao editar funcionário, funcionário não encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
+
 			}
 		}
 	}

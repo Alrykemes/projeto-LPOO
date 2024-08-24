@@ -438,8 +438,6 @@ public class TelaNovaVenda {
 			}
 		});
 		addProductPanel.add(btnCancel);
-		
-		
 	}
 	
 	public void setClienteNaTela() {

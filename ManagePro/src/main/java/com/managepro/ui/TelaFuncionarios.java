@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -31,7 +30,6 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -44,7 +42,7 @@ public class TelaFuncionarios {
 	private JPanel funcionariosPanel;
 	private JTextField campoNome;
 	private JFormattedTextField campoCpf;
-	private JComboBox<String> campoCargo;
+	private JComboBox<Cargos> campoCargo;
 	private JTable tabela;
 	private JTextField campoUsuario;
 	private JTextField campoSenha;
@@ -57,17 +55,18 @@ public class TelaFuncionarios {
 	private JDateChooser dateChooser;
 	private JTextField campoTelefone;
 	private JFormattedTextField campoSalario;
-	private JButton botaoRemover;
+	private JButton botaoRemoverFuncionario;
+	private Funcionario funcionario;
 
 	public JPanel getPanel() {
 		return this.funcionariosPanel;
 	}
 
-	public TelaFuncionarios() throws ParseException {
+	public TelaFuncionarios() {
 		initialize();
 	}
 
-	private void initialize() throws ParseException {
+	private void initialize() {
 		funcionariosPanel = new JPanel();
 		funcionariosPanel.setSize(1020, 680);
 		funcionariosPanel.setLayout(null);
@@ -78,7 +77,7 @@ public class TelaFuncionarios {
 		funcionariosPanel.add(panel_1);
 		panel_1.setLayout(null);
 
-		JButton botaoVoltar = new JButton("Voltar   ");
+		JButton botaoVoltar = new JButton("Voltar");
 		botaoVoltar.setIcon(
 				new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
 		botaoVoltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -86,7 +85,7 @@ public class TelaFuncionarios {
 			public void actionPerformed(ActionEvent e) {
 				campoNome.setText("");
 				campoCpf.setText("");
-				campoCargo.setSelectedItem("ADMINISTRADOR");
+				campoCargo.setSelectedItem(Cargos.ADMINISTRADOR);
 				campoSalario.setValue(BigDecimal.ZERO);
 				dateChooser.setDate(null);
 				campoTelefone.setText("");
@@ -114,10 +113,16 @@ public class TelaFuncionarios {
 		txtCpf.setBounds(211, 59, 70, 19);
 		panel_1.add(txtCpf);
 
-		MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
-		maskCpf.setValidCharacters("0123456789");
-		maskCpf.setAllowsInvalid(false);
-		campoCpf = new JFormattedTextField(maskCpf);
+		try {
+			MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
+			maskCpf.setValidCharacters("0123456789");
+			maskCpf.setAllowsInvalid(false);
+			campoCpf = new JFormattedTextField(maskCpf);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de cpf: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
 		campoCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		campoCpf.setText("CPF:");
 		campoCpf.setBounds(211, 82, 180, 38);
@@ -129,10 +134,8 @@ public class TelaFuncionarios {
 		txtCargo.setBounds(401, 59, 70, 19);
 		panel_1.add(txtCargo);
 
-		campoCargo = new JComboBox<>();
+		campoCargo = new JComboBox<Cargos>(Cargos.values());
 		campoCargo.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		campoCargo.setModel(new DefaultComboBoxModel<String>(
-				new String[] { "ADMINISTRADOR", "VENDEDOR", "CONTADOR", "ESTOQUISTA", "GERENTE" }));
 		campoCargo.setBounds(401, 83, 180, 38);
 		panel_1.add(campoCargo);
 
@@ -164,16 +167,22 @@ public class TelaFuncionarios {
 		dateChooser.setBounds(21, 155, 180, 38);
 		dateChooser.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		panel_1.add(dateChooser);
-		
+
 		JLabel textTelefone = new JLabel("Telefone:");
 		textTelefone.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		textTelefone.setBounds(211, 136, 45, 13);
 		panel_1.add(textTelefone);
-		
-		MaskFormatter maskTelefone = new MaskFormatter("(##)#####-####");
-		maskTelefone.setValidCharacters("0123456789");
-		maskTelefone.setAllowsInvalid(false);
-		campoTelefone = new JFormattedTextField(maskTelefone);
+
+		try {
+			MaskFormatter maskTelefone = new MaskFormatter("(##)#####-####");
+			maskTelefone.setValidCharacters("0123456789");
+			maskTelefone.setAllowsInvalid(false);
+			campoTelefone = new JFormattedTextField(maskTelefone);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de telefone: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
 		campoTelefone.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		campoTelefone.setBounds(211, 155, 180, 38);
 		panel_1.add(campoTelefone);
@@ -237,11 +246,10 @@ public class TelaFuncionarios {
 				String valorSenha = campoSenha.getText();
 
 				FuncionarioService funcionarioS = new FuncionarioService();
-				Funcionario funcionario = new Funcionario(valorNome, valorCpf, valorCargo, valorSalario,
-						valorDataAdmissao, valorTelefone, valorUsuario, valorSenha);
+				funcionario = new Funcionario(valorNome, valorCpf, valorCargo, valorSalario, valorDataAdmissao,
+						valorTelefone, valorUsuario, valorSenha);
 
 				try {
-					funcionarioS.validarCampos(funcionario);
 					funcionarioS.criarFuncionario(funcionario);
 
 					campoNome.setText("");
@@ -263,11 +271,27 @@ public class TelaFuncionarios {
 			}
 		});
 
+		botaoRemoverFuncionario = new JButton("Remover");
+		botaoRemoverFuncionario.setForeground(new Color(0, 0, 0));
+		botaoRemoverFuncionario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		botaoRemoverFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
+		botaoRemoverFuncionario.setBackground(new Color(255, 255, 255));
+		botaoRemoverFuncionario.setBounds(525, 269, 170, 40);
+		panel_1.add(botaoRemoverFuncionario);
+
 		JButton botaoEditarFuncionario = new JButton("Editar");
 		botaoEditarFuncionario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int linhaSelecionada = tabela.getSelectedRow();
 				if (linhaSelecionada != -1) {
+					FuncionarioService funcionarioService = new FuncionarioService();
+					List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+
+					Janela.getInstance().getTelaEditarFuncionario().setCampos(funcionarios.get(linhaSelecionada));
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(),
 							"EditarFuncionario");
 					Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
@@ -299,27 +323,16 @@ public class TelaFuncionarios {
 
 		tabela.getTableHeader().setReorderingAllowed(false);
 
-		JScrollPane scrollPane =  new JScrollPane(tabela);
+		JScrollPane scrollPane = new JScrollPane(tabela);
 		scrollPane.setLocation(10, 335);
 		scrollPane.setSize(986, 200);
 
 		panel_1.add(scrollPane);
-		
-		botaoRemover = new JButton("Remover");
-		botaoRemover.setForeground(new Color(0, 0, 0));
-		botaoRemover.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		botaoRemover.setFont(new Font("SansSerif", Font.BOLD, 20));
-		botaoRemover.setBackground(new Color(255, 255, 255));
-		botaoRemover.setBounds(525, 269, 170, 40);
-		panel_1.add(botaoRemover);
 
 		carregarFuncionariosNaTabela();
 	}
 
-	private void carregarFuncionariosNaTabela() {
+	public void carregarFuncionariosNaTabela() {
 		try {
 			FuncionarioService funcionarioService = new FuncionarioService();
 			List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();

@@ -48,8 +48,16 @@ public class Janela {
 	    return this.telaAdicionarCliente;
 	}
 	
+	public TelaEditarFuncionario getTelaEditarFuncionario() {
+		return this.telaEditarFuncionario;
+	}
+	
 	public TelaNovaVenda getTelaNovaVenda() {
 		return this.telaNovaVenda;
+	}
+	
+	public TelaFuncionarios getTelaFuncionarios() {
+		return this.telaFuncionarios;
 	}
 	
 	public JFrame getFrame() {
