@@ -83,5 +83,12 @@ public class Venda {
 	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
 	}
+
+	@Override
+	public String toString() {
+		return "ID: " + id + "| Data: " + data + "| Preco: " + String.format("R$ %.2f", preco);
+	}
+	
+	
 	
 }

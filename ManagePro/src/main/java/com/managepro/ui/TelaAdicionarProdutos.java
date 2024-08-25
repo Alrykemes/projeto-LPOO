@@ -1,15 +1,24 @@
 package com.managepro.ui;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
-
 import java.awt.Panel;
 import java.awt.Color;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.awt.event.ActionEvent;
+
+import com.managepro.core.model.Produto;
+import com.managepro.core.service.ProdutoService;
+import com.managepro.exceptions.ValidacaoException;
+import com.toedter.calendar.JDateChooser;
 
 public class TelaAdicionarProdutos{
 
@@ -17,19 +26,20 @@ public class TelaAdicionarProdutos{
 	private JTextField textFieldNomeProduto;
 	private JTextField textFieldCodigo;
 	private JTextField textFieldPrecoVenda;
-	private JTextField textFieldQuanditade;
+	private JTextField textFieldQuantidade;
 	private JTextField textFieldMarca;
 	private JTextField textFieldFornecedor;
+	private JDateChooser dataValidade;
 
 	public JPanel getPanel() {
 		return this.adicionarProdutoPanel;
 	}
 
-	public TelaAdicionarProdutos() {
+	public TelaAdicionarProdutos() throws ParseException {
 		this.initialize();
 	}
 
-	private void initialize() {
+	private void initialize() throws ParseException {
 		adicionarProdutoPanel = new JPanel();
 		adicionarProdutoPanel.setSize(700, 500);
 		adicionarProdutoPanel.setLayout(null);
@@ -49,7 +59,11 @@ public class TelaAdicionarProdutos{
 		adicionarProdutoPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
+<<<<<<< HEAD
 		JLabel Codigo = new JLabel("Código *");
+=======
+		JLabel Codigo = new JLabel("C�digo *");
+>>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
 		adicionarProdutoPanel.add(Codigo);
@@ -58,13 +72,17 @@ public class TelaAdicionarProdutos{
 		textFieldCodigo.setColumns(10);
 		textFieldCodigo.setBounds(312, 98, 131, 35);
 		adicionarProdutoPanel.add(textFieldCodigo);
-
+		
 		textFieldPrecoVenda = new JTextField();
 		textFieldPrecoVenda.setColumns(10);
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		adicionarProdutoPanel.add(textFieldPrecoVenda);
 
+<<<<<<< HEAD
 		JLabel PrecoVenda = new JLabel("Preço de Venda *");
+=======
+		JLabel PrecoVenda = new JLabel("Pre�o de Venda *");
+>>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
 		PrecoVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoVenda.setBounds(501, 73, 110, 14);
 		adicionarProdutoPanel.add(PrecoVenda);
@@ -75,6 +93,50 @@ public class TelaAdicionarProdutos{
 		adicionarProdutoPanel.add(panel);
 		panel.setLayout(null);
 
+		textFieldQuantidade = new JTextField();
+		textFieldQuantidade.setColumns(10);
+		textFieldQuantidade.setBounds(34, 182, 87, 35);
+		adicionarProdutoPanel.add(textFieldQuantidade);
+
+		JLabel Quantidade = new JLabel("Quantidade *");
+		Quantidade.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Quantidade.setBounds(34, 157, 118, 14);
+		adicionarProdutoPanel.add(Quantidade);
+
+		textFieldMarca = new JTextField();
+		textFieldMarca.setColumns(10);
+		textFieldMarca.setBounds(158, 182, 139, 35);
+		adicionarProdutoPanel.add(textFieldMarca);
+
+		JLabel Marca = new JLabel("Marca *");
+		Marca.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Marca.setBounds(162, 157, 87, 14);
+		adicionarProdutoPanel.add(Marca);
+
+		JLabel Fornecedor = new JLabel("Fornecedor *");
+		Fornecedor.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Fornecedor.setBounds(331, 157, 81, 14);
+		adicionarProdutoPanel.add(Fornecedor);
+
+		textFieldFornecedor = new JTextField();
+		textFieldFornecedor.setColumns(10);
+		textFieldFornecedor.setBounds(331, 182, 131, 35);
+		adicionarProdutoPanel.add(textFieldFornecedor);
+
+		JLabel TituloTela = new JLabel("CADASTRAR PRODUTO");
+		TituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		TituloTela.setBounds(10, 11, 295, 24);
+		adicionarProdutoPanel.add(TituloTela);
+		
+		dataValidade = new JDateChooser();
+		dataValidade.setBounds(490, 182, 160, 35);
+		adicionarProdutoPanel.add(dataValidade);
+		
+		JLabel Validade = new JLabel("Data de Validade *");
+		Validade.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		Validade.setBounds(511, 158, 121, 14);
+		adicionarProdutoPanel.add(Validade);
+		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -89,6 +151,21 @@ public class TelaAdicionarProdutos{
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String nomeProduto = textFieldNomeProduto.getText();
+				BigDecimal preco = new BigDecimal(textFieldPrecoVenda.getText());
+				int quantidade = Integer.parseInt(textFieldQuantidade.getText());
+				String marca = textFieldMarca.getText();
+				String fornecedor = textFieldFornecedor.getText();				
+				Instant dataInstant = dataValidade.getDate().toInstant();
+				LocalDate validade = dataInstant.atZone(ZoneId.systemDefault()).toLocalDate();
+				Produto produto = new Produto (nomeProduto,quantidade, marca, fornecedor, preco, validade);
+				ProdutoService produtoService = new ProdutoService();
+				try {
+					produtoService.adicionarProduto(produto);
+					Janela.getInstance().getTelaEstoque().atualizarEstoque();
+				} catch (ValidacaoException e1) {
+					e1.printStackTrace();
+				}
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
 				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
 				Janela.getInstance().getFrame().setLocationRelativeTo(null);
@@ -96,6 +173,7 @@ public class TelaAdicionarProdutos{
 		});
 		btnCadastrar.setBounds(539, 11, 99, 41);
 		panel.add(btnCadastrar);
+<<<<<<< HEAD
 
 		textFieldQuanditade = new JTextField();
 		textFieldQuanditade.setColumns(10);
@@ -182,5 +260,9 @@ public class TelaAdicionarProdutos{
 		TituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		TituloTela.setBounds(10, 11, 295, 24);
 		adicionarProdutoPanel.add(TituloTela);
+=======
+		
+		
+>>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
 	}
 }

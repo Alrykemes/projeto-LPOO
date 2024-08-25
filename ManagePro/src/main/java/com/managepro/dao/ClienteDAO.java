@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 
 import javax.swing.JOptionPane;
 
@@ -20,18 +21,36 @@ public class ClienteDAO implements ClientRepository{
 	@Override
 	public void addCliente(Cliente cliente) {
 		try {
-			LocalDate data =  cliente.getDataNascimento();
 			Connection connection = MySQLConnection.getConnection();
-			Statement statement = connection.createStatement();
+			PreparedStatement stmtCliente = connection.prepareStatement(
+					"INSERT INTO cliente(nome, cpf, data_nascimento) VALUES (?, ?, ?);",
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmtTelefone = connection.prepareStatement(
+					"INSERT INTO telefone_cliente(id_cliente, numero) VALUES (?, ?);");
 			
-			String sql = "INSERT INTO cliente(nome, cpf, data_nascimento) VALUES ('" + cliente.getNome() + "', '"+ cliente.getCpf() +"', '"+ java.sql.Date.valueOf(data) +"')";
-			statement.execute(sql);
+			stmtCliente.setString(1, cliente.getNome());
+			stmtCliente.setString(2, cliente.getCpf());
+			stmtCliente.setDate(3, Date.valueOf(cliente.getDataNascimento()));
 			
-			statement.close();
+			stmtCliente.executeUpdate();
+			
+			ResultSet rs = stmtCliente.getGeneratedKeys();
+	        if (rs.next()) {
+	        Long clienteId = rs.getLong(1);	        	
+			
+			stmtTelefone.setLong(1, clienteId);
+			stmtTelefone.setString(2, cliente.getTelefone());
+			
+			stmtTelefone.execute();
+	        } else {
+				throw new SQLException("Falha ao Inserir Cliente, ID não Gerado ou nulo!");
+			}
+	        
 			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		
 	}

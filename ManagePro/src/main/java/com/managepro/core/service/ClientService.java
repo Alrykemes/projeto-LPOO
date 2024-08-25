@@ -48,6 +48,17 @@ public class ClientService {
 			System.out.println(cliente.getDataNascimento().compareTo(dataAtual));
 			throw new Exception("Erro, Cliente menor de idade");
 		}
+<<<<<<< HEAD
 		return true;
+=======
+		
+		if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
+			clienteDAO.addCliente(cliente);
+			Janela.getInstance().getTelaNovaVenda().setCliente(getClientCpf(cliente.getCpf()));
+			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
+		} else {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já¡ cadastrado)");
+		}
+>>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
 	}
 }

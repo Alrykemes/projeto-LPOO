@@ -58,6 +58,13 @@ public class Janela {
 	
 	public TelaFuncionarios getTelaFuncionarios() {
 		return this.telaFuncionarios;
+
+	public TelaEstoque getTelaEstoque() {
+		return this.telaEstoque;
+	}
+	
+	public TelaEditarProdutos getTelaEditarProdutos() {
+		return this.telaEditarProdutos;
 	}
 	
 	public JFrame getFrame() {
