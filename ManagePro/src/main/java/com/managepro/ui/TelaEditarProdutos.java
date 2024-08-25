@@ -2,19 +2,25 @@ package com.managepro.ui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 import javax.xml.crypto.Data;
 
 import com.managepro.core.model.Produto;
 import com.managepro.core.service.ProdutoService;
 import com.managepro.exceptions.ValidacaoException;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 
 import java.awt.Panel;
 import java.awt.ScrollPane;
 import java.awt.Color;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -28,12 +34,12 @@ public class TelaEditarProdutos {
 
 
 	private JPanel editarProdutosPanel;
-	private JTextField textFieldNomeProduto;
-	private JTextField textFieldCodigo;
-	private JTextField textFieldPrecoVenda;
-	private JTextField textFieldQuantidade;
-	private JTextField textFieldMarca;
-	private JTextField textFieldFornecedor;
+	private JFormattedTextField textFieldNomeProduto;
+	private JFormattedTextField textFieldCodigo;
+	private JFormattedTextField textFieldPrecoVenda;
+	private JFormattedTextField textFieldQuantidade;
+	private JFormattedTextField textFieldMarca;
+	private JFormattedTextField textFieldFornecedor;
 	private JDateChooser dataValidade;
 	private Produto produtoSelecionado;
 	private Long codigoProduto;
@@ -78,7 +84,7 @@ public class TelaEditarProdutos {
 		this.codigoProduto = codigoProduto;
 	}
 	
-	public void initialize() {
+	public void initialize() throws ParseException {
 		editarProdutosPanel = new JPanel();
 		editarProdutosPanel.setSize(700, 500);
 		editarProdutosPanel.setLayout(null);
@@ -88,12 +94,8 @@ public class TelaEditarProdutos {
 		textoTituloTela.setBounds(10, 35, 268, 14);
 		editarProdutosPanel.add(textoTituloTela);
 
-		JLabel NomedoProduto = new JLabel("Nome do Produto *");
-		NomedoProduto.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		NomedoProduto.setBounds(34, 73, 118, 14);
-		editarProdutosPanel.add(NomedoProduto);
-
-		textFieldNomeProduto = new JTextField();
+		MaskFormatter maskNomeProduto = new MaskFormatter("**************************");
+		textFieldNomeProduto = new JFormattedTextField(maskNomeProduto);
 		textFieldNomeProduto.setBounds(34, 98, 217, 35);
 		editarProdutosPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
@@ -104,12 +106,17 @@ public class TelaEditarProdutos {
 		editarProdutosPanel.add(Codigo);
 
 
-		textFieldCodigo = new JTextField();
+		MaskFormatter maskCodigo = new MaskFormatter("*****************");
+		textFieldCodigo = new JFormattedTextField(maskCodigo);
 		textFieldCodigo.setColumns(10);
 		textFieldCodigo.setBounds(312, 98, 131, 35);
 		editarProdutosPanel.add(textFieldCodigo);
 
-		textFieldPrecoVenda = new JTextField();
+		MaskFormatter maskPrecoVenda = new MaskFormatter("*****************");
+		maskPrecoVenda.setValidCharacters("0123456789,.");
+		maskPrecoVenda.setAllowsInvalid(false);
+		textFieldPrecoVenda = new JFormattedTextField(maskPrecoVenda);
+		textFieldPrecoVenda.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		textFieldPrecoVenda.setColumns(10);
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		editarProdutosPanel.add(textFieldPrecoVenda);
@@ -126,7 +133,11 @@ public class TelaEditarProdutos {
 		editarProdutosPanel.add(panel);
 		panel.setLayout(null);
 
-		textFieldQuantidade = new JTextField();
+		MaskFormatter maskQuantidade = new MaskFormatter("*****************");
+		maskQuantidade.setValidCharacters("0123456789");
+		maskQuantidade.setAllowsInvalid(false);
+		textFieldQuantidade = new JFormattedTextField(maskQuantidade);
+		textFieldQuantidade.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		textFieldQuantidade.setColumns(10);
 		textFieldQuantidade.setBounds(34, 182, 87, 35);
 		editarProdutosPanel.add(textFieldQuantidade);
@@ -136,7 +147,8 @@ public class TelaEditarProdutos {
 		Quantidade.setBounds(34, 157, 118, 14);
 		editarProdutosPanel.add(Quantidade);
 
-		textFieldMarca = new JTextField();
+		MaskFormatter maskMarca = new MaskFormatter("**************************");
+		textFieldMarca = new JFormattedTextField(maskMarca);
 		textFieldMarca.setColumns(10);
 		textFieldMarca.setBounds(158, 182, 139, 35);
 		editarProdutosPanel.add(textFieldMarca);
@@ -151,7 +163,8 @@ public class TelaEditarProdutos {
 		Fornecedor.setBounds(331, 157, 81, 14);
 		editarProdutosPanel.add(Fornecedor);
 
-		textFieldFornecedor = new JTextField();
+		MaskFormatter maskFornecedor = new MaskFormatter("**************************");
+		textFieldFornecedor = new JFormattedTextField(maskFornecedor);
 		textFieldFornecedor.setColumns(10);
 		textFieldFornecedor.setBounds(331, 182, 131, 35);
 		editarProdutosPanel.add(textFieldFornecedor);
@@ -162,6 +175,8 @@ public class TelaEditarProdutos {
 		editarProdutosPanel.add(tituloTela);
 		
 		dataValidade = new JDateChooser();
+		JTextFieldDateEditor editor = (JTextFieldDateEditor) dataValidade.getDateEditor();
+		editor.setEditable(false);
 		dataValidade.setBounds(490, 182, 160, 35);
 		editarProdutosPanel.add(dataValidade);
 		
@@ -184,26 +199,36 @@ public class TelaEditarProdutos {
 		JButton btnEditar = new JButton("Salvar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nomeProduto = textFieldNomeProduto.getText();
-				BigDecimal preco = new BigDecimal(textFieldPrecoVenda.getText().replaceAll(",", "."));
-				int quantidade = Integer.parseInt(textFieldQuantidade.getText());
-				String marca = textFieldMarca.getText();
-				String fornecedor = textFieldFornecedor.getText();				
+				if (textFieldNomeProduto.getText().trim().isEmpty() || 
+					    textFieldPrecoVenda.getText().trim().isEmpty() ||
+					    textFieldQuantidade.getText().trim().isEmpty() || 
+					    textFieldMarca.getText().trim().isEmpty() || 
+					    textFieldFornecedor.getText().trim().isEmpty() || 
+					    dataValidade.getDate() == null) {
+					JOptionPane.showMessageDialog(null, "Não se esqueça de prencher todos os campos!", "Erro", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+				String nomeProduto = textFieldNomeProduto.getText().replace("  ", "");
+				BigDecimal preco = new BigDecimal(textFieldPrecoVenda.getText().replaceAll(",", ".").replaceAll(" ", ""));
+				int quantidade = Integer.parseInt(textFieldQuantidade.getText().replace(" ",""));
+				String marca = textFieldMarca.getText().replace("  ", "");
+				String fornecedor = textFieldFornecedor.getText().replace("  ", "");				
 				Instant dataInstant = dataValidade.getDate().toInstant();
 				LocalDate validade = dataInstant.atZone(ZoneId.systemDefault()).toLocalDate();
 				Produto produto = new Produto (codigoProduto,nomeProduto, quantidade, marca, fornecedor, preco, validade);
 				ProdutoService produtoService = new ProdutoService();
-				Janela.getInstance().getTelaEstoque().refresh();
 				try {
 					produtoService.atualizarProduto(produto);
-					Janela.getInstance().getTelaEstoque().atualizarEstoque();
+					Janela.getInstance().getTelaEstoque().atualizarTabela();
 				} catch (ValidacaoException e1) {
 					e1.printStackTrace();
 				}
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
 				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
 				Janela.getInstance().getFrame().setLocationRelativeTo(null);
+				JOptionPane.showMessageDialog(null, "Produto Editado com Sucesso!", "", JOptionPane.INFORMATION_MESSAGE);
 			}
+		}
 		});
 		btnEditar.setBounds(539, 11, 99, 41);
 		panel.add(btnEditar);
