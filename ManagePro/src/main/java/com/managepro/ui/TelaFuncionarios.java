@@ -254,7 +254,7 @@ public class TelaFuncionarios {
 
 					campoNome.setText("");
 					campoCpf.setText("");
-					campoCargo.setSelectedItem("ADMINISTRADOR");
+					campoCargo.setSelectedItem(Cargos.ADMINISTRADOR);
 					campoSalario.setValue(BigDecimal.ZERO);
 					dateChooser.setDate(null);
 					campoTelefone.setText("");
@@ -275,9 +275,45 @@ public class TelaFuncionarios {
 		botaoRemoverFuncionario.setForeground(new Color(0, 0, 0));
 		botaoRemoverFuncionario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int linhaSelecionada = tabela.getSelectedRow();
+				if (linhaSelecionada != -1) {
+					FuncionarioService funcionarioService = new FuncionarioService();
+					List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+					String nomeFuncionario = "";
+					String cpfFuncionario = "";
 
+					try {
+						nomeFuncionario = funcionarios.get(linhaSelecionada).getNome();
+						cpfFuncionario = funcionarios.get(linhaSelecionada).getCpf();
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Erro na tabela", "Erro",
+								JOptionPane.WARNING_MESSAGE);
+					}
+
+					if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(),
+							"Deseja remover o funcionário " + nomeFuncionario + "?", "Remover Funcionário",
+							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						try {
+							funcionarioService.apagarFuncionario(cpfFuncionario);
+							carregarFuncionariosNaTabela();
+						} catch (Exception e2) {
+							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+									"Erro ao remover funcionário, tente novamente mais tarde", "Erro",
+									JOptionPane.WARNING_MESSAGE);
+						}
+
+					} else {
+						System.out.println("oofgg");
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+							"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",
+							JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
+
 		botaoRemoverFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
 		botaoRemoverFuncionario.setBackground(new Color(255, 255, 255));
 		botaoRemoverFuncionario.setBounds(525, 269, 170, 40);

@@ -26,7 +26,7 @@ public class FuncionarioService {
 				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário cadastrado com sucesso!");
 			}
 		} else {
-			throw new Exception("Erro");
+			throw new Exception("Erro ao validar dados.");
 		}
 	}
 
@@ -75,11 +75,10 @@ public class FuncionarioService {
 		return true;
 	}
 
-	public void criarFuncionario(Funcionario funcionario, String cpfOriginal) throws Exception {
+	public void editarFuncionario(Funcionario funcionario, String cpfOriginal) throws Exception {
 		if (validarCampos(funcionario)) {
 			Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(cpfOriginal);
 			if (funcionarioRetornoBanco != null) {
-				FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 				funcionarioDAO.editarFuncionario(funcionario, funcionarioRetornoBanco);
 				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário editado com sucesso!");
 			} else {
@@ -88,6 +87,18 @@ public class FuncionarioService {
 
 			}
 		}
+	}
+
+	public void apagarFuncionario(String cpf) {
+		Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(cpf);
+		if (funcionarioRetornoBanco != null) {
+			funcionarioDAO.removerFuncionario(funcionarioRetornoBanco.getId());
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário removido com sucesso!");
+		} else {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+					"Erro ao remover funcionário, funcionário não encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
+		}
+
 	}
 
 	public List<Funcionario> obterTodosFuncionarios() {

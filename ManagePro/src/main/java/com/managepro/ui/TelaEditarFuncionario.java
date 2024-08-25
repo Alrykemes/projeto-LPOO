@@ -247,7 +247,7 @@ public class TelaEditarFuncionario {
 						valorDataAdmissao, valorTelefone, valorUsuario, valorSenha);
 
 				try {
-					funcionarioS.criarFuncionario(funcionario, cpfOriginal);
+					funcionarioS.editarFuncionario(funcionario, cpfOriginal);
 
 					campoNome.setText("");
 					campoCpf.setText("");
