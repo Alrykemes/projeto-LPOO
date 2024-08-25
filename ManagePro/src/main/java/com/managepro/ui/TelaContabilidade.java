@@ -1,5 +1,6 @@
 package com.managepro.ui;
 
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -13,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.util.Date;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import com.managepro.core.model.Estatistica;
 import com.managepro.dao.EstatisticaDAO;
@@ -28,27 +31,41 @@ import org.jfree.data.general.DefaultPieDataset;
 import java.awt.BorderLayout;
 
 public class TelaContabilidade {
+	
 
 	private JPanel contabilidadePanel;
 	private Panel painelGrafico;
 	private Panel painelGrafico2;
 	private Panel painelGrafico3; 
 	private Panel painelOpcoes;
+	private Panel cardUm;
+	private Panel cardDois;
+	private Panel cardTres;
 	private JDateChooser escolherDataInicial;
 	private JDateChooser escolherDataFinal;
-	
+	private JLabel ganhoTotal;
+	private JLabel quantidadeProdutos;
+	private JLabel quantidadeVendas;
 	private EstatisticaDAO estatisticaDAO;
 	private Estatistica estatistica;
+	private Connection connection;
 
 	public JPanel getPanel() {
 		return this.contabilidadePanel;
 	}
 	
-	public TelaContabilidade() {
-		this.estatisticaDAO = new EstatisticaDAO(); 
-		this.estatistica = new Estatistica();
-		this.initialize();
-		this.atualizarInformacoes(); 
+	public TelaContabilidade() throws SQLException, ClassNotFoundException {
+		try {
+			this.connection = MySQLConnection.getConnection();
+			this.estatisticaDAO = new EstatisticaDAO(connection); 
+			this.estatistica = new Estatistica();
+			this.initialize();
+			this.atualizarInformacoes();
+		} catch (SQLException e) {
+			e.printStackTrace(); 
+            JOptionPane.showMessageDialog(null, "Erro ao conectar ao banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+		}
+		
 	}
 	
 	private void initialize() {
@@ -126,54 +143,62 @@ public class TelaContabilidade {
 		painelGrafico3.setBounds(132, 438, 510, 170);
 		contabilidadePanel.add(painelGrafico3);
 		
-		Panel cardUm = new Panel();
+		cardUm = new Panel();
 		cardUm.setBackground(new Color(255, 255, 255));
 		cardUm.setBounds(132, 126, 255, 116);
 		contabilidadePanel.add(cardUm);
-		cardUm.setLayout(null);
+		//cardUm.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Produtos");
-		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel.setBounds(20, 11, 60, 14);
-		cardUm.add(lblNewLabel);
 		
+		//quantidadeProdutos = new JLabel();
+		quantidadeProdutos.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		quantidadeProdutos.setBounds(20, 11, 60, 14);
+		//cardUm.add(quantidadeProdutos);
+		
+		/*
 		JLabel lblQuantidadeProdutos = new JLabel("");
 		lblQuantidadeProdutos.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblQuantidadeProdutos.setBounds(151, 68, 60, 26);
 		cardUm.add(lblQuantidadeProdutos);
+		*/
 		
-		Panel cardDois = new Panel();
-		cardDois.setLayout(null);
+		cardDois = new Panel();
+		//cardDois.setLayout(null);
 		cardDois.setBackground(new Color(255, 255, 255));
 		cardDois.setBounds(410, 126, 248, 116);
 		contabilidadePanel.add(cardDois);
 		
-		JLabel lblNewLabel_5 = new JLabel("Vendas");
-		lblNewLabel_5.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_5.setBounds(20, 11, 46, 14);
-		cardDois.add(lblNewLabel_5);
 		
+		//quantidadeVendas = new JLabel();
+		quantidadeVendas.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		quantidadeVendas.setBounds(20, 11, 46, 14);
+		//cardDois.add(quantidadeVendas);
+		
+		/*
 		JLabel lblQuantidadeVenda = new JLabel("");
 		lblQuantidadeVenda.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblQuantidadeVenda.setBounds(169, 68, 60, 26);
 		cardDois.add(lblQuantidadeVenda);
+		*/
 		
-		Panel cardTres = new Panel();
-		cardTres.setLayout(null);
+		cardTres = new Panel();
+		//cardTres.setLayout(null);
 		cardTres.setBackground(new Color(255, 255, 255));
 		cardTres.setBounds(679, 126, 249, 116);
 		contabilidadePanel.add(cardTres);
 		
-		JLabel lblNewLabel_3 = new JLabel("Ganhos");
-		lblNewLabel_3.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblNewLabel_3.setBounds(26, 11, 46, 14);
-		cardTres.add(lblNewLabel_3);
 		
+		//ganhoTotal = new JLabel();
+		ganhoTotal.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		ganhoTotal.setBounds(26, 11, 46, 14);
+		//cardTres.add(ganhoTotal);
+		
+		/*
 		JLabel lblPrecoTotal = new JLabel("");
 		lblPrecoTotal.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblPrecoTotal.setBounds(104, 68, 111, 26);
 		cardTres.add(lblPrecoTotal);
-		
+		*/
 		
 
 		JButton botaoVoltar = new JButton("Voltar   ");
@@ -205,6 +230,7 @@ public class TelaContabilidade {
 		
 	}
 	
+	
 		private void validarData() { 
 			Date dataInicial = escolherDataInicial.getDate();
 			Date dataFinal = escolherDataFinal.getDate();
@@ -223,23 +249,38 @@ public class TelaContabilidade {
     }
 		
 		
-		
-		
 		private void atualizarInformacoes() {
-	        // Atualizar valores nos cards
-			
-	        // Estatistica estatistica = estatisticaDAO.obterEstatisticas(dataInicial, dataFinal);
+			try {
+	            
+				List<Estatistica> estatisticas = estatisticaDAO.listAll();
+	            
+	            if (!estatisticas.isEmpty()) {
+	                Estatistica estatistica = estatisticas.get(0); 
+	                
+	                quantidadeProdutos = new JLabel("Quantidade de Produtos: " + estatistica.getQuantidadeVendas());
+	                quantidadeVendas = new JLabel("Quantidade de Vendas: " + estatistica.getQuantidadeProdutos());
+	                ganhoTotal = new JLabel("Total Ganho: " + estatistica.getTotalGanho());
+	                
+	                
+	                cardUm.removeAll();
+	                cardUm.add(quantidadeProdutos);
+	                cardDois.removeAll();
+	                cardDois.add(quantidadeVendas);
+	                cardTres.removeAll();
+	                cardTres.add(ganhoTotal);
 
-			
-	        JLabel lblQuantidadeProdutos = (JLabel) contabilidadePanel.getComponent(16);
-	        JLabel lblQuantidadeVendas = (JLabel) contabilidadePanel.getComponent(19);
-	        JLabel lblGanhoTotal = (JLabel) contabilidadePanel.getComponent(22);
-	        
-	        lblQuantidadeProdutos.setText(String.valueOf(estatistica.getQuantidadeProdutos()));
-	        lblQuantidadeVendas.setText(String.valueOf(estatistica.getQuantidadeVendas()));
-	        lblGanhoTotal.setText(String.format("R$ %.2f", estatistica.getTotalGanho()));
-	    }
-		
+	                
+	                cardUm.revalidate();
+	                cardUm.repaint();
+	                cardDois.revalidate();
+	                cardDois.repaint();
+	                cardTres.revalidate();
+	                cardTres.repaint();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		}
 		
 		
 		
@@ -296,7 +337,7 @@ public class TelaContabilidade {
 	        painelGrafico3.repaint(); 
 
 	        // Gráfico de pizza
-	        DefaultPieDataset datasetPie = createPieDataset(dataInicial, dataFinal);
+	        DefaultPieDataset<String> datasetPie = createPieDataset(dataInicial, dataFinal);
 	        JFreeChart chartPie = ChartFactory.createPieChart(
 	            "Gráfico de Pizza",
 	            datasetPie,
@@ -333,8 +374,8 @@ public class TelaContabilidade {
 	        return dataset;
 	    }
 		
-		private DefaultPieDataset createPieDataset(Date dataInicial, Date dataFinal) {
-	        DefaultPieDataset dataset = new DefaultPieDataset();
+		private DefaultPieDataset<String> createPieDataset(Date dataInicial, Date dataFinal) {
+	        DefaultPieDataset<String> dataset = new DefaultPieDataset<String>();
 	        // logica para buscar e usar dados reais
 	        dataset.setValue("Item 1", 20);
 	        dataset.setValue("Item 2", 30);

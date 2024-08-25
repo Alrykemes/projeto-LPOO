@@ -47,19 +47,31 @@ package com.managepro.dao;
 	       
 	    public List<Estatistica> listAll() throws SQLException {
 	        List<Estatistica> list = new ArrayList<>();
+	        
 	        String sql = "SELECT * FROM estatistica";
-	        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+	        
+	        try (PreparedStatement stmt = connection.prepareStatement(sql);
+	             ResultSet rs = stmt.executeQuery()) {
+	            
 	            while (rs.next()) {
-	                list.add(new Estatistica(
-	                    rs.getLong("id"),
+	                
+	                Estatistica estatistica = new Estatistica (
+	                    
+	                	rs.getLong("id"),
 	                    rs.getLong("quantidade_venda"),
 	                    rs.getLong("quantidade_produto"),
 	                    rs.getLong("quantidade_funcionario"),
 	                    rs.getBigDecimal("preco_total")
-	                ));
+	                );
+	                
+	                list.add(estatistica);
 	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            throw e;  
 	        }
-	        return list;
+	        
+	        return list;  
 	    }
 	    
 	    
@@ -126,7 +138,7 @@ package com.managepro.dao;
 	    }
 	    
 	    
-	    
+	    /*
 	    public List<Object[]> getQuantidadeVendasPorCategoria(JDateChooser dateChooserInicial, JDateChooser dateChooserFinal) throws SQLException {
 	        List<Object[]> result = new ArrayList<>();
 	        String sql = "SELECT categoria, COUNT(*) as quantidade FROM vendas WHERE data BETWEEN ? AND ? GROUP BY categoria";
@@ -145,23 +157,20 @@ package com.managepro.dao;
 	        }
 	        return result;
 	    }
+	    */
 	    
 	    
-	    //Obter valores para adicionar dados na tela de Contabilidade
-	    public Estatistica obterEstatisticas(Date dataInicial, Date dataFinal) {
+	    
+	    public Estatistica obterEstatisticas() throws SQLException {
 	        Estatistica estatistica = new Estatistica();
-	        String query = "SELECT quantidade_produtos, quantidade_vendas, total_ganho FROM estatisticas WHERE data >= ? AND data <= ?";
+	        String query = "SELECT quantidade_produtos, quantidade_funcionarios, total_ganho FROM estatisticas";
 	        
-	        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-	            stmt.setDate(1, new java.sql.Date(dataInicial.getTime()));
-	            stmt.setDate(2, new java.sql.Date(dataFinal.getTime()));
-	            
-	            try (ResultSet rs = stmt.executeQuery()) {
-	                if (rs.next()) {
-	                    estatistica.setQuantidadeProdutos(rs.getLong("quantidade_produtos"));
-	                    estatistica.setQuantidadeVendas(rs.getLong("quantidade_vendas"));
-	                    estatistica.setTotalGanho(rs.getBigDecimal("total_ganho"));
-	                }
+	        try (PreparedStatement stmt = connection.prepareStatement(query);
+	             ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                estatistica.setQuantidadeProdutos(rs.getLong("quantidade_produtos"));
+	                estatistica.setQuantidadeFuncionarios(rs.getLong("quantidade_funcionarios"));
+	                estatistica.setTotalGanho(rs.getBigDecimal("total_ganho"));
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();

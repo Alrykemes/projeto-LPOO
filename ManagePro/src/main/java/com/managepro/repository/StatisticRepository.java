@@ -20,7 +20,7 @@ public interface StatisticRepository {
 	
 	public List<Estatistica> findByPrecoTotal(BigDecimal precoTotal) throws SQLException;
 	
-	public List<Object[]> getQuantidadeVendasPorCategoria(JDateChooser dateChooserInicial, JDateChooser dateChooserFinal) throws SQLException;
+	//public List<Object[]> getQuantidadeVendasPorCategoria(JDateChooser dateChooserInicial, JDateChooser dateChooserFinal) throws SQLException;
 	 
-	public Estatistica obterEstatisticas(Date dataInicial, Date dataFinal) throws SQLException;
+	public Estatistica obterEstatisticas() throws SQLException;
 }
