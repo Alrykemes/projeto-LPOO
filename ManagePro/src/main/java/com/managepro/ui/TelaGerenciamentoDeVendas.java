@@ -127,7 +127,7 @@ public class TelaGerenciamentoDeVendas {
 		
 		dateChooserAte = new JDateChooser();
 		dateChooserAte.setBounds(210, 42, 128, 30);
-		textDateAte = new JLabel("Até:");
+		textDateAte = new JLabel("Atï¿½:");
 		textDateAte.setBounds(175, 48, 40, 15);
 		textDateAte.setFont(new Font("SansSerif", Font.BOLD, 16));
 		
@@ -331,7 +331,7 @@ public class TelaGerenciamentoDeVendas {
 					if (arquivoSalvo.exists()) {
 	                    int resposta = JOptionPane.showConfirmDialog(
 	                            Janela.getInstance().getFrame(),
-	                            "O arquivo já existe. Deseja sobrescrevê-lo?",
+	                            "O arquivo jï¿½ existe. Deseja sobrescrevï¿½-lo?",
 	                            "Arquivo existente",
 	                            JOptionPane.YES_NO_OPTION,
 	                            JOptionPane.WARNING_MESSAGE
@@ -366,7 +366,7 @@ public class TelaGerenciamentoDeVendas {
  							
  							contentStream.beginText();
  							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 120);
- 							contentStream.showText("ENDEREÇO: Av. Prefeito Geraldo Pinho Alves, Nº 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
+ 							contentStream.showText("ENDEREï¿½O: Av. Prefeito Geraldo Pinho Alves, Nï¿½ 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
  							contentStream.endText();
  							
  							contentStream.beginText();
@@ -431,7 +431,7 @@ public class TelaGerenciamentoDeVendas {
  							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
  							contentStream.newLineAtOffset(140, pagina.getMediaBox().getHeight() - 340);
- 							contentStream.showText("CÓD.  |             NOME             |   QUANTIDADE     "
+ 							contentStream.showText("Cï¿½D.  |             NOME             |   QUANTIDADE     "
  									+ "  |   VALOR");
  							contentStream.endText();
  							
@@ -466,7 +466,7 @@ public class TelaGerenciamentoDeVendas {
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-							contentStream.showText("MÉTODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
+							contentStream.showText("Mï¿½TODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
 							contentStream.endText();
 							inicioLinha += 15;
 							
@@ -500,7 +500,7 @@ public class TelaGerenciamentoDeVendas {
 		funcionarioNome.setBounds(125, 23, 331, 29);
 		vendaPanel.add(funcionarioNome);
 		
-		JLabel txtFuncionario = new JLabel("Funcionário:");
+		JLabel txtFuncionario = new JLabel("Funcionï¿½rio:");
 		txtFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtFuncionario.setBounds(125, 1, 331, 29);
 		vendaPanel.add(txtFuncionario);
@@ -509,13 +509,16 @@ public class TelaGerenciamentoDeVendas {
 		btnDeletar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!listaVendas.isSelectionEmpty()) {
-					vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
-					atualizarListModels();
+					if(JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(), "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
+						vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
+						atualizarListModels();
+					}
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"Você precisa selecionar alguma das vendas antes de deletar!");
+							"Vocï¿½ precisa selecionar alguma das vendas antes de deletar!");
 				}
 			}
+			
 		});
 		btnDeletar.setForeground(new Color(255, 255, 255));
 		btnDeletar.setBackground(new Color(255, 0, 0));
@@ -533,7 +536,7 @@ public class TelaGerenciamentoDeVendas {
 		totalCompra.setBounds(154, 428, 119, 29);
 		vendaPanel.add(totalCompra);
 		
-		JLabel txtMetodoPagamento = new JLabel("Método de Pagamento:");
+		JLabel txtMetodoPagamento = new JLabel("Mï¿½todo de Pagamento:");
 		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtMetodoPagamento.setBounds(10, 458, 195, 29);
 		vendaPanel.add(txtMetodoPagamento);
@@ -596,12 +599,12 @@ public class TelaGerenciamentoDeVendas {
 				try {																	
 					listModelVendas.addAll(vendaService.getVendasPorFuncionarioId(Long.valueOf(pesquisaString)));											
 				} catch (Exception e2) {
-					System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+					System.out.println("NullPointerException | Causa: lista de vendas ï¿½ null, o BD nï¿½o retorno nada. \n" + e2.getMessage());
 				}
 			} else {
 				listModelVendas.clear();
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Você precisa digitar antes de Pesquisar");
+						"Vocï¿½ precisa digitar antes de Pesquisar");
 			}
 		}
 		
@@ -612,12 +615,12 @@ public class TelaGerenciamentoDeVendas {
 				try {
 					listModelVendas.addAll(vendaService.getVendasPorId(Long.valueOf(pesquisaString)));																		
 				} catch (Exception e2) {
-					System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+					System.out.println("NullPointerException | Causa: lista de vendas ï¿½ null, o BD nï¿½o retorno nada. \n" + e2.getMessage());
 				}
 			} else {
 				listModelVendas.clear();
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Você precisa digitar antes de Pesquisar");
+						"Vocï¿½ precisa digitar antes de Pesquisar");
 			}
 		}
 		
@@ -634,7 +637,7 @@ public class TelaGerenciamentoDeVendas {
 			LocalDate ate = instantAte.atZone(ZoneId.systemDefault()).toLocalDate();
 			if (de.compareTo(ate) >= 0) {
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Você precisa selecionar as datas antes de Pesquisar");
+						"Vocï¿½ precisa selecionar as datas antes de Pesquisar");
 			} else {
 				
 				if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
@@ -642,12 +645,12 @@ public class TelaGerenciamentoDeVendas {
 					try {
 						listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));																		
 					} catch (Exception e2) {
-						System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+						System.out.println("NullPointerException | Causa: lista de vendas ï¿½ null, o BD nï¿½o retorno nada. \n" + e2.getMessage());
 					}
 				} else {
 					listModelVendas.clear();
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"Você precisa selecionar as datas antes de Pesquisar");
+							"Vocï¿½ precisa selecionar as datas antes de Pesquisar");
 				}
 			}
 		}
