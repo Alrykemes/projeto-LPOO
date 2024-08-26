@@ -68,6 +68,17 @@ CREATE TABLE produto_venda (
   FOREIGN KEY (id_produto) REFERENCES produto(id_produto)
 );
 
+CREATE TABLE estatistica (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    quantidade_produtos INT,
+    quantidade_vendas INT,
+    quantidade_funcionarios INT,
+    total_ganho DECIMAL(10,2)
+);
+
+INSERT INTO estatistica (quantidade_produtos, quantidade_vendas, quantidade_funcionarios, total_ganho)
+VALUES (0, 0, 0, 0);
+
 INSERT INTO funcionario (nome, cpf, cargo, salario, data_admissao, usuario, senha) 
 VALUES("Administrador MANAGEPRO", "123.456.789-12", "ADMINISTRADOR", 10000.00, '2024-08-12', "admin", "123");
 
@@ -98,7 +109,7 @@ VALUES("Feijï¿½o", "5.29", 20, "Turquesa", 'Cadan Distribuiï¿½ï¿½o', '2026-07-26
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
 VALUES("Azeite de Oliva", "46.90", 20, "Gallo", 'Cadan Distribuição', '2026-03-17');
 
-
+# Trigger para não permitir Troco e Valor Recebido ser nullo quando a forma de pagamento for dinheiro.
 DELIMITER //
 
 CREATE TRIGGER validar_venda
@@ -118,3 +129,187 @@ END//
 
 DELIMITER ;
 
+# Procedure de atualização da tabela de Estatistica
+
+DELIMITER $$
+
+CREATE PROCEDURE atualizar_estatistica_completa()
+BEGIN
+    UPDATE estatistica
+    SET 
+        quantidade_produtos = (SELECT COALESCE(COUNT(*), 0) FROM produto),
+        quantidade_vendas = (SELECT COALESCE(COUNT(*), 0) FROM venda),
+        quantidade_funcionarios = (SELECT COALESCE(COUNT(*), 0) FROM funcionario),
+        total_ganho = (SELECT COALESCE(SUM(preco), 0) FROM produto)
+    WHERE id = 1;
+END$$
+
+DELIMITER ;
+
+# Triggers da tabela funcionario para atualizar estatisticas 
+
+DELIMITER $$
+
+CREATE TRIGGER funcionario_insert_trigger
+AFTER INSERT ON funcionario
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER funcionario_update_trigger
+AFTER UPDATE ON funcionario
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER funcionario_delete_trigger
+AFTER DELETE ON funcionario
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+# Triggers da tabela produto para atualizar estatisticas
+
+DELIMITER $$
+
+CREATE TRIGGER produto_insert_trigger
+AFTER INSERT ON produto
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER produto_update_trigger
+AFTER UPDATE ON produto
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER produto_delete_trigger
+AFTER DELETE ON produto
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+# Triggers da tabela funcionario para atualizar estatisticas
+
+DELIMITER $$
+
+CREATE TRIGGER venda_insert_trigger
+AFTER INSERT ON venda
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER venda_update_trigger
+AFTER UPDATE ON venda
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE TRIGGER venda_delete_trigger
+AFTER DELETE ON venda
+FOR EACH ROW
+BEGIN
+    CALL atualizar_estatistica_completa();
+END$$
+
+DELIMITER ;
+
+# Triggers de atualização
+
+DELIMITER $$
+
+CREATE TRIGGER atualiza_total_ganho_after_produto_insert
+AFTER INSERT ON produto
+FOR EACH ROW
+BEGIN
+    UPDATE estatistica
+    SET total_ganho = (
+        SELECT COALESCE(SUM(preco), 0)
+        FROM produto
+    )
+    WHERE id = 1;  
+END $$
+
+DELIMITER $$
+
+CREATE TRIGGER atualiza_total_ganho_after_produto_update
+AFTER UPDATE ON produto
+FOR EACH ROW
+BEGIN
+    UPDATE estatistica
+    SET total_ganho = (
+        SELECT COALESCE(SUM(preco), 0)
+        FROM produto
+    );
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER atualiza_total_ganho_update
+AFTER UPDATE ON venda
+FOR EACH ROW
+BEGIN
+    UPDATE estatistica
+    SET total_ganho = (
+        SELECT SUM(valor_venda)
+        FROM venda
+    );
+END $$
+
+CREATE TRIGGER atualiza_total_ganho_delete
+AFTER DELETE ON venda
+FOR EACH ROW
+BEGIN
+    UPDATE estatistica
+    SET total_ganho = (
+        SELECT SUM(valor_venda)
+        FROM venda
+    );
+END $$
+
+DELIMITER ;
+DELIMITER ;
