@@ -10,65 +10,98 @@ import com.managepro.dao.FuncionarioDAO;
 import com.managepro.ui.Janela;
 
 public class FuncionarioService {
-	
+
 	private FuncionarioDAO funcionarioDAO;
-	
+
 	public FuncionarioService() {
 		funcionarioDAO = new FuncionarioDAO();
 	}
-	
+
 	public void criarFuncionario(Funcionario funcionario) throws Exception {
 		if (validarCampos(funcionario)) {
 			if (funcionarioDAO.encontrarFuncionarioPeloCpf(funcionario.getCpf()) != null) {
 				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário já cadastrado");
 			} else {
 				funcionarioDAO.adicionarFuncionario(funcionario);
-				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário cadastrado");
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário cadastrado com sucesso!");
 			}
 		} else {
-			throw new Exception("Erro");
+			throw new Exception("Erro ao validar dados.");
 		}
 	}
-	
+
 	public boolean validarCampos(Funcionario funcionario) throws Exception {
 		if (funcionario.getNome().length() <= 4 || funcionario.getNome().length() >= 69) {
-			throw new Exception("Erro, o nome inserido não é válido");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "O nome inserido não é válido");
+			return false;
 		}
-		
-		if (funcionario.getCpf().length() != 14) {
-			throw new Exception("CPF inválido");
-		}
-		
-		try {
-	        BigDecimal salario = funcionario.getSalario();
-	        if (salario == null || salario.compareTo(BigDecimal.ZERO) <= 0) {
-	            throw new Exception("Salário inválido. Deve ser um número positivo.");
-	        }
-	    } catch (NumberFormatException e) {
-	        throw new Exception("Salário inválido. Apenas números são permitidos.");
-	    }
 
-		
+		if (funcionario.getCpf().length() != 14) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF inválido");
+			return false;
+		}
+
+		try {
+			BigDecimal salario = funcionario.getSalario();
+			if (salario == null || salario.compareTo(BigDecimal.ZERO) <= 0) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+						"Salário inválido, deve ser um número positivo");
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+					"Salário inválido, deve conter apenas números");
+			return false;
+		}
+
 		if (funcionario.getUsuario().length() < 4) {
-			throw new Exception("Usuário muito curto");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+					"Nome de usuário muito curto, adicione mais caracteres");
+			return false;
+		} else if (funcionario.getUsuario().length() > 20) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Nome de usuário muito extenso - MAX(20)");
+			return false;
 		}
-		
+
 		if (funcionario.getSenha().length() < 4) {
-			throw new Exception("Senha muito curta");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+					"Senha muito curta, adicione mais caracteres");
+			return false;
+		} else if (funcionario.getSenha().length() > 20) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Senha muito extensa - MAX(20(");
+			return false;
 		}
+
 		return true;
 	}
-	
-	public void funcionarioExiste(Funcionario funcionario) throws Exception {
+
+	public void editarFuncionario(Funcionario funcionario, String cpfOriginal) throws Exception {
 		if (validarCampos(funcionario)) {
-			Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(funcionario.getCpf());
+			Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(cpfOriginal);
 			if (funcionarioRetornoBanco != null) {
-				System.out.println(funcionarioRetornoBanco.getId());
+				funcionarioDAO.editarFuncionario(funcionario, funcionarioRetornoBanco);
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário editado com sucesso!");
+			} else {
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+						"Erro ao editar funcionário, funcionário não encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
+
 			}
 		}
 	}
-	
+
+	public void apagarFuncionario(String cpf) {
+		Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(cpf);
+		if (funcionarioRetornoBanco != null) {
+			funcionarioDAO.removerFuncionario(funcionarioRetornoBanco.getId());
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário removido com sucesso!");
+		} else {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+					"Erro ao remover funcionário, funcionário não encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
+		}
+
+	}
+
 	public List<Funcionario> obterTodosFuncionarios() {
-	    return funcionarioDAO.listaDeFuncionarios();
+		return funcionarioDAO.listaDeFuncionarios();
 	}
 }
