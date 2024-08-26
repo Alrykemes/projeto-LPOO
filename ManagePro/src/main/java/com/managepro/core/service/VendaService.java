@@ -2,15 +2,16 @@ package com.managepro.core.service;
 
 
 
-import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.Venda;
 import com.managepro.dao.VendaDAO;
+import com.managepro.exceptions.ValidacaoException;
 import com.managepro.ui.Janela;
 
 public class VendaService {
@@ -117,12 +118,19 @@ public class VendaService {
 		
 		if(venda.getData() == null) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Data é Null");
-			throw new InvalidParameterException("Data da Compra é null", null);
+			throw new ValidacaoException("Data da Compra é null", null);
 		}
 		
 		if(venda.getProdutosVendidos() == null) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Produtos é Null");
-			throw new InvalidParameterException("A lista de produtos da Compra são null", null);
+			throw new ValidacaoException("A lista de produtos da Compra são null", null);
+		}
+		
+		if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
+			if(venda.getValorRecebido().compareTo(venda.getPreco()) < 0) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "O valor Recebido não pode ser menor que o preço dos produtos!");
+				throw new ValidacaoException("O valor recebido é menor que o preço dos produtos.", null);
+			}
 		}
 	}
 }

@@ -52,6 +52,8 @@ CREATE TABLE venda (
   forma_pagamento ENUM("CARTAODEALIMENTACAO", "CARTAODECREDITO", "CARTAODEDEBITO", "DINHEIRO", "PIX") NOT NULL,
   data_venda DATE NOT NULL,
   preco DECIMAL(10,2) NOT NULL,
+  valor_recebido DECIMAL(10, 2),
+  troco DECIMAL(10,2),
   FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario),
   FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente)
   );
@@ -95,3 +97,22 @@ VALUES("Feijão", "5.29", 20, "Turquesa", 'Cadan Distribuição', '2026-07-26');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
 VALUES("Azeite de Oliva", "46.90", 20, "Gallo", 'Cadan Distribuição', '2026-03-17');
+
+DELIMITER //
+
+CREATE TRIGGER validar_venda
+BEFORE INSERT ON venda
+FOR EACH ROW
+BEGIN
+    IF NEW.forma_pagamento = 'DINHEIRO' THEN
+        IF NEW.valor_recebido IS NULL OR NEW.troco IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Erro: Valor recebido e troco devem ser preenchidos quando o método de pagamento for DINHEIRO.';
+        END IF;
+    ELSE
+        IF NEW.valor_recebido IS NOT NULL OR NEW.troco IS NOT NULL THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Erro: Valor recebido e troco devem ser nulos quando o método de pagamento não for DINHEIRO.';
+        END IF;
+    END IF;
+END//
+
+DELIMITER ;
