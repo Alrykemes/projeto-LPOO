@@ -23,4 +23,8 @@ public class LoginService {
         Janela.getInstance().getTelaNovaVenda().getLabelFuncionarioJLabel().setText(funcionario.getNome());
         return funcionario.getSenha().equals(senha);
     }
-}
+    
+    public boolean verificarSenha(String senha) {
+    	return senha.equals("Master@#123");
+		}
+    }

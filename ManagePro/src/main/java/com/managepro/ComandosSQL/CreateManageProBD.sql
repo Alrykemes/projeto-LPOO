@@ -90,13 +90,14 @@ INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade)
 VALUES("Biscoito Treloso", "2.29", 20, "Vitarela", 'Vitarela', '2024-09-22');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
-VALUES("Arroz", "7.32", 20, "Emoções", 'Cadan Distribuição', '2027-12-18');
+VALUES("Arroz", "7.32", 20, "Emoï¿½ï¿½es", 'Cadan Distribuiï¿½ï¿½o', '2027-12-18');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
-VALUES("Feijão", "5.29", 20, "Turquesa", 'Cadan Distribuição', '2026-07-26');
+VALUES("Feijï¿½o", "5.29", 20, "Turquesa", 'Cadan Distribuiï¿½ï¿½o', '2026-07-26');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
 VALUES("Azeite de Oliva", "46.90", 20, "Gallo", 'Cadan Distribuição', '2026-03-17');
+
 
 DELIMITER //
 
@@ -116,3 +117,4 @@ BEGIN
 END//
 
 DELIMITER ;
+
