@@ -103,16 +103,20 @@ public class TelaEstoque {
 				}
 				if (comboBox.getSelectedItem().equals("Nome")) {
 					if (textPesquisaField.getText().trim().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome válido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else if (produtoService.pesquisarProdutoNome(textPesquisaField.getText().trim()) == null ) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome válido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						tabelaNome(textPesquisaField.getText().trim());
 					}
 				}
 				if (comboBox.getSelectedItem().equals("Data de Validade")) {
+					if (dataValidade.getDate() == null) {
+						JOptionPane.showMessageDialog(null, "Selecione uma data, para prosseguir.", "Erro", JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
 					Instant dataInstant = dataValidade.getDate().toInstant();
 					LocalDate validade = dataInstant.atZone(ZoneId.systemDefault()).toLocalDate();
 					try {
@@ -122,6 +126,7 @@ public class TelaEstoque {
 					}
 				}
 			}
+		}
 		});
 		botaoPesquisa.setIcon(new ImageIcon(TelaEstoque.class.getResource("/com/managepro/assets/LupaIcon.png")));
 		botaoPesquisa.setBounds(933, 47, 40, 38);
