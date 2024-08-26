@@ -1,8 +1,5 @@
 package com.managepro.core.service;
 
-
-
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,146 +9,120 @@ import javax.swing.JOptionPane;
 import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.Venda;
 import com.managepro.dao.VendaDAO;
+import com.managepro.exceptions.ExcecaoDeNegocios;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.exceptions.ValidacaoException;
 import com.managepro.ui.Janela;
 
 public class VendaService {
 	
 	private VendaDAO vendaDAO;
-	private Boolean situacaoPagamento = true;
+	private Boolean situacaoPagamento = false;
 	
 	public VendaService() {
 		vendaDAO = new VendaDAO();
 	}
 	
-	public void cadastrarVenda(Venda venda) {
-		/*
-		 * necessita de verificaï¿½ï¿½o de situacao de pagamento apos implementar lib de pagamento.
-		 * esse comentario nao precisa apagar! 
-		 */
-		if(venda != null) {
-			try {
-				validarVenda(venda);
-			} catch (Exception e) {
-				e.printStackTrace();
+	public void cadastrarVenda(Venda venda) throws ExcecaoDeNegocios, ValidacaoException, ExcecaoDoSistema {
+		
+		if(venda != null) {	
+			validarVenda(venda);
+				
+			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
+					if(venda.getValorRecebido() == null) {
+						throw new ExcecaoDeNegocios("Você precisa definir um valor a ser recebido!");
+					}
+					if(venda.getValorRecebido().compareTo(venda.getPreco()) < 0) {
+						throw new ExcecaoDeNegocios("O valor Recebido não pode ser menor que o preço dos produtos!");
+					} else {
+						situacaoPagamento = true;
+					}
 			}
+			
+			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.PIX)) { }
+			
+			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.CARTAODEDEBITO)) {}
+			
+			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.CARTAODEDEBITO)) {}
+			
 			if(situacaoPagamento == true) {	
 				vendaDAO.cadastrarVenda(venda);
 			} else {
-				//
+				throw new ExcecaoDeNegocios("Pagamento não aprovado");
 			}
 		} else {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Venda ï¿½ Null");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Venda é Null");
 		}
 	}
 	
-	public List<Venda> getTodasVendas() {
-		
-			try {
-				if(vendaDAO.listarTodasAsVendas() != null) {
-					return vendaDAO.listarTodasAsVendas();					
-				}
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nenhuma Venda realizada atï¿½ o momento");
-				return null;
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
-	}
-	
-	public List<Venda> getVendasPorFuncionarioId(Long id) {
+	public List<Venda> getTodasVendas() throws ExcecaoDoSistema, ExcecaoDeNegocios {
 		try {
-			if(vendaDAO.listarVendasPorIdFuncionario(id).isEmpty()) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Nï¿½o hï¿½ vendas realizadas por esse funcionï¿½rio ou o mesmo nï¿½o existe.");
-			} else {				
-				return vendaDAO.listarVendasPorIdFuncionario(id);					
-			}
-			return null;
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public List<Venda> getVendasPorId(Long id) {
-		try {
-			if(vendaDAO.pesquisarVendaPorId(id).isEmpty()) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nï¿½o hï¿½ vendas com esse ID.");				
-				return null;
+			if(vendaDAO.listarTodasAsVendas() != null) {
+				return vendaDAO.listarTodasAsVendas();
 			} else {
-				return vendaDAO.pesquisarVendaPorId(id);					
+				throw new ExcecaoDeNegocios("Não há vendas Realizadas até o momento!");
 			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
 			return null;
 		}
 	}
 	
-	public List<Venda> getVendasPorIntervaloDeDatas(LocalDate de, LocalDate ate) {
-		try {
-			if(vendaDAO.listarVendasPorIntervaloDeData(de, ate).isEmpty()) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Nï¿½o hï¿½ vendas entre esse intervalo de datas.");				
-				return null;
-			} else {
-				return vendaDAO.listarVendasPorIntervaloDeData(de, ate);				
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-			return null;
+	public List<Venda> getVendasPorFuncionarioId(Long id) throws ExcecaoDoSistema, ExcecaoDeNegocios {
+		if(vendaDAO.listarVendasPorIdFuncionario(id).isEmpty()) {
+			throw new ExcecaoDeNegocios("Não há vendas realizadas por esse funcionário no sistema!");
+		} else {				
+			return vendaDAO.listarVendasPorIdFuncionario(id);					
 		}
 	}
 	
-	public void deletarVendaPorId(Long id) {
-		try {
-			if (vendaDAO.pesquisarVendaPorId(id) != null) {
-				vendaDAO.deletarVenda(id);
-			} else {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Venda nï¿½o encontrada!");
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+	public List<Venda> getVendasPorId(Long id) throws ExcecaoDoSistema, ExcecaoDeNegocios {
+		if(vendaDAO.pesquisarVendaPorId(id).isEmpty()) {
+			throw new ExcecaoDeNegocios("Não há vendas realizadas com esse ID.");			
+		} else {
+			return vendaDAO.pesquisarVendaPorId(id);					
+		}
+	} 
+	
+	public List<Venda> getVendasPorIntervaloDeDatas(LocalDate de, LocalDate ate) throws ExcecaoDoSistema, ExcecaoDeNegocios {
+		if(vendaDAO.listarVendasPorIntervaloDeData(de, ate).isEmpty()) {
+			throw new ExcecaoDeNegocios("Não há vendas realizadas entre esse intervalo de datas até o momento.");			
+		} else {
+			return vendaDAO.listarVendasPorIntervaloDeData(de, ate);				
 		}
 	}
 	
-	public boolean validarIdEQtdDoProduto(JFormattedTextField codField, JFormattedTextField qtdField) {
-		
+	public void deletarVendaPorId(Long id) throws ExcecaoDoSistema, ExcecaoDeNegocios {
+		if (vendaDAO.pesquisarVendaPorId(id) != null) {
+			vendaDAO.deletarVenda(id);
+		} else {
+			throw new ExcecaoDeNegocios("Venda não encontrada no sistema!");
+		}
+	}
+	
+	public boolean validarIdEQtdDoProduto(JFormattedTextField codField, JFormattedTextField qtdField) throws ExcecaoDoSistema, ExcecaoDeNegocios {
 		if(codField.getText().replaceAll(" ", "").length() <= 0) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Insira o cÃ³digo do produto desejado");
-			return false;
+			throw new ExcecaoDeNegocios("Insira o código do produto desejado.");
 		} else {
 			if(qtdField.getText().replaceAll(" ", "").length() <= 0) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Insira a quantidade desejada do produto");
-				return false;
+				throw new ExcecaoDeNegocios("Insira a quantidade desejada do produto");
 			} else {
 				return true;
 			}
 		}
 	}
 	
-	public boolean validarValorRecebido(JFormattedTextField valorInseridoField) {
-		// logica de validacao
-		return false;
-	}
-	
-	public void validarVenda(Venda venda) throws Exception {
+	public void validarVenda(Venda venda) throws ValidacaoException, ExcecaoDeNegocios {
 		
 		if(venda.getData() == null) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Data é Null");
-			throw new ValidacaoException("Data da Compra é null", null);
+			throw new ValidacaoException("Data da Compra é null");
 		}
 		
 		if(venda.getProdutosVendidos() == null) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Produtos é Null");
-			throw new ValidacaoException("A lista de produtos da Compra são null", null);
+			throw new ValidacaoException("A lista de produtos da Compra é null");
 		}
 		
-		if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
-			if(venda.getValorRecebido().compareTo(venda.getPreco()) < 0) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "O valor Recebido não pode ser menor que o preço dos produtos!");
-				throw new ValidacaoException("O valor recebido é menor que o preço dos produtos.", null);
-			}
+		if(venda.getCliente() == null) {
+			throw new ExcecaoDeNegocios("A venda deve ter um cliente!");
 		}
 	}
 }

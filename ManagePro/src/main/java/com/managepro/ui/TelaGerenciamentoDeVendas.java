@@ -19,14 +19,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
 import com.managepro.core.service.VendaService;
+import com.managepro.exceptions.ExcecaoDeNegocios;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.toedter.calendar.JDateChooser;
 
 public class TelaGerenciamentoDeVendas {
@@ -234,7 +234,11 @@ public class TelaGerenciamentoDeVendas {
 					cpfCliente.setText("-");
 					listModelVendas.clear();
 					listModelProdutos.clear();
-					listModelVendas.addAll(vendaService.getTodasVendas());
+					try {
+						listModelVendas.addAll(vendaService.getTodasVendas());
+					} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 					vendaPanel.repaint();
 					pesquisaPanel.repaint();
 				}
@@ -510,7 +514,11 @@ public class TelaGerenciamentoDeVendas {
 			public void actionPerformed(ActionEvent e) {
 				if(!listaVendas.isSelectionEmpty()) {
 					if(JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(), "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
-						vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
+						try {
+							vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
+						} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
+							JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+						}
 						atualizarListModels();
 					}
 				} else {
@@ -598,8 +606,8 @@ public class TelaGerenciamentoDeVendas {
 				listModelVendas.clear();
 				try {																	
 					listModelVendas.addAll(vendaService.getVendasPorFuncionarioId(Long.valueOf(pesquisaString)));											
-				} catch (Exception e2) {
-					System.out.println("NullPointerException | Causa: lista de vendas ï¿½ null, o BD nï¿½o retorno nada. \n" + e2.getMessage());
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				listModelVendas.clear();
@@ -612,21 +620,26 @@ public class TelaGerenciamentoDeVendas {
 			String pesquisaString = FieldPesquisar.getText().replaceAll(" ", "");
 			if(!pesquisaString.isEmpty()) {
 				listModelVendas.clear();
-				try {
-					listModelVendas.addAll(vendaService.getVendasPorId(Long.valueOf(pesquisaString)));																		
-				} catch (Exception e2) {
-					System.out.println("NullPointerException | Causa: lista de vendas ï¿½ null, o BD nï¿½o retorno nada. \n" + e2.getMessage());
-				}
+					try {
+						listModelVendas.addAll(vendaService.getVendasPorId(Long.valueOf(pesquisaString)));
+					} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+					}																		
+				
 			} else {
 				listModelVendas.clear();
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Vocï¿½ precisa digitar antes de Pesquisar");
+						"Você precisa digitar antes de Pesquisar");
 			}
 		}
 		
 		if (ComboBoxFiltro.getSelectedItem().equals("Todas")) {
 			listModelVendas.clear();
-			listModelVendas.addAll(vendaService.getTodasVendas());
+			try {
+				listModelVendas.addAll(vendaService.getTodasVendas());
+			} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		if (ComboBoxFiltro.getSelectedItem().equals("Data")) {
@@ -637,20 +650,20 @@ public class TelaGerenciamentoDeVendas {
 			LocalDate ate = instantAte.atZone(ZoneId.systemDefault()).toLocalDate();
 			if (de.compareTo(ate) >= 0) {
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Vocï¿½ precisa selecionar as datas antes de Pesquisar");
+						"Você precisa selecionar as datas antes de Pesquisar");
 			} else {
 				
-				if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
-					listModelVendas.clear();
-					try {
-						listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));																		
-					} catch (Exception e2) {
-						System.out.println("NullPointerException | Causa: lista de vendas ï¿½ null, o BD nï¿½o retorno nada. \n" + e2.getMessage());
+				try {
+					if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
+						listModelVendas.clear();
+						listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));	
+					} else {
+						listModelVendas.clear();
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+								"Você precisa selecionar as datas antes de Pesquisar");
 					}
-				} else {
-					listModelVendas.clear();
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"Vocï¿½ precisa selecionar as datas antes de Pesquisar");
+				} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}

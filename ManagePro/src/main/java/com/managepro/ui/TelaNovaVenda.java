@@ -11,7 +11,10 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import com.managepro.core.model.Cliente;
 import com.managepro.core.model.FormaPagamento;
@@ -20,6 +23,9 @@ import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
 import com.managepro.core.service.ClientService;
 import com.managepro.core.service.VendaService;
+import com.managepro.exceptions.ExcecaoDeNegocios;
+import com.managepro.exceptions.ExcecaoDoSistema;
+import com.managepro.exceptions.ValidacaoException;
 import com.managepro.core.service.ProdutoService;
 
 import java.awt.Color;
@@ -32,6 +38,8 @@ import javax.swing.DefaultListModel;
 
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,8 +55,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class TelaNovaVenda {
-
-	//TO DO: ORGANIZAR VARIAVEIS E SEUS NOMES
 	
 	private JPanel novaVendaPanel;
 	private JPanel PrincipalPanel;
@@ -350,7 +356,7 @@ public class TelaNovaVenda {
 		
 		PagamentocomboBox = new JComboBox<>();
 		PagamentocomboBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		PagamentocomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"DINHEIRO", "PIX", "CARTAO DE CREDITO", "CARTAO DE DEBITO", "CARTAO DE ALIMENTACAO"}));
+		PagamentocomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"DINHEIRO", "PIX", "CARTAO DE CREDITO", "CARTAO DE DEBITO"}));
 		PagamentocomboBox.setBounds(321, 45, 282, 30);
 		PagamentocomboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -398,14 +404,45 @@ public class TelaNovaVenda {
 		txtValueInsert.setBounds(321, 81, 120, 24);
 		SaleConfigPanel.add(txtValueInsert);
 		
-		MaskFormatter maskValorRecebido = new MaskFormatter("**********");
-		maskValorRecebido.setValidCharacters("0123456789");
-		maskValorRecebido.setAllowsInvalid(false);
-		valorInseridoField = new JFormattedTextField(maskValorRecebido);
+		NumberFormat format = new DecimalFormat("#,##0.00");
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(BigDecimal.class);
+		formatter.setAllowsInvalid(false);
+		formatter.setMinimum(new BigDecimal("0.00"));
+		formatter.setMaximum(new BigDecimal("99999999.99"));
+		valorInseridoField = new JFormattedTextField(formatter);
 		valorInseridoField.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		valorInseridoField.setBounds(321, 105, 282, 30);
 		valorInseridoField.setColumns(10);
 		SaleConfigPanel.add(valorInseridoField);
+		valorInseridoField.getDocument().addDocumentListener(new DocumentListener() {
+			
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            private void updateLabel() {
+				try {
+					Number number = format.parse(valorInseridoField.getText());
+					BigDecimal valorRecebido = new BigDecimal(number.toString());
+					BigDecimal troco = valorRecebido.subtract(totalPriceOfSale);
+					TelaNovaVenda.this.troco.setText(String.format("R$ %.2f", troco));
+				} catch (ParseException e) {
+					// Ta tratando mas, como ta dando certo.
+				} 
+            }
+        });
 		
 		txtTroco = new JLabel("Troco:");
 		txtTroco.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -421,38 +458,41 @@ public class TelaNovaVenda {
 		btnFinalizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				// validar se ha um cliente setado
-				
-				// implementar adicao no bd apos confirmacao de venda pela lib do mercado pago
 				Venda newVenda = new Venda();
 				newVenda.setFuncionario(Janela.getInstance().getTelaLogin().getFuncionarioLogado());
 				newVenda.setCliente(cliente);
 				newVenda.setData(LocalDate.now());
 				newVenda.setProdutosVendidos(listaProdutosVenda);
 				newVenda.setFormaDePagamentoEnum(FormaPagamento.valueOf(PagamentocomboBox.getSelectedItem().toString().replaceAll(" ",   "")));
-				newVenda.setPreco(totalPriceOfSale);
-				
-				
-				if(PagamentocomboBox.getSelectedItem() == "DINHEIRO") {
-					// logica para receber valor e setar troco.
-					if(vendaService.validarValorRecebido(valorInseridoField)) {
-						
+				if(newVenda.getFormaDePagamentoEnum() == FormaPagamento.DINHEIRO) {
+					try {
+						Number number = format.parse(valorInseridoField.getText());
+						BigDecimal valorRecebido = new BigDecimal(number.toString());
+						BigDecimal troco = valorRecebido.subtract(totalPriceOfSale);
+						newVenda.setTroco(troco);
+						newVenda.setValorRecebido(valorRecebido);
+					} catch (ParseException ex) {
+						// Ta tratando mas, como ta dando certo.
 					}
 				}
+				newVenda.setPreco(totalPriceOfSale);
 				
-				vendaService.cadastrarVenda(newVenda);
-				
-				SaleConfigPanel.add(cpfField);
-				SaleConfigPanel.remove(txtClientName);
-				SaleConfigPanel.remove(txtClientCpf);
-				SaleConfigPanel.add(btnPesquisaClient);
-				listModelProdutoVenda.clear();
-				priceOfProducts.clear();
-				listaProdutosVenda.clear();
-				unitPrice.setText("R$ 0,00");
-				totalPrice.setText("R$ 0,00");
-				totalPriceSale.setText("R$ 0,00");
-				SaleConfigPanel.repaint();
+				try {
+					vendaService.cadastrarVenda(newVenda);
+					SaleConfigPanel.add(cpfField);
+					SaleConfigPanel.remove(txtClientName);
+					SaleConfigPanel.remove(txtClientCpf);
+					SaleConfigPanel.add(btnPesquisaClient);
+					listModelProdutoVenda.clear();
+					priceOfProducts.clear();
+					listaProdutosVenda.clear();
+					unitPrice.setText("R$ 0,00");
+					totalPrice.setText("R$ 0,00");
+					totalPriceSale.setText("R$ 0,00");
+					SaleConfigPanel.repaint();
+				} catch (ExcecaoDoSistema | ExcecaoDeNegocios | ValidacaoException ex) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnFinalizar.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -503,39 +543,43 @@ public class TelaNovaVenda {
 	public void adicionarProduto(JFormattedTextField codField, JFormattedTextField qtdField) {
 		ProdutoVendaDetails produtoVendaDetails = new ProdutoVendaDetails();
 		
-		if(vendaService.validarIdEQtdDoProduto(codField, qtdField)) {
-				
-				Long IDnovoProduto = Long.valueOf(codField.getText().replaceAll(" ", ""));
-				produto = produtoService.getProductById(IDnovoProduto);
-				
-				if(produto.getCodigoProduto() == null || produto == null) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto n�o encontrado na base de dados!");
-				} else {	
-					produtoVendaDetails.setCodigoProduto(produto.getCodigoProduto());
-					produtoVendaDetails.setNomeProduto(produto.getNomeProduto());
+		try {
+			if(vendaService.validarIdEQtdDoProduto(codField, qtdField)) {
 					
-					int qtdProdutos = Integer.valueOf(qtdField.getText().replaceAll(" ", ""));
+					Long IDnovoProduto = Long.valueOf(codField.getText().replaceAll(" ", ""));
+					produto = produtoService.getProductById(IDnovoProduto);
 					
-					produtoVendaDetails.setQuantidade(qtdProdutos);
-					BigDecimal precoProdutos = produto.getPreco().multiply(BigDecimal.valueOf(Long.valueOf(qtdProdutos)));
-					produtoVendaDetails.setPreco(precoProdutos);
+					if(produto.getCodigoProduto() == null || produto == null) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto n�o encontrado na base de dados!");
+					} else {	
+						produtoVendaDetails.setCodigoProduto(produto.getCodigoProduto());
+						produtoVendaDetails.setNomeProduto(produto.getNomeProduto());
+						
+						int qtdProdutos = Integer.valueOf(qtdField.getText().replaceAll(" ", ""));
+						
+						produtoVendaDetails.setQuantidade(qtdProdutos);
+						BigDecimal precoProdutos = produto.getPreco().multiply(BigDecimal.valueOf(Long.valueOf(qtdProdutos)));
+						produtoVendaDetails.setPreco(precoProdutos);
+						
+						unitPrice.setText(String.format("R$ %.2f", produto.getPreco()));
+						totalPrice.setText(String.format("R$ %.2f", precoProdutos));
+						
+						priceOfProducts.add(precoProdutos);
+						
+						totalPriceOfSale = priceOfProducts
+								.stream()				            
+								.reduce(BigDecimal.ZERO, BigDecimal::add);
+						
+						listModelProdutoVenda.addElement(produtoVendaDetails);
+						listaProdutosVenda.add(produtoVendaDetails);
+					}
 					
-					unitPrice.setText(String.format("R$ %.2f", produto.getPreco()));
-					totalPrice.setText(String.format("R$ %.2f", precoProdutos));
-					
-					priceOfProducts.add(precoProdutos);
-					
-					totalPriceOfSale = priceOfProducts
-							.stream()				            
-							.reduce(BigDecimal.ZERO, BigDecimal::add);
-					
-					listModelProdutoVenda.addElement(produtoVendaDetails);
-					listaProdutosVenda.add(produtoVendaDetails);
+					totalPriceSale.setText(String.format("R$ %.2f", totalPriceOfSale));
+					produto.setCodigoProduto(null);
 				}
-				
-				totalPriceSale.setText(String.format("R$ %.2f", totalPriceOfSale));
-				produto.setCodigoProduto(null);
-			}
+		} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public void removerProduto(ProdutoVendaDetails produtoVendaDetails) {

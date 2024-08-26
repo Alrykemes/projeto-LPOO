@@ -69,10 +69,10 @@ import com.managepro.repository.MySQLConnection;
 	                Estatistica estatistica = new Estatistica (
 	                    
 	                	rs.getLong("id"),
-	                    rs.getLong("quantidade_venda"),
-	                    rs.getLong("quantidade_produto"),
-	                    rs.getLong("quantidade_funcionario"),
-	                    rs.getBigDecimal("preco_total")
+	                    rs.getLong("quantidade_vendas"),
+	                    rs.getLong("quantidade_produtos"),
+	                    rs.getLong("quantidade_funcionarios"),
+	                    rs.getBigDecimal("total_ganho")
 	                );
 	                
 	                list.add(estatistica);
