@@ -33,6 +33,10 @@ public class TelaAdicionarCliente{
 	private JDateChooser dateChooser;
 	private Cliente cliente;
 
+	public void setCpfField(String cpf) {
+		textFieldCPF.setText(cpf);
+	}
+	
 	public JPanel getPanel() {
 		return this.adicionarProdutoPanel;
 	}
@@ -167,7 +171,5 @@ public class TelaAdicionarCliente{
 		panel.add(btnCadastrar);
 		
 	}
-	public void setCpfField(String cpf) {
-		textFieldCPF.setText(cpf);
-	}
+	
 }

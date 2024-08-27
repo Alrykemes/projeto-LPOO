@@ -82,6 +82,10 @@ public class TelaNovaVenda {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	
+	public Cliente getCliente() {
+		return this.cliente;
+	}
 
 	public TelaNovaVenda() throws ParseException {
 		initialize();
@@ -238,7 +242,6 @@ public class TelaNovaVenda {
 				
 				vendaService.cadastrarVenda(newVenda);
 				
-				cliente = null;
 				SaleConfigPanel.add(cpfField);
 				SaleConfigPanel.remove(txtClientName);
 				SaleConfigPanel.remove(txtClientCpf);
@@ -315,7 +318,7 @@ public class TelaNovaVenda {
 								Janela.getInstance().getTelaAdicionarCliente().setCpfField(cpfCliente);
 								Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "AdicionarCliente");
 							}	 	
-						} else if(cliente.getCpf() != null){
+						} else {
 							
 							setClienteNaTela();
 						}
@@ -349,35 +352,35 @@ public class TelaNovaVenda {
 		
 		PagamentocomboBox = new JComboBox<>();
 		PagamentocomboBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		PagamentocomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"DINHEIRO", "PIX", "CARTAO DE CREDITO", "CARTAO DE DEBITO", "TICKET DE ALIMENTACAO"}));
+		PagamentocomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"DINHEIRO", "PIX", "CARTAO DE CREDITO", "CARTAO DE DEBITO", "CARTAO DE ALIMENTACAO"}));
 		PagamentocomboBox.setBounds(321, 45, 282, 30);
 		PagamentocomboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				if(e.getItem().equals("Dinheiro")) {
+				if(e.getItem().equals("DINHEIRO")) {
 					SaleConfigPanel.add(txtValueInsert);
 					SaleConfigPanel.add(ValueInsertField);
 					SaleConfigPanel.add(txtTroco);
 					SaleConfigPanel.add(troco);
 				}
-				if(e.getItem().equals("Pix")) {
+				if(e.getItem().equals("PIX")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
 					SaleConfigPanel.remove(troco);
 				}
-				if(e.getItem().equals("Cartão de Crédito")) {
+				if(e.getItem().equals("CARTAO DE DEBITO")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
 					SaleConfigPanel.remove(troco);
 				}
-				if(e.getItem().equals("Cartão de Crédito")) {
+				if(e.getItem().equals("CARTAO DE CREDITO")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
 					SaleConfigPanel.remove(troco);
 				}
-				if(e.getItem().equals("Ticket Alimentação")) {
+				if(e.getItem().equals("CARTAO DE ALIMENTACAO")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(ValueInsertField);
 					SaleConfigPanel.remove(txtTroco);
@@ -443,6 +446,7 @@ public class TelaNovaVenda {
 	}
 	
 	public void setClienteNaTela() {
+		setCliente(cliente);
 		SaleConfigPanel.remove(cpfField);
 		SaleConfigPanel.add(txtClientName);
 		SaleConfigPanel.add(txtClientCpf);

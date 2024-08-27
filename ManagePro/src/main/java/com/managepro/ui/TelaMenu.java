@@ -81,7 +81,7 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÍ n„o tem premiss„o para acessar o Estoque.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc√™ n√£o tem permiss√£o para acessar o Estoque.");
 				}
 			}
 		});
@@ -99,7 +99,7 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "NovaVenda");
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÍ n„o tem premiss„o para criar uma nova Venda.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc√™ n√£o tem permiss√£o para criar uma nova Venda.");
 				}
 			}
 		});
@@ -119,13 +119,13 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "GerenciamentoDeVendas");
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÍ n„o tem premiss„o para acessar o gerenciamento de vendas.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc√™ n√£o tem permiss√£o para acessar o gerenciamento de vendas.");
 				}
 			}
 		});
 		panelMenu.add(vendasBt);
 		
-		funcionariosBt = new JButton("Funcion·rios ");
+		funcionariosBt = new JButton("Funcion√°rios ");
 		funcionariosBt.setIcon(new ImageIcon(TelaMenu.class.getResource("/com/managepro/assets/FuncionariosIcon.png")));
 		funcionariosBt.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		funcionariosBt.setBorder(new LineBorder(Color.GRAY, 2));
@@ -137,7 +137,7 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Funcionarios");
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÍ n„o tem premiss„o para acessar o gerenciamento de funcion·rios.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc√™ n√£o tem permiss√£o para acessar o gerenciamento de funcion√°rios.");
 				}
 			}
 		});
@@ -156,7 +156,7 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Contabilidade");
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÍ n„o tem premiss„o para acessar a contabilidade.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Voc√™ n√£o tem permiss√£o para acessar a contabilidade.");
 				}
 			}
 		});

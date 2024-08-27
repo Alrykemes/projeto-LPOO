@@ -5,7 +5,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
+//import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,30 +81,7 @@ public class VendaDAO implements SaleRepository {
 	    }
 	}
 	
-	public void pesquisarVendasPorId(Long id) throws ClassNotFoundException, SQLException {
-	
-	    try {
-	    	
-	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statementReceberVendas = connection.prepareStatement("SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco FROM venda v WHERE v.id_venda = ?");
-	
-	        statementReceberVendas.setLong(1, id);
-	        statementReceberVendas.execute();
-	
-	        statementReceberVendas.close();
-	        connection.close();
-	        
-	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace(); 
-	    }
-	}
-	
-	
-	
-	
-	public void deletarVendas(Long Id) throws ClassNotFoundException, SQLException {
+	public void deletarVenda(Long Id) throws ClassNotFoundException, SQLException {
 	
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
@@ -127,17 +106,16 @@ public class VendaDAO implements SaleRepository {
 	}
 	
 	@Override
-	public List<Venda> listarVendaPorId(Long Id) throws ClassNotFoundException, SQLException {
+	public List<Venda> pesquisarVendaPorId(Long id) throws ClassNotFoundException, SQLException {
 	
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	            "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-	            "FROM venda v WHERE v.id_venda = ?"
-	        );
+	    	Statement statement = connection.createStatement();
 	
-	        statement.setLong(1, Id);
-	        ResultSet resultSet = statement.executeQuery();
+	        String sql =  "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+		            "FROM venda v WHERE v.id_venda LIKE '" + id + "%'";
+	    	
+	        ResultSet resultSet = statement.executeQuery(sql);
 	        
 	        List<Venda> vendas = new ArrayList<>();
 	
@@ -146,12 +124,12 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById((resultSet.getLong("id_funcionario")))); // Implementar método TO DO
-	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); // Implementar método
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario")))); 
+	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	           // venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId())); // Implementar método
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId())); 
 	
 	            vendas.add(venda);
 	        }
@@ -173,17 +151,16 @@ public class VendaDAO implements SaleRepository {
 	
 	
 	@Override
-	public List<Venda> listarVendaPorFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException {
 	    
 		try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-	                        "FROM venda v WHERE v.id_funcionario = ?"
-	        );
+	    	Statement statement = connection.createStatement();
 	
-	        statement.setLong(1, idFuncionario);
-	        ResultSet resultSet = statement.executeQuery();
+	    	String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+                    "FROM venda v WHERE v.id_funcionario LIKE '"+ idFuncionario +"%'";
+	    	
+	        ResultSet resultSet = statement.executeQuery(sql);
 	
 	        List<Venda> vendas = new ArrayList<>();
 	
@@ -192,12 +169,12 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	          //  venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId()));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
 	        }
@@ -218,15 +195,14 @@ public class VendaDAO implements SaleRepository {
 	
 	
 	@Override
-	public List<Venda> listarVendasPorData(LocalDate dataVenda) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ClassNotFoundException, SQLException {
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-	                        "FROM venda v WHERE v.data_venda = ?"
-	        );
+	    	PreparedStatement statement = connection.prepareStatement("SELECT * FROM venda WHERE data_venda BETWEEN ? AND ?;");
 	
-	        statement.setDate(1, Date.valueOf(dataVenda));
+	    	statement.setDate(1, Date.valueOf(de));
+	    	statement.setDate(2, Date.valueOf(ate));
+	        
 	        ResultSet resultSet = statement.executeQuery();
 	
 	        List<Venda> vendas = new ArrayList<>();
@@ -236,12 +212,12 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	        	venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	            //venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId()));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
 	        }
@@ -258,6 +234,46 @@ public class VendaDAO implements SaleRepository {
 	            return null;
 	        }
 		}
+
+	@Override
+	public List<Venda> listarTodasAsVendas() throws ClassNotFoundException, SQLException {
+		try {
+	    	Connection connection = MySQLConnection.getConnection();
+	    	PreparedStatement statement = connection.prepareStatement(
+	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, preco FROM venda AS v"
+	        );
+	
+	        ResultSet resultSet = statement.executeQuery();
+	
+	        List<Venda> vendas = new ArrayList<>();
+	
+	        while (resultSet.next()) {
+	            
+	        	Venda venda = new Venda();
+	            
+	        	venda.setId(resultSet.getLong("id_venda"));
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
+	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
+	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
+	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
+	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
+	
+	            vendas.add(venda);
+	        }
+		    resultSet.close();
+		    statement.close();
+		    connection.close();
+	
+	        return vendas;
+	
+	        } catch (SQLException | ClassNotFoundException e) {
+	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				System.out.println(e.getMessage());
+	            e.printStackTrace();  
+	            return null;
+	        }
+	}
 
 	
 }

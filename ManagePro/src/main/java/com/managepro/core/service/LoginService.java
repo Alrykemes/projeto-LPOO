@@ -13,7 +13,7 @@ public class LoginService {
     }
     
     public boolean authenticate(String usuario, String senha) {
-        Funcionario funcionario = FuncionarioDAO.findEmployeeByUser(usuario);
+        Funcionario funcionario = FuncionarioDAO.encontrarFuncionarioPeloUsuario(usuario);
         if(funcionario == null || funcionario.getUsuario() == null) {
         	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Usuario ou senha Incorreto!");
         	return false;
