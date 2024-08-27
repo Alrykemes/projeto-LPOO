@@ -79,13 +79,13 @@ public class TelaEstoque {
 			public void actionPerformed(ActionEvent e) {
 				if (comboBox.getSelectedItem().equals("ID")) {
 					if (textPesquisaField.getText().matches(".*[a-zA-Z].*")) {
-	                    JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter apenas n˙meros.", "Erro", JOptionPane.INFORMATION_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter apenas n√∫meros.", "Erro", JOptionPane.INFORMATION_MESSAGE);
 	                }
 					else if (textPesquisaField.getText().trim().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id v·lido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id v√°lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else if (produtoService.getProductById(Long.valueOf(textPesquisaField.getText().trim())) == null ) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id v·lido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id v√°lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						tabelaId(Long.valueOf(textPesquisaField.getText().trim()));
@@ -94,10 +94,10 @@ public class TelaEstoque {
 				}
 				if (comboBox.getSelectedItem().equals("Nome")) {
 					if (textPesquisaField.getText().trim().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome v·lido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome v√°lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else if (produtoService.pesquisarProdutoPorNome(textPesquisaField.getText().trim()) == null ) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome v·lido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome v√°lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						tabelaNome(textPesquisaField.getText().trim());
@@ -316,7 +316,7 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"CÛdigo","Nome","Fornecedor","Quantidade","Marca","PreÁo","Data de Validade"}; 
+         String[] nomeColuna = {"C√≥digo","Nome","Fornecedor","Quantidade","Marca","Pre√ßo","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		return tabelaAtualizada;
 	}
@@ -335,7 +335,7 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"CÛdigo","Nome","Fornecedor","Quantidade","Marca","PreÁo","Data de Validade"}; 
+         String[] nomeColuna = {"C√≥digo","Nome","Fornecedor","Quantidade","Marca","Pre√ßo","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
 	}
@@ -354,7 +354,7 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"CÛdigo","Nome","Fornecedor","Quantidade","Marca","PreÁo","Data de Validade"}; 
+         String[] nomeColuna = {"C√≥digo","Nome","Fornecedor","Quantidade","Marca","Pre√ßo","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
 	}
@@ -373,7 +373,7 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"CÛdigo","Nome","Fornecedor","Quantidade","Marca","PreÁo","Data de Validade"}; 
+         String[] nomeColuna = {"C√≥digo","Nome","Fornecedor","Quantidade","Marca","Pre√ßo","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
 	}

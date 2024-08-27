@@ -67,7 +67,7 @@ public class TelaEditarFuncionario {
 		editarFuncionarioPanel.setSize(700, 500);
 		editarFuncionarioPanel.setLayout(null);
 
-		tituloTela = new JLabel("EDITAR FUNCIONÁRIO");
+		tituloTela = new JLabel("EDITAR FUNCIONÃRIO");
 		tituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		tituloTela.setBounds(28, 20, 237, 38);
 		editarFuncionarioPanel.add(tituloTela);
@@ -99,7 +99,7 @@ public class TelaEditarFuncionario {
 			maskCpf.setAllowsInvalid(false);
 			campoCpf = new JFormattedTextField(maskCpf);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de cpf: " + e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a mÃ¡scara de cpf: " + e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -120,7 +120,7 @@ public class TelaEditarFuncionario {
 		campoCargo.setBounds(244, 149, 180, 35);
 		editarFuncionarioPanel.add(campoCargo);
 
-		txtSalario = new JLabel("Salário:");
+		txtSalario = new JLabel("Salï¿½rio:");
 		txtSalario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtSalario.setBounds(244, 204, 70, 19);
 		editarFuncionarioPanel.add(txtSalario);
@@ -137,7 +137,7 @@ public class TelaEditarFuncionario {
 		campoSalario.setBounds(244, 234, 180, 35);
 		editarFuncionarioPanel.add(campoSalario);
 
-		txtDataAdmissao = new JLabel("Data Admissão:");
+		txtDataAdmissao = new JLabel("Data de AdmissÃ£o:");
 		txtDataAdmissao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtDataAdmissao.setBounds(244, 295, 132, 19);
 		editarFuncionarioPanel.add(txtDataAdmissao);
@@ -160,7 +160,7 @@ public class TelaEditarFuncionario {
 			maskTelefone.setAllowsInvalid(false);
 			campoTelefone = new JFormattedTextField(maskTelefone);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de telefone: " + e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a mÃ¡scara de telefone: " + e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -170,7 +170,7 @@ public class TelaEditarFuncionario {
 		editarFuncionarioPanel.add(campoTelefone);
 		campoTelefone.setColumns(10);
 
-		txtUsuario = new JLabel("Usuário:");
+		txtUsuario = new JLabel("UsuÃ¡rio:");
 		txtUsuario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtUsuario.setBounds(480, 157, 70, 19);
 		editarFuncionarioPanel.add(txtUsuario);
@@ -222,7 +222,7 @@ public class TelaEditarFuncionario {
 					Instant instant = dateChooser.getDate().toInstant();
 					dataAdmissaoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Data inválida");
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Data invÃ¡lida");
 				}
 
 				String valorNome = campoNome.getText();
@@ -233,7 +233,7 @@ public class TelaEditarFuncionario {
 					((JFormattedTextField) campoSalario).commitEdit();
 					valorSalario = (BigDecimal) ((JFormattedTextField) campoSalario).getValue();
 				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Salário inválido");
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "SalÃ¡rio invÃ¡lido");
 
 				}
 
@@ -258,13 +258,13 @@ public class TelaEditarFuncionario {
 					campoUsuario.setText("");
 					campoSenha.setText("");
 
-					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Funcionarios");
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "FuncionÃ¡rios");
 					Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
 					Janela.getInstance().getFrame().setLocationRelativeTo(null);
 					Janela.getInstance().getTelaFuncionarios().carregarFuncionariosNaTabela();
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Erro ao editar funcionário, tente novamente mais tarde", "Erro",
+							"Erro ao editar funcionÃ¡rio, tente novamente mais tarde", "Erro",
 							JOptionPane.WARNING_MESSAGE);
 				}
 			}

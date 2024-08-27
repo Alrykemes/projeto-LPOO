@@ -47,7 +47,7 @@ public class ProdutoDAO  implements ProductRepository{
 		return produto;
 		
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			return null;
 		}
@@ -67,7 +67,7 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.setDate(6, Date.valueOf(produto.getValidade()));
 				statement.execute();
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 			}
 		}
@@ -86,7 +86,7 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.execute();
 				return null;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 				return null;
@@ -101,7 +101,7 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.setLong(1, id);
 				statement.execute();
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 			}
 		}
@@ -128,7 +128,7 @@ public class ProdutoDAO  implements ProductRepository{
 				}
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}
@@ -156,7 +156,7 @@ public class ProdutoDAO  implements ProductRepository{
 						
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}
@@ -187,7 +187,7 @@ public class ProdutoDAO  implements ProductRepository{
 				
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}
@@ -217,7 +217,7 @@ public class ProdutoDAO  implements ProductRepository{
 						
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}
@@ -248,7 +248,7 @@ public class ProdutoDAO  implements ProductRepository{
 						
 				return product;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 				return null;
 			}

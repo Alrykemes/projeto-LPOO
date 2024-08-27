@@ -60,31 +60,31 @@ public class ProdutoService {
 
 	public void validacao(Produto produto) throws ValidacaoException {
 
-		// exceções buscar produto
+		// exceï¿½ï¿½es buscar produto
 
 			if (produto == null) {
-				throw new ValidacaoException("Produto não existe.");
+				throw new ValidacaoException("Produto nÃ£o existente.");
 			}
 
-			// exceções gerais do produto
+			// exceï¿½ï¿½es gerais do produto
 
 			if (produto.getNomeProduto() == null) {
-			throw new ValidacaoException("Nome do produto é obrigatório");
+			throw new ValidacaoException("Nome do produto Ã© obrigatÃ¡rio");
 			}
 			
 			if (produto.getMarca() == null) {
-				throw new ValidacaoException("Marca é obrigatória.");
+				throw new ValidacaoException("Marca Ã© obrigatÃ³ria.");
 			}
 
 			if (produto.getPreco() == null) {
-				throw new ValidacaoException("Preço é obrigatório.");
+				throw new ValidacaoException("PreÃ§o Ã© obrigatÃ¡rio.");
 			}
 			
 			BigDecimal zero = new BigDecimal(0);
 			int resultado = produto.getPreco().compareTo(zero);
 
 			if (resultado < 0 || resultado == 0) {
-				throw new ValidacaoException("Preço não pode ser negativo e/ou é obrigatório.");
+				throw new ValidacaoException("PreÃ§o nÃ£o pode ser negativo e/ou Ã© obrigatÃ¡rio.");
 			}
 
 		}

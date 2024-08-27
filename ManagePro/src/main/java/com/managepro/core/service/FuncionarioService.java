@@ -20,10 +20,10 @@ public class FuncionarioService {
 	public void criarFuncionario(Funcionario funcionario) throws Exception {
 		if (validarCampos(funcionario)) {
 			if (funcionarioDAO.encontrarFuncionarioPeloCpf(funcionario.getCpf()) != null) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcion�rio j� cadastrado");
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário já cadastrado");
 			} else {
 				funcionarioDAO.adicionarFuncionario(funcionario);
-				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcion�rio cadastrado com sucesso!");
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário cadastrado com sucesso!");
 			}
 		} else {
 			throw new Exception("Erro ao validar dados.");
@@ -32,12 +32,12 @@ public class FuncionarioService {
 
 	public boolean validarCampos(Funcionario funcionario) throws Exception {
 		if (funcionario.getNome().length() <= 4 || funcionario.getNome().length() >= 69) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "O nome inserido n�o � v�lido");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "O nome inserido não é válido");
 			return false;
 		}
 
 		if (funcionario.getCpf().length() != 14) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF inv�lido");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF inválido");
 			return false;
 		}
 
@@ -45,21 +45,21 @@ public class FuncionarioService {
 			BigDecimal salario = funcionario.getSalario();
 			if (salario == null || salario.compareTo(BigDecimal.ZERO) <= 0) {
 				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-						"Sal�rio inv�lido, deve ser um n�mero positivo");
+						"Salário inválido, deve ser um número positivo");
 				return false;
 			}
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-					"Sal�rio inv�lido, deve conter apenas n�meros");
+					"Salário inválido, deve conter apenas números");
 			return false;
 		}
 
 		if (funcionario.getUsuario().length() < 4) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-					"Nome de usu�rio muito curto, adicione mais caracteres");
+					"Nome de usuário muito curto, adicione mais caracteres");
 			return false;
 		} else if (funcionario.getUsuario().length() > 20) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Nome de usu�rio muito extenso - MAX(20)");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Nome de usuário muito extenso - MAX(20)");
 			return false;
 		}
 
@@ -68,7 +68,7 @@ public class FuncionarioService {
 					"Senha muito curta, adicione mais caracteres");
 			return false;
 		} else if (funcionario.getSenha().length() > 20) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Senha muito extensa - MAX(20(");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Senha muito extensa - MAX(20)");
 			return false;
 		}
 
@@ -80,10 +80,10 @@ public class FuncionarioService {
 			Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(cpfOriginal);
 			if (funcionarioRetornoBanco != null) {
 				funcionarioDAO.editarFuncionario(funcionario, funcionarioRetornoBanco);
-				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcion�rio editado com sucesso!");
+				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário editado com sucesso!");
 			} else {
 				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-						"Erro ao editar funcion�rio, funcion�rio n�o encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
+						"Erro ao editar funcionário, funcionário não encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
 
 			}
 		}
@@ -93,10 +93,10 @@ public class FuncionarioService {
 		Funcionario funcionarioRetornoBanco = funcionarioDAO.encontrarFuncionarioPeloCpf(cpf);
 		if (funcionarioRetornoBanco != null) {
 			funcionarioDAO.removerFuncionario(funcionarioRetornoBanco.getId());
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcion�rio removido com sucesso!");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Funcionário removido com sucesso!");
 		} else {
 			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-					"Erro ao remover funcion�rio, funcion�rio n�o encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
+					"Erro ao remover funcionário, funcionário não encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
 		}
 
 	}

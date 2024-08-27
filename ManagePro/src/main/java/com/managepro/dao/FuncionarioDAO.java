@@ -56,7 +56,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao procurar funcion�rio pelo usu�rio, tente novamente mais tarde");
+					"Erro ao procurar funcionário pelo usuário, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			return null;
@@ -98,7 +98,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao procurar funcion�rio pelo ID, tente novamente mais tarde");
+					"Erro ao procurar funcionário pelo ID, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			return null;
@@ -136,7 +136,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao procuruar funcion�rio pelo CPF, tente novamente mais tarde");
+					"Erro ao procurar funcionário pelo CPF, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			return null;
@@ -165,7 +165,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			int linhasAfetadas = statementFuncionario.executeUpdate();
 
 			if (linhasAfetadas == 0) {
-				throw new SQLException("Falha ao Atualizar Funcion�rio, nenhum registro foi modificado!");
+				throw new SQLException("Falha ao atualizar funcionário, nenhum registro foi modificado!");
 			}
 
 			ResultSet rs = statementFuncionario.getGeneratedKeys();
@@ -177,7 +177,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 				statementTelefone.execute();
 
 			} else {
-				throw new SQLException("Falha ao Inserir Funcion�rio, ID n�o Gerado ou nulo!");
+				throw new SQLException("Falha ao inserir funcionário, ID não gerado ou nulo!");
 			}
 
 			rs.close();
@@ -186,7 +186,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao adicionar funcion�rio, tente novamente mais tarde");
+					"Erro ao adicionar funcionário, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
@@ -213,7 +213,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			int linhasAfetadas = statementFuncionario.executeUpdate();
 
 			if (linhasAfetadas == 0) {
-				throw new SQLException("Falha ao Atualizar Funcion�rio, nenhum registro foi modificado!");
+				throw new SQLException("Falha ao atualizar funcionário, nenhum registro foi modificado!");
 			}
 
 			String updateTelefoneQuery = "UPDATE telefone_funcionario SET numero = ? WHERE id_funcionario = ?";
@@ -230,7 +230,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao editar funcion�rio, tente novamente mais tarde");
+					"Erro ao editar funcionário, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
@@ -268,7 +268,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao pegar lista de funcion�rios, tente novamente mais tarde.");
+					"Erro ao pegar lista de funcionários, tente novamente mais tarde.");
 			e.printStackTrace();
 		}
 		return funcionarios;
@@ -295,7 +295,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao remover funcion�rio, tente novamente mais tarde");
+					"Erro ao remover funcionário, tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}

@@ -30,10 +30,10 @@ public class VendaService {
 				
 			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
 					if(venda.getValorRecebido() == null) {
-						throw new ExcecaoDeNegocios("VocÍ precisa definir um valor a ser recebido!");
+						throw new ExcecaoDeNegocios("Voc√™ precisa definir um valor a ser recebido!");
 					}
 					if(venda.getValorRecebido().compareTo(venda.getPreco()) < 0) {
-						throw new ExcecaoDeNegocios("O valor Recebido n„o pode ser menor que o preÁo dos produtos!");
+						throw new ExcecaoDeNegocios("O valor Recebido n√£o pode ser menor que o pre√ßo dos produtos!");
 					} else {
 						situacaoPagamento = true;
 					}
@@ -48,10 +48,10 @@ public class VendaService {
 			if(situacaoPagamento == true) {	
 				vendaDAO.cadastrarVenda(venda);
 			} else {
-				throw new ExcecaoDeNegocios("Pagamento n„o aprovado");
+				throw new ExcecaoDeNegocios("Pagamento n√£o aprovado");
 			}
 		} else {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Venda È Null");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Venda √© Null");
 		}
 	}
 	
@@ -60,7 +60,7 @@ public class VendaService {
 			if(vendaDAO.listarTodasAsVendas() != null) {
 				return vendaDAO.listarTodasAsVendas();
 			} else {
-				throw new ExcecaoDeNegocios("N„o h· vendas Realizadas atÈ o momento!");
+				throw new ExcecaoDeNegocios("N√£o h√° vendas Realizadas at√© o momento!");
 			}
 		} catch (Exception e) {
 			return null;
@@ -69,7 +69,7 @@ public class VendaService {
 	
 	public List<Venda> getVendasPorFuncionarioId(Long id) throws ExcecaoDoSistema, ExcecaoDeNegocios {
 		if(vendaDAO.listarVendasPorIdFuncionario(id).isEmpty()) {
-			throw new ExcecaoDeNegocios("N„o h· vendas realizadas por esse funcion·rio no sistema!");
+			throw new ExcecaoDeNegocios("N√£o h√° vendas realizadas por esse funcion√°rio no sistema!");
 		} else {				
 			return vendaDAO.listarVendasPorIdFuncionario(id);					
 		}
@@ -77,7 +77,7 @@ public class VendaService {
 	
 	public List<Venda> getVendasPorId(Long id) throws ExcecaoDoSistema, ExcecaoDeNegocios {
 		if(vendaDAO.pesquisarVendaPorId(id).isEmpty()) {
-			throw new ExcecaoDeNegocios("N„o h· vendas realizadas com esse ID.");			
+			throw new ExcecaoDeNegocios("N√£o h√° vendas realizadas com esse ID.");			
 		} else {
 			return vendaDAO.pesquisarVendaPorId(id);					
 		}
@@ -85,7 +85,7 @@ public class VendaService {
 	
 	public List<Venda> getVendasPorIntervaloDeDatas(LocalDate de, LocalDate ate) throws ExcecaoDoSistema, ExcecaoDeNegocios {
 		if(vendaDAO.listarVendasPorIntervaloDeData(de, ate).isEmpty()) {
-			throw new ExcecaoDeNegocios("N„o h· vendas realizadas entre esse intervalo de datas atÈ o momento.");			
+			throw new ExcecaoDeNegocios("N√£o h√° vendas realizadas entre esse intervalo de datas at√© o momento.");			
 		} else {
 			return vendaDAO.listarVendasPorIntervaloDeData(de, ate);				
 		}
@@ -95,13 +95,13 @@ public class VendaService {
 		if (vendaDAO.pesquisarVendaPorId(id) != null) {
 			vendaDAO.deletarVenda(id);
 		} else {
-			throw new ExcecaoDeNegocios("Venda n„o encontrada no sistema!");
+			throw new ExcecaoDeNegocios("Venda n√£o encontrada no sistema!");
 		}
 	}
 	
 	public boolean validarIdEQtdDoProduto(JFormattedTextField codField, JFormattedTextField qtdField) throws ExcecaoDoSistema, ExcecaoDeNegocios {
 		if(codField.getText().replaceAll(" ", "").length() <= 0) {
-			throw new ExcecaoDeNegocios("Insira o cÛdigo do produto desejado.");
+			throw new ExcecaoDeNegocios("Insira o c√≥digo do produto desejado.");
 		} else {
 			if(qtdField.getText().replaceAll(" ", "").length() <= 0) {
 				throw new ExcecaoDeNegocios("Insira a quantidade desejada do produto");
@@ -114,11 +114,11 @@ public class VendaService {
 	public void validarVenda(Venda venda) throws ValidacaoException, ExcecaoDeNegocios {
 		
 		if(venda.getData() == null) {
-			throw new ValidacaoException("Data da Compra È null");
+			throw new ValidacaoException("Data da Compra √© null");
 		}
 		
 		if(venda.getProdutosVendidos() == null) {
-			throw new ValidacaoException("A lista de produtos da Compra È null");
+			throw new ValidacaoException("A lista de produtos da compra √© null");
 		}
 		
 		if(venda.getCliente() == null) {

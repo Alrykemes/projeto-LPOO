@@ -75,7 +75,7 @@ public class VendaDAO implements SaleRepository {
 		       statementProdutoVenda.close();
 	    } catch (SQLException | ClassNotFoundException e) {
 	    	e.printStackTrace();
-			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicaÃ§Ã£o do sistema.", e);
 	    }
 	}
 	
@@ -97,7 +97,7 @@ public class VendaDAO implements SaleRepository {
 	        connection.close();
 	        
 	    } catch (SQLException | ClassNotFoundException e) {
-			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicaÃ§Ã£o do sistema.", e); 
 	    } 
 	}
 	
@@ -137,7 +137,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	    
 	    } catch (SQLException | ClassNotFoundException e) {
-			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicaÃ§Ã£o do sistema.", e);
 	    } 
 	}
 	
@@ -178,7 +178,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	    } catch (SQLException | ClassNotFoundException e) {
-			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicaÃ§Ã£o do sistema.", e);
 	    } 
 	}
 	
@@ -218,7 +218,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicaÃ§Ã£o do sistema.", e);
 	        }
 		}
 
@@ -255,7 +255,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicaÃ§Ã£o do sistema.", e);
 	        }
 	}
 

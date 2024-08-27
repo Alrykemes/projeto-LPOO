@@ -43,12 +43,12 @@ public class ClienteDAO implements ClientRepository{
 			
 			stmtTelefone.execute();
 	        } else {
-				throw new SQLException("Falha ao Inserir Cliente, ID n„o Gerado ou nulo!");
+				throw new SQLException("Falha ao inserir cliente, ID n√£o gerado ou nulo!");
 			}
 	        
 			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÁ„o do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunica√ß√£o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
@@ -85,7 +85,7 @@ public class ClienteDAO implements ClientRepository{
 			return cliente;
 			
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÁ„o do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunica√ß√£o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		
@@ -118,7 +118,7 @@ public class ClienteDAO implements ClientRepository{
 			return cliente;
 			
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na ComunicaÁ„o do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunica√ß√£o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		

@@ -15,7 +15,7 @@ public class LoginService {
     public boolean authenticate(String usuario, String senha) {
         Funcionario funcionario = FuncionarioDAO.encontrarFuncionarioPeloUsuario(usuario);
         if(funcionario == null || funcionario.getUsuario() == null) {
-        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Usuario ou senha Incorreto!");
+        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Usuario ou senha incorretos!");
         	return false;
         }
         Janela.getInstance().getTelaLogin().setFuncionarioLogado(funcionario);

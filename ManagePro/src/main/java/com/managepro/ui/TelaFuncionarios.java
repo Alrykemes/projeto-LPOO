@@ -119,7 +119,7 @@ public class TelaFuncionarios {
 			maskCpf.setAllowsInvalid(false);
 			campoCpf = new JFormattedTextField(maskCpf);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de cpf: " + e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a mÃ¡scara de cpf: " + e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -139,7 +139,7 @@ public class TelaFuncionarios {
 		campoCargo.setBounds(401, 83, 180, 38);
 		panel_1.add(campoCargo);
 
-		txtSalario = new JLabel("Salário:");
+		txtSalario = new JLabel("SalÃ¡rio:");
 		txtSalario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtSalario.setBounds(591, 59, 70, 19);
 		panel_1.add(txtSalario);
@@ -156,7 +156,7 @@ public class TelaFuncionarios {
 		campoSalario.setBounds(591, 82, 180, 38);
 		panel_1.add(campoSalario);
 
-		txtDataAdmissao = new JLabel("Data Admissão:");
+		txtDataAdmissao = new JLabel("Data AdmissÃ£o:");
 		txtDataAdmissao.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtDataAdmissao.setBounds(20, 130, 132, 19);
 		panel_1.add(txtDataAdmissao);
@@ -179,7 +179,7 @@ public class TelaFuncionarios {
 			maskTelefone.setAllowsInvalid(false);
 			campoTelefone = new JFormattedTextField(maskTelefone);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de telefone: " + e.getMessage(), "Erro",
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a mÃ¡scara de telefone: " + e.getMessage(), "Erro",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -188,7 +188,7 @@ public class TelaFuncionarios {
 		panel_1.add(campoTelefone);
 		campoTelefone.setColumns(10);
 
-		txtUsuario = new JLabel("Usuário:");
+		txtUsuario = new JLabel("Usuï¿½rio:");
 		txtUsuario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtUsuario.setBounds(401, 130, 70, 19);
 		panel_1.add(txtUsuario);
@@ -225,7 +225,7 @@ public class TelaFuncionarios {
 					Instant instant = dateChooser.getDate().toInstant();
 					dataAdmissaoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Data inválida");
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Data invÃ¡lida");
 				}
 
 				String valorNome = campoNome.getText();
@@ -236,7 +236,7 @@ public class TelaFuncionarios {
 					campoSalario.commitEdit();
 					valorSalario = (BigDecimal) campoSalario.getValue();
 				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Salário inválido");
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "SalÃ¡rio invÃ¡lido");
 
 				}
 
@@ -265,7 +265,7 @@ public class TelaFuncionarios {
 
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Erro ao cadastrar funcionário, tente novamente mais tarde", "Erro",
+							"Erro ao cadastrar funcionÃ¡rio, tente novamente mais tarde", "Erro",
 							JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -291,14 +291,14 @@ public class TelaFuncionarios {
 					}
 
 					if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(),
-							"Deseja remover o funcionário " + nomeFuncionario + "?", "Remover Funcionário",
+							"Deseja remover o funcionÃ¡rio " + nomeFuncionario + "?", "Remover FuncionÃ¡rio",
 							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						try {
 							funcionarioService.apagarFuncionario(cpfFuncionario);
 							carregarFuncionariosNaTabela();
 						} catch (Exception e2) {
 							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-									"Erro ao remover funcionário, tente novamente mais tarde", "Erro",
+									"Erro ao remover funcionÃ¡rio, tente novamente mais tarde", "Erro",
 									JOptionPane.WARNING_MESSAGE);
 						}
 
@@ -308,7 +308,7 @@ public class TelaFuncionarios {
 
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",
+							"Selecione um funcionÃ¡rio na tabela abaixo", "Nenhuma seleÃ§Ã£o",
 							JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -334,7 +334,7 @@ public class TelaFuncionarios {
 					Janela.getInstance().getFrame().setLocationRelativeTo(null);
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",
+							"Selecione um funcionÃ¡rio na tabela abaixo", "Nenhuma seleÃ§Ã£o",
 							JOptionPane.WARNING_MESSAGE);
 				}
 
@@ -351,7 +351,7 @@ public class TelaFuncionarios {
 		tabela.setBorder(new LineBorder(new Color(0, 0, 0)));
 		tabela.setToolTipText("");
 		tabela.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null } },
-				new String[] { "Nome", "CPF", "Cargo", "Salário", "Data Admissão", "Telefone", "Usuário", "Senha" }));
+				new String[] { "Nome", "CPF", "Cargo", "SalÃ¡rio", "Data Admissï¿½o", "Telefone", "UsuÃ¡rio", "Senha" }));
 		tabela.setBounds(50, 248, 930, 200);
 
 		JTableHeader tableHeader = tabela.getTableHeader();
@@ -383,7 +383,7 @@ public class TelaFuncionarios {
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-					"Erro ao inserir funcionários na tabela, tente novamente mais tarde", "Erro",
+					"Erro ao inserir funcionÃ¡rios na tabela, tente novamente mais tarde", "Erro",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}

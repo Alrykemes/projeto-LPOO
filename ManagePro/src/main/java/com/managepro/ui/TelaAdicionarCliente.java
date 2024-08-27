@@ -104,7 +104,7 @@ public class TelaAdicionarCliente{
 		dateChooser.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		adicionarProdutoPanel.add(dateChooser);
 		
-		JLabel lblNmeroCliente = new JLabel("N\u00FAmero do Cliente*");
+		JLabel lblNmeroCliente = new JLabel("Número do Cliente*");
 		lblNmeroCliente.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		lblNmeroCliente.setBounds(137, 213, 141, 14);
 		adicionarProdutoPanel.add(lblNmeroCliente);

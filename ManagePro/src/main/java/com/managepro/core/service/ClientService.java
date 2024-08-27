@@ -23,7 +23,7 @@ public class ClientService {
 
 		if (dataAtual.compareTo(cliente.getDataNascimento()) < 18) {
 			System.out.println(cliente.getDataNascimento().compareTo(dataAtual));
-			throw new Exception("Erro, Cliente menor de idade");
+			throw new Exception("Erro, cliente menor de idade");
 		}
 		
 		if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
@@ -31,14 +31,14 @@ public class ClientService {
 			Janela.getInstance().getTelaNovaVenda().setCliente(getClientCpf(cliente.getCpf()));
 			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já¡ cadastrado)");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF jÃ¡ cadastrado)");
 		}
 	}
 	
 	public Cliente getClientCpf(String cpf) {
 		
 		if(cpf.replaceAll(" ", "").length() != 14) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Número de CPF Invalido!");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "NÃºmero de CPF InvÃ¡lido!");
 			return null;
 		}
 		return clienteDAO.findClientByCpf(cpf);

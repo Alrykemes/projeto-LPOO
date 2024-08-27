@@ -129,8 +129,16 @@ public class TelaLogin {
 		String usuario = userLogin.getText().trim();
 		String senha = new String(passwordLogin.getPassword()).trim();
 
-		if(usuario.isEmpty() || senha.isEmpty()) {
-			JOptionPane.showMessageDialog(panelLogin, "Usuário e/ou senha n�o podem estar vazios.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
+		if(usuario.isEmpty() && senha.isEmpty()) {
+			JOptionPane.showMessageDialog(panelLogin, "Usuário e/ou senha não podem estar vazios.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
+	        return;
+		}
+		else if(senha.isEmpty()) {
+			JOptionPane.showMessageDialog(panelLogin, "Senha não pode estar vazia.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
+	        return;
+		}
+		else if(usuario.isEmpty()) {
+			JOptionPane.showMessageDialog(panelLogin, "Usuário não pode estar vazio.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
 	        return;
 		}
 		

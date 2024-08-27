@@ -335,7 +335,7 @@ public class TelaGerenciamentoDeVendas {
 					if (arquivoSalvo.exists()) {
 	                    int resposta = JOptionPane.showConfirmDialog(
 	                            Janela.getInstance().getFrame(),
-	                            "O arquivo j� existe. Deseja sobrescrev�-lo?",
+	                            "O arquivo já existe. Deseja sobrescrevê-lo?",
 	                            "Arquivo existente",
 	                            JOptionPane.YES_NO_OPTION,
 	                            JOptionPane.WARNING_MESSAGE
@@ -370,7 +370,7 @@ public class TelaGerenciamentoDeVendas {
  							
  							contentStream.beginText();
  							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 120);
- 							contentStream.showText("ENDERE�O: Av. Prefeito Geraldo Pinho Alves, N� 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
+ 							contentStream.showText("ENDEREÇO: Av. Prefeito Geraldo Pinho Alves, Nº 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
  							contentStream.endText();
  							
  							contentStream.beginText();
@@ -470,7 +470,7 @@ public class TelaGerenciamentoDeVendas {
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-							contentStream.showText("M�TODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
+							contentStream.showText("MÉTODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
 							contentStream.endText();
 							inicioLinha += 15;
 							
@@ -504,7 +504,7 @@ public class TelaGerenciamentoDeVendas {
 		funcionarioNome.setBounds(125, 23, 331, 29);
 		vendaPanel.add(funcionarioNome);
 		
-		JLabel txtFuncionario = new JLabel("Funcion�rio:");
+		JLabel txtFuncionario = new JLabel("Funcionário:");
 		txtFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtFuncionario.setBounds(125, 1, 331, 29);
 		vendaPanel.add(txtFuncionario);
@@ -544,7 +544,7 @@ public class TelaGerenciamentoDeVendas {
 		totalCompra.setBounds(154, 428, 119, 29);
 		vendaPanel.add(totalCompra);
 		
-		JLabel txtMetodoPagamento = new JLabel("M�todo de Pagamento:");
+		JLabel txtMetodoPagamento = new JLabel("Método de Pagamento:");
 		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtMetodoPagamento.setBounds(10, 458, 195, 29);
 		vendaPanel.add(txtMetodoPagamento);
@@ -612,7 +612,7 @@ public class TelaGerenciamentoDeVendas {
 			} else {
 				listModelVendas.clear();
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Voc� precisa digitar antes de Pesquisar");
+						"Você precisa digitar antes de Pesquisar");
 			}
 		}
 		
@@ -629,7 +629,7 @@ public class TelaGerenciamentoDeVendas {
 			} else {
 				listModelVendas.clear();
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Voc� precisa digitar antes de Pesquisar");
+						"Você precisa digitar antes de Pesquisar");
 			}
 		}
 		
@@ -650,7 +650,7 @@ public class TelaGerenciamentoDeVendas {
 			LocalDate ate = instantAte.atZone(ZoneId.systemDefault()).toLocalDate();
 			if (de.compareTo(ate) >= 0) {
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Voc� precisa selecionar as datas antes de Pesquisar");
+						"Você precisa selecionar as datas antes de Pesquisar");
 			} else {
 				
 				try {
@@ -660,7 +660,7 @@ public class TelaGerenciamentoDeVendas {
 					} else {
 						listModelVendas.clear();
 						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-								"Voc� precisa selecionar as datas antes de Pesquisar");
+								"Você precisa selecionar as datas antes de Pesquisar");
 					}
 				} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
