@@ -7,18 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-//import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.repository.MySQLConnection;
 import com.managepro.repository.SaleRepository;
-import com.managepro.ui.Janela;
 
 public class VendaDAO implements SaleRepository {
 	
@@ -32,11 +29,11 @@ public class VendaDAO implements SaleRepository {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void cadastrarVenda(Venda venda) {
+	public void cadastrarVenda(Venda venda) throws ExcecaoDoSistema {
 		   try {
 		        
 			   Connection connection = MySQLConnection.getConnection();
-			   PreparedStatement statementVenda = connection.prepareStatement("INSERT INTO venda (id_funcionario, id_cliente, forma_pagamento, data_venda, preco) VALUES (?, ?, ?, ?, ?)");
+			   PreparedStatement statementVenda = connection.prepareStatement("INSERT INTO venda (id_funcionario, id_cliente, forma_pagamento, data_venda, preco, valor_recebido, troco) VALUES (?, ?, ?, ?, ?, ?, ?)");
 			   PreparedStatement statementProdutoVenda = connection.prepareStatement("INSERT INTO produto_venda (id_venda, id_produto, quantidade, preco) VALUES (?, ?, ?, ?)");
 			   
 		       statementVenda.setLong(1, venda.getFuncionario().getId());
@@ -44,6 +41,8 @@ public class VendaDAO implements SaleRepository {
 		       statementVenda.setString(3, venda.getFormaDePagamentoEnum().name());
 		       statementVenda.setDate(4, Date.valueOf(venda.getData())); 
 		       statementVenda.setBigDecimal(5, venda.getPreco());
+		       statementVenda.setBigDecimal(6, venda.getValorRecebido());
+		       statementVenda.setBigDecimal(7, venda.getTroco());
 		
 		       statementVenda.execute();
 		
@@ -75,13 +74,12 @@ public class VendaDAO implements SaleRepository {
 		       statementVenda.close();
 		       statementProdutoVenda.close();
 	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();
+	    	e.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	    }
 	}
 	
-	public void deletarVenda(Long Id) throws ClassNotFoundException, SQLException {
+	public void deletarVenda(Long Id) throws ExcecaoDoSistema {
 	
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
@@ -99,14 +97,12 @@ public class VendaDAO implements SaleRepository {
 	        connection.close();
 	        
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();  
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 	    } 
 	}
 	
 	@Override
-	public List<Venda> pesquisarVendaPorId(Long id) throws ClassNotFoundException, SQLException {
+	public List<Venda> pesquisarVendaPorId(Long id) throws ExcecaoDoSistema {
 	
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
@@ -141,17 +137,14 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	    
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace(); 
-	        return null;
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	    } 
 	}
 	
 	
 	
 	@Override
-	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ExcecaoDoSistema {
 	    
 		try {
 	    	Connection connection = MySQLConnection.getConnection();
@@ -185,17 +178,14 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();  
-	        return null;
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	    } 
 	}
 	
 	
 	
 	@Override
-	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ExcecaoDoSistema {
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	PreparedStatement statement = connection.prepareStatement("SELECT * FROM venda WHERE data_venda BETWEEN ? AND ?;");
@@ -228,15 +218,12 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-	            e.printStackTrace();  
-	            return null;
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	        }
 		}
 
 	@Override
-	public List<Venda> listarTodasAsVendas() throws ClassNotFoundException, SQLException {
+	public List<Venda> listarTodasAsVendas() throws ExcecaoDoSistema {
 		try {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	PreparedStatement statement = connection.prepareStatement(
@@ -268,10 +255,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-	            e.printStackTrace();  
-	            return null;
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	        }
 	}
 
