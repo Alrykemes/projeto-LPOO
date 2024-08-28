@@ -9,17 +9,6 @@ import com.managepro.core.model.Produto;
 import com.managepro.dao.ProdutoDAO;
 import com.managepro.exceptions.ValidacaoException;
 
-/* 
- * ajustar essas excecoes criar ela no pacote e tratalas em codigo,
- * criar valida��o baseada na UI de estoque e conecta-la deixem todas 
- * as itera�oes de tela funcionando e testadas obs: testar como usuario 
- * nao precisa criar testes, vamos decidir se deixaremos tudo em 
- * ingles ou portugues no grupo entao por favor siga o padrao
- * e mude o que for preciso para ficar no padrao por favor nao quebre 
- * nenhuma funcionalidade tente mudar apenas o nome das variaveis.
- * apague esse comentario e veja se tem outros pelo commit apaguem 
- * todos os comentarios para evitar conflitos de merging.
- */
 
 public class ProdutoService {
 
@@ -39,11 +28,11 @@ public class ProdutoService {
 		produtoDAO.newProduct(produto);
 	}
 	
-	public List<Produto> pesquisarProdutoNome(String nomeProduto){
+	public List<Produto> pesquisarProdutoPorNome(String nomeProduto){
 		return produtoDAO.pesquisarProdutoNome(nomeProduto);
 	}
 	
-	public List<Produto> pesquisarProdutoId(Long id){
+	public List<Produto> pesquisarProdutoPorId(Long id){
 		return produtoDAO.pesquisarProdutoID(id);
 	}
 
@@ -72,33 +61,34 @@ public class ProdutoService {
 
 	public void validacao(Produto produto) throws ValidacaoException {
 
-		// exceções buscar produto
+		// exce��es buscar produto
 
 			if (produto == null) {
-				throw new ValidacaoException("Produto não existe.");
+				throw new ValidacaoException("Produto n�o existe.");
 			}
 
-			// exceções gerais do produto
+			// exce��es gerais do produto
 
 			if (produto.getNomeProduto() == null) {
-			throw new ValidacaoException("Nome do produto é obrigatório");
+			throw new ValidacaoException("Nome do produto � obrigat�rio");
 			}
 			
 			if (produto.getMarca() == null) {
-				throw new ValidacaoException("Marca é obrigatória.");
+				throw new ValidacaoException("Marca � obrigat�ria.");
 			}
 
 			if (produto.getPreco() == null) {
-				throw new ValidacaoException("Preço é obrigatório.");
+				throw new ValidacaoException("Pre�o � obrigat�rio.");
 			}
 			
 			BigDecimal zero = new BigDecimal(0);
 			int resultado = produto.getPreco().compareTo(zero);
 
 			if (resultado < 0 || resultado == 0) {
-				throw new ValidacaoException("Preço não pode ser negativo e/ou é obrigatório.");
+				throw new ValidacaoException("Pre�o n�o pode ser negativo e/ou � obrigat�rio.");
 			}
 
 		}
 
 	}
+

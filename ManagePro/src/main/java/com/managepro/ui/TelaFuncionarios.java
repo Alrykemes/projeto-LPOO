@@ -1,270 +1,392 @@
 package com.managepro.ui;
 import javax.swing.JPanel;
+
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
+
+import com.managepro.core.model.Cargos;
+import com.managepro.core.model.Funcionario;
+import com.managepro.core.service.FuncionarioService;
+import com.toedter.calendar.JDateChooser;
+
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.JOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
+
+import javax.swing.JComboBox;
 
 public class TelaFuncionarios {
 
 
 	private JPanel funcionariosPanel;
-	private JTextField txtNome;
-	private JTextField txtCpf;
-	private JTextField txtEmail;
-	private JTextField txtSenha;
-	private JTextField txtCargo;
-	private JTable table;
-	private JLabel lblNomeLabel;
-	private JLabel lblCPFLabel;
-	private JLabel lblEmailLabel;
-	private JLabel lblSenhaLabel;
-	private JLabel lblCargoLabel;
-	private JLabel lblSalarioLabel;
-	private JLabel lblDataAdmissaoLabel;
-	private JLabel lblFrequenciaLabel;
+	private JTextField campoNome;
+	private JFormattedTextField campoCpf;
+	private JComboBox<Cargos> campoCargo;
+	private JTable tabela;
+	private JTextField campoUsuario;
+	private JTextField campoSenha;
+	private JLabel txtCpf;
+	private JLabel txtCargo;
+	private JLabel txtSalario;
+	private JLabel txtDataAdmissao;
+	private JLabel txtUsuario;
+	private JLabel txtSenha;
+	private JDateChooser dateChooser;
+	private JTextField campoTelefone;
+	private JFormattedTextField campoSalario;
+	private JButton botaoRemoverFuncionario;
+	private Funcionario funcionario;
 
 
 	public JPanel getPanel() {
 		return this.funcionariosPanel;
 	}
-	
+
 	public TelaFuncionarios() {
 		initialize();
 	}
 
-	
 	private void initialize() {
 
 		funcionariosPanel = new JPanel();
 		funcionariosPanel.setSize(1020, 680);
 		funcionariosPanel.setLayout(null);
-		
+
 		JPanel panel_1 = new JPanel();
+		panel_1.setLocation(7, 1);
 		panel_1.setSize(1006, 643);
 		funcionariosPanel.add(panel_1);
 		panel_1.setLayout(null);
-		
-		txtNome = new JTextField();
-		txtNome.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				 // Limpa o texto quando o campo ganha foco
-				if (txtNome.getText().equals("Nome:")) {
-					txtNome.setText("");
-				}
-			}
-			public void focusLost(FocusEvent e) {
-				// Se o campo estiver vazio quando perder o foco, redefine o texto original
-				if (txtNome.getText().isEmpty()) {
-					txtNome.setText("Nome:");
-				}
-			}
-		});
-		txtNome.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		txtNome.setText("Nome:");
-		txtNome.setBounds(20, 66, 132, 25);
-		panel_1.add(txtNome);
-		txtNome.setColumns(10);
-		
-		txtCpf = new JTextField();
-		txtCpf.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				if (txtCpf.getText().equals("CPF:")) {
-					txtCpf.setText("");
-				}
-			}
-			public void focusLost(FocusEvent e) {
-				if (txtCpf.getText().isEmpty()) {
-					txtCpf.setText("CPF:");
-				}
-			}
-		});
-		txtCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		txtCpf.setText("CPF:");
-		txtCpf.setBounds(162, 66, 115, 25);
-		panel_1.add(txtCpf);
-		txtCpf.setColumns(10);
-		
-		txtEmail = new JTextField();
-		txtEmail.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				if (txtEmail.getText().equals("Email:")) {
-					txtEmail.setText("");
-				}
-			}
-			public void focusLost(FocusEvent e) {
-				if (txtEmail.getText().isEmpty()) {
-					txtEmail.setText("Email:");
-				}
-			}
-		});
-		txtEmail.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		txtEmail.setText("Email:");
-		txtEmail.setBounds(287, 66, 115, 25);
-		panel_1.add(txtEmail);
-		txtEmail.setColumns(10);
-		
-		txtSenha = new JTextField();
-		txtSenha.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				if (txtSenha.getText().equals("Senha:")) {
-					txtSenha.setText("");
-				}
-			}
-			public void focusLost(FocusEvent e) {
-				if (txtSenha.getText().isEmpty()) {
-					txtSenha.setText("Senha:");
-				}
-			}
-		});
-		txtSenha.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		txtSenha.setText("Senha:");
-		txtSenha.setBounds(412, 66, 115, 25);
-		panel_1.add(txtSenha);
-		txtSenha.setColumns(10);
-		
-		txtCargo = new JTextField();
-		txtCargo.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				if (txtCargo.getText().equals("Cargo:")) {
-					txtCargo.setText("");
-				}
-			}
-			public void focusLost(FocusEvent e) {
-				if (txtCargo.getText().isEmpty()) {
-					txtCargo.setText("Cargo:");
-				}
-			}
-		});
-		txtCargo.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		txtCargo.setText("Cargo:");
-		txtCargo.setBounds(537, 66, 123, 25);
-		panel_1.add(txtCargo);
-		txtCargo.setColumns(10);
-		
-		JButton btnNewButton = new JButton("Adicionar");
-		btnNewButton.setBackground(new Color(255, 255, 255));
-		btnNewButton.setFont(new Font("SansSerif", Font.BOLD, 20));
-		btnNewButton.setBounds(867, 66, 123, 27);
-		panel_1.add(btnNewButton);
-		
-		table = new JTable();
-		table.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		table.setBorder(new LineBorder(new Color(0, 0, 0)));
-		table.setToolTipText("");
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
-			}
-		));
-		table.setBounds(10, 155, 980, 478);
-		panel_1.add(table);
-		
-		lblNomeLabel = new JLabel("Nome");
-		lblNomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNomeLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblNomeLabel.setBounds(0, 125, 115, 20);
-		panel_1.add(lblNomeLabel);
-		
-		lblCPFLabel = new JLabel("CPF");
-		lblCPFLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCPFLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblCPFLabel.setBounds(125, 125, 115, 20);
-		panel_1.add(lblCPFLabel);
-		
-		lblEmailLabel = new JLabel("Email");
-		lblEmailLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmailLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblEmailLabel.setBounds(250, 125, 115, 20);
-		panel_1.add(lblEmailLabel);
-		
-		lblSenhaLabel = new JLabel("Senha");
-		lblSenhaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSenhaLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblSenhaLabel.setBounds(375, 125, 115, 20);
-		panel_1.add(lblSenhaLabel);
-		
-		lblCargoLabel = new JLabel("Cargo");
-		lblCargoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCargoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblCargoLabel.setBounds(500, 125, 115, 20);
-		panel_1.add(lblCargoLabel);
-		
-		lblSalarioLabel = new JLabel("Sal�rio");
-		lblSalarioLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSalarioLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblSalarioLabel.setBounds(625, 125, 115, 20);
-		panel_1.add(lblSalarioLabel);
-		
-		lblDataAdmissaoLabel = new JLabel("Data Admiss�o");
-		lblDataAdmissaoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDataAdmissaoLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblDataAdmissaoLabel.setBounds(750, 125, 115, 20);
-		panel_1.add(lblDataAdmissaoLabel);
-		
-		lblFrequenciaLabel = new JLabel("Frequ�ncia");
-		lblFrequenciaLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFrequenciaLabel.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblFrequenciaLabel.setBounds(875, 125, 115, 20);
-		panel_1.add(lblFrequenciaLabel);
-		
-		JButton btnComeback = new JButton("Voltar   ");
-		btnComeback.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
-		btnComeback.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		btnComeback.addActionListener(new ActionListener() {
+
+		JButton botaoVoltar = new JButton("Voltar");
+		botaoVoltar.setIcon(
+				new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
+		botaoVoltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		botaoVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				campoNome.setText("");
+				campoCpf.setText("");
+				campoCargo.setSelectedItem(Cargos.ADMINISTRADOR);
+				campoSalario.setValue(BigDecimal.ZERO);
+				dateChooser.setDate(null);
+				campoTelefone.setText("");
+				campoUsuario.setText("");
+				campoSenha.setText("");
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
-		btnComeback.setBounds(20, 8, 120, 35);
-		panel_1.add(btnComeback);
+		botaoVoltar.setBounds(20, 8, 120, 35);
+		panel_1.add(botaoVoltar);
+
+		JLabel txtNome = new JLabel("Nome:");
+		txtNome.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtNome.setBounds(20, 53, 70, 19);
+		panel_1.add(txtNome);
+
+		campoNome = new JTextField();
+		campoNome.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoNome.setBounds(21, 82, 180, 38);
+		panel_1.add(campoNome);
+		campoNome.setColumns(10);
+
+		txtCpf = new JLabel("CPF:");
+		txtCpf.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtCpf.setBounds(211, 59, 70, 19);
+		panel_1.add(txtCpf);
+
+		try {
+			MaskFormatter maskCpf = new MaskFormatter("###.###.###-##");
+			maskCpf.setValidCharacters("0123456789");
+			maskCpf.setAllowsInvalid(false);
+			campoCpf = new JFormattedTextField(maskCpf);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a m�scara de cpf: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		campoCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		campoCpf.setText("CPF:");
+		campoCpf.setBounds(211, 82, 180, 38);
+		panel_1.add(campoCpf);
+		campoCpf.setColumns(10);
+
+		txtCargo = new JLabel("Cargo:");
+		txtCargo.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtCargo.setBounds(401, 59, 70, 19);
+		panel_1.add(txtCargo);
+
+		campoCargo = new JComboBox<Cargos>(Cargos.values());
+		campoCargo.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoCargo.setBounds(401, 83, 180, 38);
+		panel_1.add(campoCargo);
+
+		txtSalario = new JLabel("Sal�rio:");
+		txtSalario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtSalario.setBounds(591, 59, 70, 19);
+		panel_1.add(txtSalario);
+
+		NumberFormat format = new DecimalFormat("#,##0.00");
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(BigDecimal.class);
+		formatter.setAllowsInvalid(false);
+		formatter.setMinimum(new BigDecimal("0.00"));
+		formatter.setMaximum(new BigDecimal("99999999.99"));
+		campoSalario = new JFormattedTextField(formatter);
+		campoSalario.setColumns(10);
+		campoSalario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoSalario.setBounds(591, 82, 180, 38);
+		panel_1.add(campoSalario);
+
+		txtDataAdmissao = new JLabel("Data Admiss�o:");
+		txtDataAdmissao.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtDataAdmissao.setBounds(20, 130, 132, 19);
+		panel_1.add(txtDataAdmissao);
+
+		dateChooser = new JDateChooser();
+		JTextField textField = (JTextField) dateChooser.getComponent(1);
+		textField.setEditable(false);
+		dateChooser.setBounds(21, 155, 180, 38);
+		dateChooser.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		panel_1.add(dateChooser);
+
+		JLabel textTelefone = new JLabel("Telefone:");
+		textTelefone.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		textTelefone.setBounds(211, 136, 45, 13);
+		panel_1.add(textTelefone);
+
+		try {
+			MaskFormatter maskTelefone = new MaskFormatter("(##)#####-####");
+			maskTelefone.setValidCharacters("0123456789");
+			maskTelefone.setAllowsInvalid(false);
+			campoTelefone = new JFormattedTextField(maskTelefone);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a m�scara de telefone: " + e.getMessage(), "Erro",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		campoTelefone.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoTelefone.setBounds(211, 155, 180, 38);
+		panel_1.add(campoTelefone);
+		campoTelefone.setColumns(10);
+
+		txtUsuario = new JLabel("Usu�rio:");
+		txtUsuario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtUsuario.setBounds(401, 130, 70, 19);
+		panel_1.add(txtUsuario);
+
+		campoUsuario = new JTextField();
+		campoUsuario.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoUsuario.setColumns(10);
+		campoUsuario.setBounds(401, 155, 180, 38);
+		panel_1.add(campoUsuario);
+
+		txtSenha = new JLabel("Senha:");
+		txtSenha.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtSenha.setBounds(591, 130, 70, 19);
+		panel_1.add(txtSenha);
+
+		campoSenha = new JPasswordField();
+		campoSenha.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		campoSenha.setColumns(10);
+		campoSenha.setBounds(591, 155, 180, 38);
+		panel_1.add(campoSenha);
+
+		JButton botaoAdicionarFuncionario = new JButton("Adicionar");
+		botaoAdicionarFuncionario.setBackground(new Color(255, 255, 255));
+		botaoAdicionarFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
+		botaoAdicionarFuncionario.setBounds(797, 77, 170, 40);
+		panel_1.add(botaoAdicionarFuncionario);
+
+		botaoAdicionarFuncionario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LocalDate dataAdmissaoLD = null;
+				BigDecimal valorSalario = BigDecimal.ZERO;
+
+				try {
+					Instant instant = dateChooser.getDate().toInstant();
+					dataAdmissaoLD = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Data inv�lida");
+				}
+
+				String valorNome = campoNome.getText();
+				String valorCpf = campoCpf.getText();
+				Cargos valorCargo = Cargos.valueOf(campoCargo.getSelectedItem().toString());
+
+				try {
+					campoSalario.commitEdit();
+					valorSalario = (BigDecimal) campoSalario.getValue();
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Sal�rio inv�lido");
+
+				}
+
+				LocalDate valorDataAdmissao = dataAdmissaoLD;
+				String valorTelefone = campoTelefone.getText();
+				String valorUsuario = campoUsuario.getText();
+				String valorSenha = campoSenha.getText();
+
+				FuncionarioService funcionarioS = new FuncionarioService();
+				funcionario = new Funcionario(valorNome, valorCpf, valorCargo, valorSalario, valorDataAdmissao,
+						valorTelefone, valorUsuario, valorSenha);
+
+				try {
+					funcionarioS.criarFuncionario(funcionario);
+
+					campoNome.setText("");
+					campoCpf.setText("");
+					campoCargo.setSelectedItem(Cargos.ADMINISTRADOR);
+					campoSalario.setValue(BigDecimal.ZERO);
+					dateChooser.setDate(null);
+					campoTelefone.setText("");
+					campoUsuario.setText("");
+					campoSenha.setText("");
+
+					carregarFuncionariosNaTabela();
+
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+							"Erro ao cadastrar funcion�rio, tente novamente mais tarde", "Erro",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+
+		botaoRemoverFuncionario = new JButton("Remover");
+		botaoRemoverFuncionario.setForeground(new Color(0, 0, 0));
+		botaoRemoverFuncionario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int linhaSelecionada = tabela.getSelectedRow();
+				if (linhaSelecionada != -1) {
+					FuncionarioService funcionarioService = new FuncionarioService();
+					List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+					String nomeFuncionario = "";
+					String cpfFuncionario = "";
+
+					try {
+						nomeFuncionario = funcionarios.get(linhaSelecionada).getNome();
+						cpfFuncionario = funcionarios.get(linhaSelecionada).getCpf();
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Erro na tabela", "Erro",
+								JOptionPane.WARNING_MESSAGE);
+					}
+
+					if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(),
+							"Deseja remover o funcion�rio " + nomeFuncionario + "?", "Remover Funcion�rio",
+							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						try {
+							funcionarioService.apagarFuncionario(cpfFuncionario);
+							carregarFuncionariosNaTabela();
+						} catch (Exception e2) {
+							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+									"Erro ao remover funcion�rio, tente novamente mais tarde", "Erro",
+									JOptionPane.WARNING_MESSAGE);
+						}
+
+					} else {
+						System.out.println("oofgg");
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+							"Selecione um funcion�rio na tabela abaixo", "Nenhuma sele��o",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+
+		botaoRemoverFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
+		botaoRemoverFuncionario.setBackground(new Color(255, 255, 255));
+		botaoRemoverFuncionario.setBounds(525, 269, 170, 40);
+		panel_1.add(botaoRemoverFuncionario);
+
+		JButton botaoEditarFuncionario = new JButton("Editar");
+		botaoEditarFuncionario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int linhaSelecionada = tabela.getSelectedRow();
+				if (linhaSelecionada != -1) {
+					FuncionarioService funcionarioService = new FuncionarioService();
+					List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+
+					Janela.getInstance().getTelaEditarFuncionario().setCampos(funcionarios.get(linhaSelecionada));
+					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(),
+							"EditarFuncionario");
+					Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
+					Janela.getInstance().getFrame().setLocationRelativeTo(null);
+				} else {
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+							"Selecione um funcion�rio na tabela abaixo", "Nenhuma sele��o",
+							JOptionPane.WARNING_MESSAGE);
+				}
+
+			}
+		});
+
+		botaoEditarFuncionario.setBackground(new Color(255, 255, 255));
+		botaoEditarFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
+		botaoEditarFuncionario.setBounds(274, 269, 170, 40);
+		panel_1.add(botaoEditarFuncionario);
+
+		tabela = new JTable();
+		tabela.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		tabela.setBorder(new LineBorder(new Color(0, 0, 0)));
+		tabela.setToolTipText("");
+		tabela.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null } },
+				new String[] { "Nome", "CPF", "Cargo", "Sal�rio", "Data Admiss�o", "Telefone", "Usu�rio", "Senha" }));
+		tabela.setBounds(50, 248, 930, 200);
+
+		JTableHeader tableHeader = tabela.getTableHeader();
+		tableHeader.setFont(new Font("SansSerif", Font.BOLD, 17));
+
+		tabela.getTableHeader().setReorderingAllowed(false);
+
+		JScrollPane scrollPane = new JScrollPane(tabela);
+		scrollPane.setLocation(10, 335);
+		scrollPane.setSize(986, 200);
+
+		panel_1.add(scrollPane);
+
+		carregarFuncionariosNaTabela();
+	}
+
+	public void carregarFuncionariosNaTabela() {
+		try {
+			FuncionarioService funcionarioService = new FuncionarioService();
+			List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+
+			DefaultTableModel model = (DefaultTableModel) tabela.getModel();
+			model.setRowCount(0);
+
+			for (Funcionario funcionario : funcionarios) {
+				model.addRow(new Object[] { funcionario.getNome(), funcionario.getCpf(), funcionario.getFuncao(),
+						funcionario.getSalario(), funcionario.getDataAdmissao(), funcionario.getTelefone(),
+						funcionario.getUsuario(), funcionario.getSenha() });
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+					"Erro ao inserir funcion�rios na tabela, tente novamente mais tarde", "Erro",
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 }

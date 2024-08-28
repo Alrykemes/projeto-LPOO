@@ -5,18 +5,17 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.repository.MySQLConnection;
 import com.managepro.repository.SaleRepository;
-import com.managepro.ui.Janela;
 
 public class VendaDAO implements SaleRepository {
 	
@@ -30,11 +29,11 @@ public class VendaDAO implements SaleRepository {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void cadastrarVenda(Venda venda) {
+	public void cadastrarVenda(Venda venda) throws ExcecaoDoSistema {
 		   try {
 		        
 			   Connection connection = MySQLConnection.getConnection();
-			   PreparedStatement statementVenda = connection.prepareStatement("INSERT INTO venda (id_funcionario, id_cliente, forma_pagamento, data_venda, preco) VALUES (?, ?, ?, ?, ?)");
+			   PreparedStatement statementVenda = connection.prepareStatement("INSERT INTO venda (id_funcionario, id_cliente, forma_pagamento, data_venda, preco, valor_recebido, troco) VALUES (?, ?, ?, ?, ?, ?, ?)");
 			   PreparedStatement statementProdutoVenda = connection.prepareStatement("INSERT INTO produto_venda (id_venda, id_produto, quantidade, preco) VALUES (?, ?, ?, ?)");
 			   
 		       statementVenda.setLong(1, venda.getFuncionario().getId());
@@ -42,6 +41,8 @@ public class VendaDAO implements SaleRepository {
 		       statementVenda.setString(3, venda.getFormaDePagamentoEnum().name());
 		       statementVenda.setDate(4, Date.valueOf(venda.getData())); 
 		       statementVenda.setBigDecimal(5, venda.getPreco());
+		       statementVenda.setBigDecimal(6, venda.getValorRecebido());
+		       statementVenda.setBigDecimal(7, venda.getTroco());
 		
 		       statementVenda.execute();
 		
@@ -73,36 +74,12 @@ public class VendaDAO implements SaleRepository {
 		       statementVenda.close();
 		       statementProdutoVenda.close();
 	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();
+	    	e.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	    }
 	}
 	
-	public void pesquisarVendasPorId(Long id) throws ClassNotFoundException, SQLException {
-	
-	    try {
-	    	
-	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statementReceberVendas = connection.prepareStatement("SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco FROM venda v WHERE v.id_venda = ?");
-	
-	        statementReceberVendas.setLong(1, id);
-	        statementReceberVendas.execute();
-	
-	        statementReceberVendas.close();
-	        connection.close();
-	        
-	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace(); 
-	    }
-	}
-	
-	
-	
-	
-	public void deletarVendas(Long Id) throws ClassNotFoundException, SQLException {
+	public void deletarVenda(Long Id) throws ExcecaoDoSistema {
 	
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
@@ -120,24 +97,21 @@ public class VendaDAO implements SaleRepository {
 	        connection.close();
 	        
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();  
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 	    } 
 	}
 	
 	@Override
-	public List<Venda> listarVendaPorId(Long Id) throws ClassNotFoundException, SQLException {
+	public List<Venda> pesquisarVendaPorId(Long id) throws ExcecaoDoSistema {
 	
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	            "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-	            "FROM venda v WHERE v.id_venda = ?"
-	        );
+	    	Statement statement = connection.createStatement();
 	
-	        statement.setLong(1, Id);
-	        ResultSet resultSet = statement.executeQuery();
+	        String sql =  "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+		            "FROM venda v WHERE v.id_venda LIKE '" + id + "%'";
+	    	
+	        ResultSet resultSet = statement.executeQuery(sql);
 	        
 	        List<Venda> vendas = new ArrayList<>();
 	
@@ -146,12 +120,12 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById((resultSet.getLong("id_funcionario")))); // Implementar método TO DO
-	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); // Implementar método
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario")))); 
+	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	           // venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId())); // Implementar método
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId())); 
 	
 	            vendas.add(venda);
 	        }
@@ -163,27 +137,23 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	    
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace(); 
-	        return null;
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	    } 
 	}
 	
 	
 	
 	@Override
-	public List<Venda> listarVendaPorFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ExcecaoDoSistema {
 	    
 		try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-	                        "FROM venda v WHERE v.id_funcionario = ?"
-	        );
+	    	Statement statement = connection.createStatement();
 	
-	        statement.setLong(1, idFuncionario);
-	        ResultSet resultSet = statement.executeQuery();
+	    	String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+                    "FROM venda v WHERE v.id_funcionario LIKE '"+ idFuncionario +"%'";
+	    	
+	        ResultSet resultSet = statement.executeQuery(sql);
 	
 	        List<Venda> vendas = new ArrayList<>();
 	
@@ -192,12 +162,12 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	            venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	          //  venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId()));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
 	        }
@@ -208,25 +178,21 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();  
-	        return null;
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	    } 
 	}
 	
 	
 	
 	@Override
-	public List<Venda> listarVendasPorData(LocalDate dataVenda) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ExcecaoDoSistema {
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-	                        "FROM venda v WHERE v.data_venda = ?"
-	        );
+	    	PreparedStatement statement = connection.prepareStatement("SELECT * FROM venda WHERE data_venda BETWEEN ? AND ?;");
 	
-	        statement.setDate(1, Date.valueOf(dataVenda));
+	    	statement.setDate(1, Date.valueOf(de));
+	    	statement.setDate(2, Date.valueOf(ate));
+	        
 	        ResultSet resultSet = statement.executeQuery();
 	
 	        List<Venda> vendas = new ArrayList<>();
@@ -236,12 +202,12 @@ public class VendaDAO implements SaleRepository {
 	        	Venda venda = new Venda();
 	            
 	        	venda.setId(resultSet.getLong("id_venda"));
-	            venda.setFuncionario(funcionarioDAO.findEmployeeById(resultSet.getLong("id_funcionario"))); 
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
 	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	            //venda.setProdutosVendidos(listarProdutosPorVendaId(venda.getId()));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
 	        }
@@ -252,12 +218,46 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-	            e.printStackTrace();  
-	            return null;
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	        }
 		}
+
+	@Override
+	public List<Venda> listarTodasAsVendas() throws ExcecaoDoSistema {
+		try {
+	    	Connection connection = MySQLConnection.getConnection();
+	    	PreparedStatement statement = connection.prepareStatement(
+	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, preco FROM venda AS v"
+	        );
+	
+	        ResultSet resultSet = statement.executeQuery();
+	
+	        List<Venda> vendas = new ArrayList<>();
+	
+	        while (resultSet.next()) {
+	            
+	        	Venda venda = new Venda();
+	            
+	        	venda.setId(resultSet.getLong("id_venda"));
+	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId(resultSet.getLong("id_funcionario"))); 
+	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
+	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
+	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
+	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
+	
+	            vendas.add(venda);
+	        }
+		    resultSet.close();
+		    statement.close();
+		    connection.close();
+	
+	        return vendas;
+	
+	        } catch (SQLException | ClassNotFoundException e) {
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+	        }
+	}
 
 	
 }

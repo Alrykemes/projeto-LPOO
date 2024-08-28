@@ -14,7 +14,7 @@ public class LoginService {
     }
     
     public boolean authenticate(String usuario, String senha) {
-        Funcionario funcionario = FuncionarioDAO.findEmployeeByUser(usuario);
+        Funcionario funcionario = FuncionarioDAO.encontrarFuncionarioPeloUsuario(usuario);
         if(funcionario == null || funcionario.getUsuario() == null) {
         	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Usuario ou senha Incorreto!");
         	return false;
@@ -23,4 +23,8 @@ public class LoginService {
         Janela.getInstance().getTelaNovaVenda().getLabelFuncionarioJLabel().setText(funcionario.getNome());
         return funcionario.getSenha().equals(senha);
     }
-}
+    
+    public boolean verificarSenha(String senha) {
+    	return senha.equals("Master@#123");
+		}
+    }

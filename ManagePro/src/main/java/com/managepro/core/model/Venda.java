@@ -14,11 +14,13 @@ public class Venda {
 	private FormaPagamento formaDePagamentoEnum;
 	private LocalDate data;
 	private BigDecimal preco;
+	private BigDecimal valorRecebido;
+	private BigDecimal troco;
 	
 	public Venda() {}
 
 	public Venda(Long id, Funcionario funcionario, Cliente cliente, List<ProdutoVendaDetails> produtosVendidos,
-			FormaPagamento formaDePagamentoEnum, LocalDate data, BigDecimal preco) {
+			FormaPagamento formaDePagamentoEnum, LocalDate data, BigDecimal preco, BigDecimal valorRecebido, BigDecimal troco) {
 		this.id = id;
 		this.funcionario = funcionario;
 		this.cliente = cliente;
@@ -26,6 +28,8 @@ public class Venda {
 		this.formaDePagamentoEnum = formaDePagamentoEnum;
 		this.data = data;
 		this.preco = preco;
+		this.valorRecebido = valorRecebido;
+		this.troco = troco;
 	}
 
 	public Long getId() {
@@ -82,6 +86,27 @@ public class Venda {
 
 	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
+	}
+
+	public BigDecimal getValorRecebido() {
+		return valorRecebido;
+	}
+
+	public void setValorRecebido(BigDecimal valorRecebido) {
+		this.valorRecebido = valorRecebido;
+	}
+
+	public BigDecimal getTroco() {
+		return troco;
+	}
+
+	public void setTroco(BigDecimal troco) {
+		this.troco = troco;
+	}
+
+	@Override
+	public String toString() {
+		return "ID: " + id + "| Data: " + data + "| Preco: " + String.format("R$ %.2f", preco);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.managepro.exceptions;
 
+@SuppressWarnings("serial")
 public class ValidacaoException extends Exception {
 	
 	public ValidacaoException() {

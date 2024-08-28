@@ -1,26 +1,21 @@
 package com.managepro.ui;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.text.MaskFormatter;
-
-import java.awt.Panel;
-import java.awt.TextField;
 import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
-
+import java.awt.Font;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.awt.event.ActionEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.text.MaskFormatter;
 
 import com.managepro.core.model.Produto;
 import com.managepro.core.service.ProdutoService;
@@ -188,7 +183,7 @@ public class TelaAdicionarProdutos{
 				String fornecedor = textFieldFornecedor.getText().replace("  ", "");				
 				Instant dataInstant = dataValidade.getDate().toInstant();
 				LocalDate validade = dataInstant.atZone(ZoneId.systemDefault()).toLocalDate();
-				Produto produto = new Produto (nomeProduto, preco, quantidade, marca, fornecedor, validade);
+				Produto produto = new Produto (nomeProduto, quantidade, marca, fornecedor, preco , validade);
 				ProdutoService produtoService = new ProdutoService();
 				try {
 					produtoService.adicionarProduto(produto);

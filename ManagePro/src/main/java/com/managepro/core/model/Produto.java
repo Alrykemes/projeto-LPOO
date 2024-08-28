@@ -13,6 +13,16 @@ public class Produto {
 	
 	public Produto() {}
 
+	public Produto(String nomeProduto, int quantidade, String marca, String fornecedor,
+			BigDecimal preco, LocalDate validade) {
+		this.nomeProduto = nomeProduto;
+		this.quantidade = quantidade;
+		this.marca = marca;
+		this.fornecedor = fornecedor;
+		this.preco = preco;
+		this.validade = validade;
+	}
+	
 	public Produto(Long codigoProduto, String nomeProduto, int quantidade, String marca, String fornecedor,
 			BigDecimal preco, LocalDate validade) {
 		this.codigoProduto = codigoProduto;
@@ -91,8 +101,8 @@ public class Produto {
 
 	@Override
 	public String toString() {
-		return "Código: " + codigoProduto + " | Nome: " + nomeProduto + " | Quantidade: " + quantidade
-				+ " | Preço: " + String.format("R$ %.2f",  preco);
+		return "C�digo: " + codigoProduto + " | Nome: " + nomeProduto + " | Quantidade: " + quantidade
+				+ " | Pre�o: " + String.format("R$ %.2f",  preco);
 	}
 	
 }

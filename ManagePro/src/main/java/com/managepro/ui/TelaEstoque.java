@@ -1,48 +1,35 @@
 package com.managepro.ui;
-import javax.swing.JPanel;
-import javax.swing.JList;
-import javax.swing.JTextField;
-
-import org.apache.velocity.runtime.directive.Parse;
-
-import com.managepro.core.model.Produto;
-import com.managepro.core.model.ProdutoVendaDetails;
-import com.managepro.core.service.ProdutoService;
-import com.thoughtworks.qdox.model.expression.Add;
-import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JTextFieldDateEditor;
-
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
+
 import javax.swing.DefaultComboBoxModel;
-
-import java.awt.Font;
-import java.awt.ScrollPane;
-
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
-import java.awt.event.ItemListener;
-import java.math.BigDecimal;
-import java.awt.event.ItemEvent;
+import com.managepro.core.model.Produto;
+import com.managepro.core.service.ProdutoService;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
 
 public class TelaEstoque {
 
@@ -50,11 +37,14 @@ public class TelaEstoque {
 	private JFormattedTextField textPesquisaField;
 	private JTable listaProduto;
 	private ProdutoService produtoService;
+	@SuppressWarnings("unused")
 	private Produto produtoSelecionado;
 	private JScrollPane scrollPane;
 	private JComboBox<String> comboBox;
 	private MaskFormatter maskPesquisa;
+	@SuppressWarnings("unused")
 	private DefaultTableModel tableModel;
+	@SuppressWarnings("unused")
 	private JDateChooser dateChooser;
 	private JDateChooser dataValidade;
 
@@ -88,13 +78,13 @@ public class TelaEstoque {
 			public void actionPerformed(ActionEvent e) {
 				if (comboBox.getSelectedItem().equals("ID")) {
 					if (textPesquisaField.getText().matches(".*[a-zA-Z].*")) {
-	                    JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter apenas números.", "Erro", JOptionPane.INFORMATION_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter apenas n�meros.", "Erro", JOptionPane.INFORMATION_MESSAGE);
 	                }
 					else if (textPesquisaField.getText().trim().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id v�lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else if (produtoService.getProductById(Long.valueOf(textPesquisaField.getText().trim())) == null ) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um id v�lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						tabelaId(Long.valueOf(textPesquisaField.getText().trim()));
@@ -103,10 +93,10 @@ public class TelaEstoque {
 				}
 				if (comboBox.getSelectedItem().equals("Nome")) {
 					if (textPesquisaField.getText().trim().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome v�lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
-					else if (produtoService.pesquisarProdutoNome(textPesquisaField.getText().trim()) == null ) {
-						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+					else if (produtoService.pesquisarProdutoPorNome(textPesquisaField.getText().trim()) == null ) {
+						JOptionPane.showMessageDialog(null, "O campo de pesquisa deve conter um nome v�lido.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						tabelaNome(textPesquisaField.getText().trim());
@@ -263,7 +253,7 @@ public class TelaEstoque {
 			}
 		});
 		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Todos", "ID", "Nome", "Data de Validade"}));
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Todos", "ID", "Nome", "Data de Validade"}));
 		comboBox.setBounds(830, 89, 93, 22);
 		estoquePanel.add(comboBox);
 		
@@ -325,14 +315,14 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"Código","Nome","Fornecedor","Quantidade","Marca","Preço","Data de Validade"}; 
+         String[] nomeColuna = {"C�digo","Nome","Fornecedor","Quantidade","Marca","Pre�o","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		return tabelaAtualizada;
 	}
 	
 	public void tabelaId (Long id) {
 		
-		List<Produto> produtos = produtoService.pesquisarProdutoId(id);
+		List<Produto> produtos = produtoService.pesquisarProdutoPorId(id);
 		 Object[][] dados = new Object[produtos.size()][7];
          for (int i = 0; i < produtos.size(); i++) {
              Produto produto = produtos.get(i);
@@ -344,14 +334,15 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"Código","Nome","Fornecedor","Quantidade","Marca","Preço","Data de Validade"}; 
+
+         String[] nomeColuna = {"C�digo","Nome","Fornecedor","Quantidade","Marca","Pre�o","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
 	}
 	
 	public void tabelaNome (String Nome) {
 		
-		List<Produto> produtos = produtoService.pesquisarProdutoNome(Nome);
+		List<Produto> produtos = produtoService.pesquisarProdutoPorNome(Nome);
 		 Object[][] dados = new Object[produtos.size()][7];
          for (int i = 0; i < produtos.size(); i++) {
              Produto produto = produtos.get(i);
@@ -363,7 +354,7 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"Código","Nome","Fornecedor","Quantidade","Marca","Preço","Data de Validade"}; 
+         String[] nomeColuna = {"C�digo","Nome","Fornecedor","Quantidade","Marca","Pre�o","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
 	}
@@ -382,7 +373,7 @@ public class TelaEstoque {
              dados[i][5] = produto.getPreco();
              dados[i][6] = produto.getValidade();
          }
-         String[] nomeColuna = {"Código","Nome","Fornecedor","Quantidade","Marca","Preço","Data de Validade"}; 
+         String[] nomeColuna = {"C�digo","Nome","Fornecedor","Quantidade","Marca","Pre�o","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
 	}

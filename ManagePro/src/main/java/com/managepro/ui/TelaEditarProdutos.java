@@ -5,10 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
-import javax.xml.crypto.Data;
-
 import com.managepro.core.model.Produto;
 import com.managepro.core.service.ProdutoService;
 import com.managepro.exceptions.ValidacaoException;
@@ -41,6 +38,7 @@ public class TelaEditarProdutos {
 	private JFormattedTextField textFieldMarca;
 	private JFormattedTextField textFieldFornecedor;
 	private JDateChooser dataValidade;
+	@SuppressWarnings("unused")
 	private Produto produtoSelecionado;
 	private Long codigoProduto;
 	

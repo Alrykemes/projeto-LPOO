@@ -28,7 +28,7 @@ public class ClientService {
 		
 		if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
 			clienteDAO.addCliente(cliente);
-			Janela.getInstance().getTelaNovaVenda().setCliente(cliente);
+			Janela.getInstance().getTelaNovaVenda().setCliente(getClientCpf(cliente.getCpf()));
 			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
 		} else {
 			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já¡ cadastrado)");
