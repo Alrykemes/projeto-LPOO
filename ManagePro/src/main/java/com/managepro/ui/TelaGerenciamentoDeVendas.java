@@ -3,6 +3,7 @@ package com.managepro.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,8 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
 import com.managepro.core.service.VendaService;
+import com.managepro.exceptions.ExcecaoDeNegocios;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.toedter.calendar.JDateChooser;
 
 public class TelaGerenciamentoDeVendas {
@@ -234,7 +237,12 @@ public class TelaGerenciamentoDeVendas {
 					cpfCliente.setText("-");
 					listModelVendas.clear();
 					listModelProdutos.clear();
-					listModelVendas.addAll(vendaService.getTodasVendas());
+					try {
+						listModelVendas.addAll(vendaService.getTodasVendas());
+					} catch (ExcecaoDoSistema | ExcecaoDeNegocios e1) {
+						 JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e1.getMessage());
+						e1.printStackTrace();
+					}
 					vendaPanel.repaint();
 					pesquisaPanel.repaint();
 				}
@@ -474,11 +482,7 @@ public class TelaGerenciamentoDeVendas {
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
 							contentStream.showText("TOTAL DA COMPRA: " + String.format("R$ %.2f", vendaNota.getPreco()));
 							contentStream.endText();
-			
-							
 						} 
-						
-						
 						
 						documento.save(arquivoSalvo.getAbsolutePath());
 						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nota Fiscal criada e salva em: " + arquivoSalvo.getAbsolutePath());
@@ -509,7 +513,12 @@ public class TelaGerenciamentoDeVendas {
 		btnDeletar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!listaVendas.isSelectionEmpty()) {
-					vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
+					try {
+						vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
+					} catch (ExcecaoDoSistema | ExcecaoDeNegocios e1) {
+						 JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e1.getMessage());
+						e1.printStackTrace();
+					}
 					atualizarListModels();
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
@@ -623,7 +632,12 @@ public class TelaGerenciamentoDeVendas {
 		
 		if (ComboBoxFiltro.getSelectedItem().equals("Todas")) {
 			listModelVendas.clear();
-			listModelVendas.addAll(vendaService.getTodasVendas());
+			try {
+				listModelVendas.addAll(vendaService.getTodasVendas());
+			} catch (ExcecaoDoSistema | ExcecaoDeNegocios e) {
+				 JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		
 		if (ComboBoxFiltro.getSelectedItem().equals("Data")) {
@@ -637,17 +651,22 @@ public class TelaGerenciamentoDeVendas {
 						"Você precisa selecionar as datas antes de Pesquisar");
 			} else {
 				
-				if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
-					listModelVendas.clear();
-					try {
-						listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));																		
-					} catch (Exception e2) {
-						System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+				try {
+					if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
+						listModelVendas.clear();
+						try {
+							listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));																		
+						} catch (Exception e2) {
+							System.out.println("NullPointerException | Causa: lista de vendas é null, o BD não retorno nada. \n" + e2.getMessage());
+						}
+					} else {
+						listModelVendas.clear();
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+								"Você precisa selecionar as datas antes de Pesquisar");
 					}
-				} else {
-					listModelVendas.clear();
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"Você precisa selecionar as datas antes de Pesquisar");
+				} catch (HeadlessException | ExcecaoDoSistema | ExcecaoDeNegocios e) {
+					 JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		}

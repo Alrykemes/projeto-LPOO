@@ -59,11 +59,7 @@ public class TelaAdicionarProdutos{
 		adicionarProdutoPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
-<<<<<<< HEAD
-		JLabel Codigo = new JLabel("Código *");
-=======
 		JLabel Codigo = new JLabel("C�digo *");
->>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
 		adicionarProdutoPanel.add(Codigo);
@@ -78,11 +74,7 @@ public class TelaAdicionarProdutos{
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		adicionarProdutoPanel.add(textFieldPrecoVenda);
 
-<<<<<<< HEAD
-		JLabel PrecoVenda = new JLabel("Preço de Venda *");
-=======
 		JLabel PrecoVenda = new JLabel("Pre�o de Venda *");
->>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
 		PrecoVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoVenda.setBounds(501, 73, 110, 14);
 		adicionarProdutoPanel.add(PrecoVenda);
@@ -173,96 +165,5 @@ public class TelaAdicionarProdutos{
 		});
 		btnCadastrar.setBounds(539, 11, 99, 41);
 		panel.add(btnCadastrar);
-<<<<<<< HEAD
-
-		textFieldQuanditade = new JTextField();
-		textFieldQuanditade.setColumns(10);
-		textFieldQuanditade.setBounds(34, 182, 131, 35);
-		adicionarProdutoPanel.add(textFieldQuanditade);
-
-		JLabel Quantidade = new JLabel("Quantidade *");
-		Quantidade.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Quantidade.setBounds(34, 157, 118, 14);
-		adicionarProdutoPanel.add(Quantidade);
-
-		textFieldMarca = new JTextField();
-		textFieldMarca.setColumns(10);
-		textFieldMarca.setBounds(218, 182, 139, 35);
-		adicionarProdutoPanel.add(textFieldMarca);
-
-		JLabel Marca = new JLabel("Marca *");
-		Marca.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Marca.setBounds(218, 157, 87, 14);
-		adicionarProdutoPanel.add(Marca);
-
-		JLabel Fornecedor = new JLabel("Fornecedor *");
-		Fornecedor.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Fornecedor.setBounds(415, 157, 81, 14);
-		adicionarProdutoPanel.add(Fornecedor);
-
-		textFieldFornecedor = new JTextField();
-		textFieldFornecedor.setColumns(10);
-		textFieldFornecedor.setBounds(415, 182, 217, 35);
-		adicionarProdutoPanel.add(textFieldFornecedor);
-
-		JPanel MostrarDescricao = new JPanel();
-		MostrarDescricao.setBackground(new Color(255, 255, 255));
-		MostrarDescricao.setBounds(34, 241, 598, 140);
-		adicionarProdutoPanel.add(MostrarDescricao);
-		MostrarDescricao.setLayout(null);
-
-		Panel panel_3 = new Panel();
-		panel_3.setBackground(new Color(128, 128, 128));
-		panel_3.setBounds(0, 0, 598, 36);
-		MostrarDescricao.add(panel_3);
-		panel_3.setLayout(null);
-
-		JLabel Nome2 = new JLabel("Nome");
-		Nome2.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Nome2.setBounds(25, 11, 46, 14);
-		panel_3.add(Nome2);
-
-		JLabel Codigo2 = new JLabel("Cód");
-		Codigo2.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Codigo2.setBounds(104, 6, 46, 24);
-		panel_3.add(Codigo2);
-
-		JLabel PrecoVenda2 = new JLabel("R$");
-		PrecoVenda2.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		PrecoVenda2.setBounds(172, 9, 46, 18);
-		panel_3.add(PrecoVenda2);
-
-		JLabel Quantidade2 = new JLabel("Qntd");
-		Quantidade2.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Quantidade2.setBounds(228, 9, 57, 18);
-		panel_3.add(Quantidade2);
-
-		JLabel Marca2 = new JLabel("Marca");
-		Marca2.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Marca2.setBounds(286, 9, 46, 18);
-		panel_3.add(Marca2);
-
-		JLabel Fornecedor2 = new JLabel("Fornecedor");
-		Fornecedor2.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		Fornecedor2.setBounds(347, 11, 87, 14);
-		panel_3.add(Fornecedor2);
-
-		JLabel Descricao = new JLabel("Inserir texto com as informações do produto que está sendo cadastrado //To Do");
-		Descricao.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		Descricao.setBounds(23, 51, 547, 26);
-		MostrarDescricao.add(Descricao);
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(34, 241, 598, 24);
-		adicionarProdutoPanel.add(panel_2);
-
-		JLabel TituloTela = new JLabel("CADASTRAR PRODUTO");
-		TituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		TituloTela.setBounds(10, 11, 295, 24);
-		adicionarProdutoPanel.add(TituloTela);
-=======
-		
-		
->>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
 	}
 }

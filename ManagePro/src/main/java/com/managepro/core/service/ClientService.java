@@ -7,58 +7,40 @@ import com.managepro.dao.ClienteDAO;
 import com.managepro.ui.Janela;
 
 public class ClientService {
-
+	
 	private ClienteDAO clienteDAO;
 
 	LocalDate dataAtual = LocalDate.now();
-
+	
 	public ClientService() {
 		clienteDAO = new ClienteDAO();
 	}
-
+	
 	public void cadastrarCliente(Cliente cliente) throws Exception {
-		if (validarCampos(cliente)) {
-			if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
-				clienteDAO.addCliente(cliente);
-				Janela.getInstance().getTelaNovaVenda().setCliente(cliente);
-				Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
-			} else {
-				JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já cadastrado)");
-			}
-		} else {
-			throw new Exception("Erro");
-		}
-	}
-
-	public Cliente getClientCpf(String cpf) {
-
-		if (cpf.replaceAll(" ", "").length() != 14) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Número de CPF Invalido!");
-			return null;
-		}
-		return clienteDAO.findClientByCpf(cpf);
-	}
-
-	public boolean validarCampos(Cliente cliente) throws Exception {
-		if (cliente.getNome().length() <= 6 || cliente.getNome().length() >= 69) {
-			throw new Exception("Erro, o nome inserido não é válido");
+		if (cliente.getNome().length() >= 69) {
+			throw new Exception("Erro, nome muito grande");
 		}
 
 		if (dataAtual.compareTo(cliente.getDataNascimento()) < 18) {
 			System.out.println(cliente.getDataNascimento().compareTo(dataAtual));
 			throw new Exception("Erro, Cliente menor de idade");
 		}
-<<<<<<< HEAD
-		return true;
-=======
 		
 		if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
 			clienteDAO.addCliente(cliente);
 			Janela.getInstance().getTelaNovaVenda().setCliente(getClientCpf(cliente.getCpf()));
 			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF j� cadastrado)");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já cadastrado)");
 		}
->>>>>>> dff8f1cadb7a2e94e9fcc6c3162e8a64df58881b
+	}
+	
+	public Cliente getClientCpf(String cpf) {
+		
+		if(cpf.replaceAll(" ", "").length() != 14) {
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Número de CPF Invalido!");
+			return null;
+		}
+		return clienteDAO.findClientByCpf(cpf);
 	}
 }
