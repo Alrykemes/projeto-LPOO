@@ -464,7 +464,7 @@ public class TelaNovaVenda {
 				newVenda.setData(LocalDate.now());
 				newVenda.setProdutosVendidos(listaProdutosVenda);
 				newVenda.setFormaDePagamentoEnum(FormaPagamento.valueOf(PagamentocomboBox.getSelectedItem().toString().replaceAll(" ",   "")));
-				if(newVenda.getFormaDePagamentoEnum() == FormaPagamento.DINHEIRO) {
+				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
 					try {
 						Number number = format.parse(valorInseridoField.getText());
 						BigDecimal valorRecebido = new BigDecimal(number.toString());
@@ -475,6 +475,13 @@ public class TelaNovaVenda {
 						// Ta tratando mas, como ta dando certo.
 					}
 				}
+				
+				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.PIX)) {
+					QrCodePix telaPix = new QrCodePix(Janela.getInstance().getFrame(), totalPriceOfSale);
+					telaPix.setVisible(true);
+					vendaService.validarPix(telaPix.getConfirmacaoPix());
+				}
+				
 				newVenda.setPreco(totalPriceOfSale);
 				
 				try {
@@ -490,6 +497,7 @@ public class TelaNovaVenda {
 					totalPrice.setText("R$ 0,00");
 					totalPriceSale.setText("R$ 0,00");
 					SaleConfigPanel.repaint();
+					totalPriceOfSale = BigDecimal.ZERO;
 				} catch (ExcecaoDoSistema | ExcecaoDeNegocios | ValidacaoException ex) {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
@@ -518,7 +526,9 @@ public class TelaNovaVenda {
 					unitPrice.setText("R$ 0,00");
 					totalPrice.setText("R$ 0,00");
 					totalPriceSale.setText("R$ 0,00");
-					
+					troco.setText("");
+					valorInseridoField.setText("");
+					totalPriceOfSale = BigDecimal.ZERO;
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 				}

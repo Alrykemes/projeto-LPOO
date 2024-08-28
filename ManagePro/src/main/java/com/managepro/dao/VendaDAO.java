@@ -79,15 +79,15 @@ public class VendaDAO implements SaleRepository {
 	    }
 	}
 	
-	public void deletarVenda(Long Id) throws ExcecaoDoSistema {
+	public void deletarVenda(Long id) throws ExcecaoDoSistema {
 	
-	    try {
+		try {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	PreparedStatement statementDeletarProduto = connection.prepareStatement("DELETE FROM produto_venda WHERE id_venda = ?");
 	    	PreparedStatement statementDeletarVendas = connection.prepareStatement("DELETE FROM venda WHERE id_venda = ?");
 	
-	        statementDeletarProduto.setLong(1, Id);
-	        statementDeletarVendas.setLong(1, Id);
+	        statementDeletarProduto.setLong(1, id);
+	        statementDeletarVendas.setLong(1, id);
 	
 	        statementDeletarProduto.execute();
 	        statementDeletarVendas.execute();
@@ -95,8 +95,8 @@ public class VendaDAO implements SaleRepository {
 	        statementDeletarProduto.close();
 	        statementDeletarVendas.close();
 	        connection.close();
-	        
 	    } catch (SQLException | ClassNotFoundException e) {
+	    	e.printStackTrace();
 			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 	    } 
 	}
@@ -108,8 +108,8 @@ public class VendaDAO implements SaleRepository {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	Statement statement = connection.createStatement();
 	
-	        String sql =  "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-		            "FROM venda v WHERE v.id_venda LIKE '" + id + "%'";
+	    	
+	        String sql =  "SELECT * FROM venda v WHERE v.id_venda LIKE '" + id + "%'";
 	    	
 	        ResultSet resultSet = statement.executeQuery(sql);
 	        
@@ -125,7 +125,9 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId())); 
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
 	        }
@@ -150,7 +152,7 @@ public class VendaDAO implements SaleRepository {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	Statement statement = connection.createStatement();
 	
-	    	String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+	    	String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco, v.valor_recebido, v.troco" +
                     "FROM venda v WHERE v.id_funcionario LIKE '"+ idFuncionario +"%'";
 	    	
 	        ResultSet resultSet = statement.executeQuery(sql);
@@ -167,6 +169,8 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
 	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
@@ -207,6 +211,8 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
 	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
@@ -226,9 +232,7 @@ public class VendaDAO implements SaleRepository {
 	public List<Venda> listarTodasAsVendas() throws ExcecaoDoSistema {
 		try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, preco FROM venda AS v"
-	        );
+	    	PreparedStatement statement = connection.prepareStatement("SELECT * FROM venda");
 	
 	        ResultSet resultSet = statement.executeQuery();
 	
@@ -244,6 +248,8 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
 	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);

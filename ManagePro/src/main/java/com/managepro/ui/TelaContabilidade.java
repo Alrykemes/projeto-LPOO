@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import com.managepro.core.model.Estatistica;
-import com.managepro.dao.EstatisticaDAO;
+import com.managepro.core.service.EstatisticaService;
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -44,9 +44,9 @@ public class TelaContabilidade {
 	private JLabel ganhoTotal;
 	private JLabel quantidadeProdutos;
 	private JLabel quantidadeVendas;
-	private EstatisticaDAO estatisticaDAO;
-	@SuppressWarnings("unused")
+	private EstatisticaService estatisticaService;
 	private Estatistica estatistica;
+	private JComboBox<String> filtercomboBox;
 
 	public JPanel getPanel() {
 		return this.contabilidadePanel;
@@ -54,7 +54,7 @@ public class TelaContabilidade {
 	
 	public TelaContabilidade() throws SQLException, ClassNotFoundException {
 		
-			this.estatisticaDAO = new EstatisticaDAO(); 
+			this.estatisticaService = new EstatisticaService(); 
 			this.estatistica = new Estatistica();
 			this.initialize();
 			this.atualizarInformacoes();
@@ -102,11 +102,11 @@ public class TelaContabilidade {
 		agruparLabel.setBounds(584, 11, 101, 29);
 		painelOpcoes.add(agruparLabel);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Venda", "Produto", "Código", "Preço Total"}));
-		comboBox.setBounds(584, 39, 167, 35);
-		painelOpcoes.add(comboBox);
+		filtercomboBox = new JComboBox<String>();
+		filtercomboBox.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		filtercomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Venda", "Produto", "Código", "Preço Total"}));
+		filtercomboBox.setBounds(584, 39, 167, 35);
+		painelOpcoes.add(filtercomboBox);
 		
 		JButton gerarRelatorio = new JButton("Gerar relatório");
 		gerarRelatorio.setBackground(new Color(255, 255, 255));
@@ -244,7 +244,7 @@ public class TelaContabilidade {
 		private void atualizarInformacoes() {
 			try {
 	            
-				List<Estatistica> estatisticas = estatisticaDAO.listAll();
+				List<Estatistica> estatisticas = estatisticaService.getAllEstatisticas();
 	            
 	            if (!estatisticas.isEmpty()) {
 	                Estatistica estatistica = estatisticas.get(0); 
@@ -350,7 +350,16 @@ public class TelaContabilidade {
 		
 		private CategoryDataset createBarDataset(Date dataInicial, Date dataFinal) {
 	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-	        // logica para buscar e usar dados reais
+	        
+	        if(filtercomboBox.getSelectedItem().equals("Venda")) {
+	        	try {
+					estatisticaService.getByQuantidadeVendas(Long.valueOf("1"));
+				} catch (NumberFormatException | SQLException e) {
+					e.printStackTrace();
+				}
+	        }
+	        
+	        
 	        dataset.addValue(1.0, "Categoria 1", "Item 1");
 	        dataset.addValue(4.0, "Categoria 1", "Item 2");
 	        dataset.addValue(3.0, "Categoria 1", "Item 3");

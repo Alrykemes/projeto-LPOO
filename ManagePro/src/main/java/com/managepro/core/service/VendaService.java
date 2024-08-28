@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JFormattedTextField;
-import javax.swing.JOptionPane;
 
 import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.Venda;
@@ -12,7 +11,6 @@ import com.managepro.dao.VendaDAO;
 import com.managepro.exceptions.ExcecaoDeNegocios;
 import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.exceptions.ValidacaoException;
-import com.managepro.ui.Janela;
 
 public class VendaService {
 	
@@ -39,19 +37,23 @@ public class VendaService {
 					}
 			}
 			
-			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.PIX)) { }
+			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.PIX)) {
+				
+			}
 			
-			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.CARTAODEDEBITO)) {}
+			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.CARTAODEDEBITO)) {
+				situacaoPagamento = false;
+			}
 			
 			if (venda.getFormaDePagamentoEnum().equals(FormaPagamento.CARTAODEDEBITO)) {}
 			
 			if(situacaoPagamento == true) {	
 				vendaDAO.cadastrarVenda(venda);
 			} else {
-				throw new ExcecaoDeNegocios("Pagamento não aprovado");
+				throw new ExcecaoDeNegocios("Pagamento não aprovado.");
 			}
 		} else {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Reporte o Erro Venda é Null");
+				throw new ValidacaoException("Reporte venda é null!");
 		}
 	}
 	
@@ -124,5 +126,9 @@ public class VendaService {
 		if(venda.getCliente() == null) {
 			throw new ExcecaoDeNegocios("A venda deve ter um cliente!");
 		}
+	}
+	
+	public void validarPix(boolean confirmacaoPix) {
+		this.situacaoPagamento = confirmacaoPix;
 	}
 }

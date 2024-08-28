@@ -22,6 +22,7 @@ import javax.swing.text.MaskFormatter;
 import org.apache.pdfbox.pdmodel.*;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
 import com.managepro.core.service.VendaService;
@@ -56,8 +57,12 @@ public class TelaGerenciamentoDeVendas {
 	private JLabel totalCompra;
 	private DefaultListModel<Venda> listModelVendas;
 	private DefaultListModel<ProdutoVendaDetails> listModelProdutos;
+	private JLabel txtTroco;
+	private JLabel txtValorRecebido;
 	
 	private VendaService vendaService;
+	private JLabel valorRecebidolbl;
+	private JLabel trocolbl;
 	
 
 	public JPanel getPanel() {
@@ -99,9 +104,7 @@ public class TelaGerenciamentoDeVendas {
 		txtFiltrar.setBounds(211, 11, 52, 20);
 		pesquisaPanel.add(txtFiltrar);
 		
-		MaskFormatter maskPesquisa = new MaskFormatter("**********");
-		maskPesquisa.setValidCharacters("0123456789");
-		maskPesquisa.setAllowsInvalid(false);
+		MaskFormatter maskPesquisa = new MaskFormatter("*****************");
 		FieldPesquisar = new JFormattedTextField(maskPesquisa);
 		FieldPesquisar.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		FieldPesquisar.setForeground(new Color(105, 105, 105));
@@ -121,12 +124,16 @@ public class TelaGerenciamentoDeVendas {
 		
 		dateChooserDe = new JDateChooser();
 		dateChooserDe.setBounds(40, 42, 128, 30);
+		dateChooserDe.getDateEditor().setEnabled(false);
+		dateChooserDe.getDateEditor().getUiComponent().setEnabled(false);
 		textDateDe = new JLabel("De:");
 		textDateDe.setBounds(10, 48, 30, 15);
 		textDateDe.setFont(new Font("SansSerif", Font.BOLD, 16));
 		
 		dateChooserAte = new JDateChooser();
 		dateChooserAte.setBounds(210, 42, 128, 30);
+		dateChooserAte.getDateEditor().setEnabled(false);
+		dateChooserAte.getDateEditor().getUiComponent().setEnabled(false);
 		textDateAte = new JLabel("Atï¿½:");
 		textDateAte.setBounds(175, 48, 40, 15);
 		textDateAte.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -256,6 +263,23 @@ public class TelaGerenciamentoDeVendas {
 						data.setText(vendaSelecionada.getData().format(formatoData));
 						totalCompra.setText(String.format("R$ %.2f", vendaSelecionada.getPreco()));
 						metodoPagamento.setText(vendaSelecionada.getFormaDePagamentoEnum().toString());
+						if(vendaSelecionada.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
+							vendaPanel.add(valorRecebidolbl);
+							vendaPanel.add(trocolbl);
+							vendaPanel.add(txtTroco);
+							vendaPanel.add(txtValorRecebido);
+							valorRecebidolbl.setText(String.format("R$ %.2f", vendaSelecionada.getValorRecebido()));
+							trocolbl.setText(String.format("R$ %.2f", vendaSelecionada.getTroco()));
+							vendaPanel.repaint();
+						} else {
+							vendaPanel.remove(valorRecebidolbl);
+							vendaPanel.remove(trocolbl);
+							vendaPanel.remove(txtTroco);
+							vendaPanel.remove(txtValorRecebido);
+							valorRecebidolbl.setText(" ");
+							trocolbl.setText(" ");
+							vendaPanel.repaint();
+						}
 						clienteNome.setText(vendaSelecionada.getCliente().getNome());
 						cpfCliente.setText(vendaSelecionada.getCliente().getCpf());
 						listModelProdutos.clear();
@@ -314,7 +338,7 @@ public class TelaGerenciamentoDeVendas {
 		listaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listaProdutos.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		JScrollPane scrollPaneProdutos = new JScrollPane(listaProdutos);
-		scrollPaneProdutos.setBounds(10, 75, 572, 342);
+		scrollPaneProdutos.setBounds(10, 65, 572, 330);
 		vendaPanel.add(scrollPaneProdutos, BorderLayout.CENTER);
 		
 		buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
@@ -470,14 +494,29 @@ public class TelaGerenciamentoDeVendas {
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-							contentStream.showText("Mï¿½TODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
+							contentStream.showText("TOTAL DA COMPRA: " + String.format("R$ %.2f", vendaNota.getPreco()));
 							contentStream.endText();
 							inicioLinha += 15;
 							
 							contentStream.beginText();
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-							contentStream.showText("TOTAL DA COMPRA: " + String.format("R$ %.2f", vendaNota.getPreco()));
+							contentStream.showText("MÉTODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
 							contentStream.endText();
+							inicioLinha += 15;
+							
+							if(vendaNota.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
+								contentStream.beginText();
+								contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText("VALOR PAGO: " + String.format("R$ %.2f", vendaNota.getValorRecebido()));
+								contentStream.endText();
+								inicioLinha += 15;
+								
+								contentStream.beginText();
+								contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
+								contentStream.showText("TROCO: " + String.format("R$ %.2f", vendaNota.getTroco()));
+								contentStream.endText();
+								
+							}
 			
 							
 						} 
@@ -513,9 +552,10 @@ public class TelaGerenciamentoDeVendas {
 		btnDeletar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!listaVendas.isSelectionEmpty()) {
-					if(JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(), "Deseja realmente cancelar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
+					if(JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(), "Deseja realmente deletar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
 						try {
-							vendaService.deletarVendaPorId(listaVendas.getSelectedValue().getId());
+							Long idDelete = listaVendas.getSelectedValue().getId();
+							vendaService.deletarVendaPorId(idDelete);
 						} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
 							JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 						}
@@ -536,43 +576,63 @@ public class TelaGerenciamentoDeVendas {
 		
 		JLabel txtTotalCompra = new JLabel("Total da Compra:");
 		txtTotalCompra.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		txtTotalCompra.setBounds(10, 428, 146, 29);
+		txtTotalCompra.setBounds(10, 458, 146, 29);
 		vendaPanel.add(txtTotalCompra);
 		
 		totalCompra = new JLabel("R$ 0,00");
 		totalCompra.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		totalCompra.setBounds(154, 428, 119, 29);
+		totalCompra.setBounds(154, 458, 119, 29);
 		vendaPanel.add(totalCompra);
 		
-		JLabel txtMetodoPagamento = new JLabel("Mï¿½todo de Pagamento:");
+		JLabel txtMetodoPagamento = new JLabel("Método de Pagamento:");
 		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		txtMetodoPagamento.setBounds(10, 458, 195, 29);
+		txtMetodoPagamento.setBounds(10, 485, 195, 29);
 		vendaPanel.add(txtMetodoPagamento);
 		
 		metodoPagamento = new JLabel("");
 		metodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		metodoPagamento.setBounds(201, 458, 182, 29);
+		metodoPagamento.setBounds(199, 485, 182, 29);
 		vendaPanel.add(metodoPagamento);
 		
 		JLabel txtCliente = new JLabel("Cliente:");
 		txtCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		txtCliente.setBounds(10, 488, 61, 32);
+		txtCliente.setBounds(10, 394, 61, 32);
 		vendaPanel.add(txtCliente);
 		
 		clienteNome = new JLabel("");
 		clienteNome.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		clienteNome.setBounds(74, 490, 245, 29);
+		clienteNome.setBounds(71, 394, 245, 29);
 		vendaPanel.add(clienteNome);
 		
 		JLabel txtCpf = new JLabel("CPF:");
 		txtCpf.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		txtCpf.setBounds(10, 517, 46, 29);
+		txtCpf.setBounds(10, 422, 46, 29);
 		vendaPanel.add(txtCpf);
 		
 		cpfCliente = new JLabel("000.000.000-00");
 		cpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		cpfCliente.setBounds(55, 517, 135, 29);
+		cpfCliente.setBounds(55, 422, 135, 29);
 		vendaPanel.add(cpfCliente);
+		
+		txtTroco = new JLabel("Troco:");
+		txtTroco.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtTroco.setBounds(10, 540, 52, 29);
+		vendaPanel.add(txtTroco);
+		
+		txtValorRecebido = new JLabel("Valor Recebido:");
+		txtValorRecebido.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		txtValorRecebido.setBounds(10, 513, 129, 29);
+		vendaPanel.add(txtValorRecebido);
+		
+		valorRecebidolbl = new JLabel("R$ 0,00");
+		valorRecebidolbl.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		valorRecebidolbl.setBounds(141, 513, 119, 29);
+		vendaPanel.add(valorRecebidolbl);
+		
+		trocolbl = new JLabel("R$ 0,00");
+		trocolbl.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		trocolbl.setBounds(65, 540, 119, 29);
+		vendaPanel.add(trocolbl);
 		
 		JButton btnVoltar = new JButton("Voltar   ");
 		btnVoltar.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
@@ -603,11 +663,17 @@ public class TelaGerenciamentoDeVendas {
 		if (ComboBoxFiltro.getSelectedItem().equals("IDFuncionario")) {
 			String pesquisaString = FieldPesquisar.getText().replaceAll(" ", "");
 			if(!pesquisaString.isEmpty()) {
-				listModelVendas.clear();
-				try {																	
-					listModelVendas.addAll(vendaService.getVendasPorFuncionarioId(Long.valueOf(pesquisaString)));											
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				if(pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
+					listModelVendas.clear();
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+							"ID de funcionario inválido, não pode conter letras, ou símbolos!");
+				} else {
+					listModelVendas.clear();
+					try {																	
+						listModelVendas.addAll(vendaService.getVendasPorFuncionarioId(Long.valueOf(pesquisaString)));											
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+					}					
 				}
 			} else {
 				listModelVendas.clear();
@@ -620,11 +686,18 @@ public class TelaGerenciamentoDeVendas {
 			String pesquisaString = FieldPesquisar.getText().replaceAll(" ", "");
 			if(!pesquisaString.isEmpty()) {
 				listModelVendas.clear();
+				if(pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
+					listModelVendas.clear();
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
+							"ID inválido, não pode conter letras!");
+				} else {
 					try {
+						listModelVendas.clear();
 						listModelVendas.addAll(vendaService.getVendasPorId(Long.valueOf(pesquisaString)));
 					} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
 						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-					}																		
+					}																							
+				}
 				
 			} else {
 				listModelVendas.clear();
@@ -652,7 +725,6 @@ public class TelaGerenciamentoDeVendas {
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
 						"Você precisa selecionar as datas antes de Pesquisar");
 			} else {
-				
 				try {
 					if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
 						listModelVendas.clear();
@@ -668,5 +740,4 @@ public class TelaGerenciamentoDeVendas {
 			}
 		}
 	}
-	
 }

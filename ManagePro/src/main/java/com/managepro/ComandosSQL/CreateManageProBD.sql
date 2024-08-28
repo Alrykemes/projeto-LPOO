@@ -295,7 +295,7 @@ FOR EACH ROW
 BEGIN
     UPDATE estatistica
     SET total_ganho = (
-        SELECT SUM(valor_venda)
+        SELECT SUM(preco)
         FROM venda
     );
 END $$
@@ -306,10 +306,25 @@ FOR EACH ROW
 BEGIN
     UPDATE estatistica
     SET total_ganho = (
-        SELECT SUM(valor_venda)
+        SELECT SUM(preco)
         FROM venda
     );
 END $$
 
 DELIMITER ;
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER atualiza_estatistica_after_insert
+AFTER INSERT ON venda
+FOR EACH ROW
+BEGIN
+    -- Atualiza a quantidade de vendas e o total ganho na tabela estatistica
+    UPDATE estatistica
+    SET quantidade_vendas = (SELECT COUNT() FROM venda),
+        total_ganho = (SELECT COALESCE(SUM(preco), 0) FROM venda)
+    WHERE id = 1; -- Ajuste o WHERE conforme necessário
+END$$
+
 DELIMITER ;
