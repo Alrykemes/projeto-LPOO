@@ -1,5 +1,6 @@
 package com.managepro.ui;
 
+import com.managepro.core.service.EstatisticaService;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -14,12 +15,10 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.util.Date;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import com.managepro.core.model.Estatistica;
-import com.managepro.dao.EstatisticaDAO;
-import com.managepro.repository.MySQLConnection;
+import com.managepro.core.model.ProdutoVendaDetails;
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -46,26 +45,21 @@ public class TelaContabilidade {
 	private JLabel ganhoTotal;
 	private JLabel quantidadeProdutos;
 	private JLabel quantidadeVendas;
-	private EstatisticaDAO estatisticaDAO;
+	private EstatisticaService estatisticaService;
+	private JComboBox<String> comboBox;
+	@SuppressWarnings("unused")
 	private Estatistica estatistica;
-	private Connection connection;
 
 	public JPanel getPanel() {
 		return this.contabilidadePanel;
 	}
 	
 	public TelaContabilidade() throws SQLException, ClassNotFoundException {
-		try {
-			this.connection = MySQLConnection.getConnection();
-			this.estatisticaDAO = new EstatisticaDAO(connection); 
+			
+			this.estatisticaService = new EstatisticaService(); 
 			this.estatistica = new Estatistica();
 			this.initialize();
 			this.atualizarInformacoes();
-		} catch (SQLException e) {
-			e.printStackTrace(); 
-            JOptionPane.showMessageDialog(null, "Erro ao conectar ao banco de dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-		}
-		
 	}
 	
 	private void initialize() {
@@ -110,7 +104,7 @@ public class TelaContabilidade {
 		agruparLabel.setBounds(584, 11, 101, 29);
 		painelOpcoes.add(agruparLabel);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
 		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Venda", "Produto", "Código", "Preço Total"}));
 		comboBox.setBounds(584, 39, 167, 35);
@@ -150,7 +144,7 @@ public class TelaContabilidade {
 		//cardUm.setLayout(null);
 		
 		
-		//quantidadeProdutos = new JLabel();
+		quantidadeProdutos = new JLabel();
 		quantidadeProdutos.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		quantidadeProdutos.setBounds(20, 11, 60, 14);
 		//cardUm.add(quantidadeProdutos);
@@ -169,7 +163,7 @@ public class TelaContabilidade {
 		contabilidadePanel.add(cardDois);
 		
 		
-		//quantidadeVendas = new JLabel();
+		quantidadeVendas = new JLabel();
 		quantidadeVendas.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		quantidadeVendas.setBounds(20, 11, 46, 14);
 		//cardDois.add(quantidadeVendas);
@@ -188,7 +182,7 @@ public class TelaContabilidade {
 		contabilidadePanel.add(cardTres);
 		
 		
-		//ganhoTotal = new JLabel();
+		ganhoTotal = new JLabel();
 		ganhoTotal.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		ganhoTotal.setBounds(26, 11, 46, 14);
 		//cardTres.add(ganhoTotal);
@@ -252,7 +246,7 @@ public class TelaContabilidade {
 		private void atualizarInformacoes() {
 			try {
 	            
-				List<Estatistica> estatisticas = estatisticaDAO.listAll();
+				List<Estatistica> estatisticas = estatisticaService.getAllEstatisticas();
 	            
 	            if (!estatisticas.isEmpty()) {
 	                Estatistica estatistica = estatisticas.get(0); 
@@ -278,7 +272,7 @@ public class TelaContabilidade {
 	                cardTres.repaint();
 	            }
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	JOptionPane.showMessageDialog(this.contabilidadePanel, "Não foi possível criar gráficos", "Erro", JOptionPane.ERROR_MESSAGE);
 	        }
 		}
 		
@@ -294,7 +288,7 @@ public class TelaContabilidade {
 		private void createAndDisplayCharts(Date dataInicial, Date dataFinal) {
 	        
 			
-			// Gráfico de barras
+			
 	        CategoryDataset datasetBar = createBarDataset(dataInicial, dataFinal);
 	        JFreeChart chartBar = ChartFactory.createBarChart(
 	            "Gráfico de Barras",
@@ -307,7 +301,7 @@ public class TelaContabilidade {
 	            false
 	        );
 	        painelGrafico.removeAll(); 
-	        painelGrafico.setLayout(new java.awt.BorderLayout());
+	        painelGrafico.setLayout(new BorderLayout());
 	        ChartPanel chartPanelBar = new ChartPanel(chartBar);
 	        painelGrafico.add(chartPanelBar, BorderLayout.SOUTH);
 	        chartPanelBar.setPreferredSize(painelGrafico.getSize());
@@ -316,7 +310,7 @@ public class TelaContabilidade {
 
 	        
 	        
-	        // Gráfico de colunas
+	        
 	        CategoryDataset datasetColumn = createColumnDataset(dataInicial, dataFinal);
 	        JFreeChart chartColumn = ChartFactory.createBarChart(
 	            "Gráfico de Colunas",
@@ -329,14 +323,14 @@ public class TelaContabilidade {
 	            false
 	        );
 	        painelGrafico3.removeAll(); 
-	        painelGrafico3.setLayout(new java.awt.BorderLayout());
+	        painelGrafico3.setLayout(new BorderLayout());
 	        ChartPanel chartPanelColumn = new ChartPanel(chartColumn);
 	        painelGrafico3.add(chartPanelColumn, BorderLayout.SOUTH);
 	        chartPanelColumn.setPreferredSize(painelGrafico3.getSize());
 	        painelGrafico3.revalidate(); 
 	        painelGrafico3.repaint(); 
 
-	        // Gráfico de pizza
+	        
 	        DefaultPieDataset<String> datasetPie = createPieDataset(dataInicial, dataFinal);
 	        JFreeChart chartPie = ChartFactory.createPieChart(
 	            "Gráfico de Pizza",
@@ -346,7 +340,7 @@ public class TelaContabilidade {
 	            false
 	        );
 	        painelGrafico2.removeAll(); 
-	        painelGrafico2.setLayout(new java.awt.BorderLayout());
+	        painelGrafico2.setLayout(new BorderLayout());
 	        ChartPanel chartPanelPie = new ChartPanel(chartPie);
 	        painelGrafico2.add(chartPanelPie, BorderLayout.CENTER);
 	        chartPanelPie.setPreferredSize(painelGrafico2.getSize());
@@ -358,7 +352,7 @@ public class TelaContabilidade {
 		
 		private CategoryDataset createBarDataset(Date dataInicial, Date dataFinal) {
 	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-	        // logica para buscar e usar dados reais
+	        
 	        dataset.addValue(1.0, "Categoria 1", "Item 1");
 	        dataset.addValue(4.0, "Categoria 1", "Item 2");
 	        dataset.addValue(3.0, "Categoria 1", "Item 3");
@@ -367,7 +361,7 @@ public class TelaContabilidade {
 		
 		private CategoryDataset createColumnDataset(Date dataInicial, Date dataFinal) {
 	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-	        // logica para buscar e usar dados reais
+	        
 	        dataset.addValue(2.0, "Categoria A", "Item A");
 	        dataset.addValue(5.0, "Categoria A", "Item B");
 	        dataset.addValue(4.0, "Categoria A", "Item C");
@@ -376,12 +370,32 @@ public class TelaContabilidade {
 		
 		private DefaultPieDataset<String> createPieDataset(Date dataInicial, Date dataFinal) {
 	        DefaultPieDataset<String> dataset = new DefaultPieDataset<String>();
-	        // logica para buscar e usar dados reais
+	        
 	        dataset.setValue("Item 1", 20);
 	        dataset.setValue("Item 2", 30);
 	        dataset.setValue("Item 3", 50);
 	        return dataset;
 	    }
+		
+		
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+		
 		
 }

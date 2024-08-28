@@ -32,10 +32,10 @@ package com.managepro.dao;
 	                if (rs.next()) {
 	                    return new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos"),
+	                        rs.getLong("quantidade_funcionarios"),
+	                        rs.getBigDecimal("total_ganho")
 	                    );
 	                } else {
 	                    return null;
@@ -58,10 +58,10 @@ package com.managepro.dao;
 	                Estatistica estatistica = new Estatistica (
 	                    
 	                	rs.getLong("id"),
-	                    rs.getLong("quantidade_venda"),
-	                    rs.getLong("quantidade_produto"),
-	                    rs.getLong("quantidade_funcionario"),
-	                    rs.getBigDecimal("preco_total")
+	                    rs.getLong("quantidade_vendas"),
+	                    rs.getLong("quantidade_produtos"),
+	                    rs.getLong("quantidade_funcionarios"),
+	                    rs.getBigDecimal("total_ganho")
 	                );
 	                
 	                list.add(estatistica);
@@ -75,19 +75,20 @@ package com.managepro.dao;
 	    }
 	    
 	    
+	    
 	    public List<Estatistica> findByQuantidadeVenda(Long quantidadeVenda) throws SQLException {
 	        List<Estatistica> list = new ArrayList<>();
-	        String sql = "SELECT * FROM estatistica WHERE quantidade_venda = ?";
+	        String sql = "SELECT * FROM estatistica WHERE quantidade_vendas = ?";
 	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 	            stmt.setLong(1, quantidadeVenda);
 	            try (ResultSet rs = stmt.executeQuery()) {
 	                while (rs.next()) {
 	                    list.add(new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos"),
+	                        rs.getLong("quantidade_funcionarios"),
+	                        rs.getBigDecimal("total_ganho")
 	                    ));
 	                }
 	            }
@@ -96,19 +97,20 @@ package com.managepro.dao;
 	    }
 	    
 	    
+	    
 	    public List<Estatistica> findByQuantidadeFuncionario(Long quantidadeFuncionario) throws SQLException {
 	        List<Estatistica> list = new ArrayList<>();
-	        String sql = "SELECT * FROM estatistica WHERE quantidade_funcionario = ?";
+	        String sql = "SELECT * FROM estatistica WHERE quantidade_funcionarios = ?";
 	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 	            stmt.setLong(1, quantidadeFuncionario);
 	            try (ResultSet rs = stmt.executeQuery()) {
 	                while (rs.next()) {
 	                    list.add(new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos"),
+	                        rs.getLong("quantidade_funcionarios"),
+	                        rs.getBigDecimal("total_ganho")
 	                    ));
 	                }
 	            }
@@ -117,7 +119,8 @@ package com.managepro.dao;
 	    }
 	    
 	    
-	    public List<Estatistica> findByPrecoTotal(BigDecimal precoTotal) throws SQLException {
+	    
+	    public List<Estatistica> findByTotalGanho(BigDecimal precoTotal) throws SQLException {
 	        List<Estatistica> list = new ArrayList<>();
 	        String sql = "SELECT * FROM estatistica WHERE preco_total = ?";
 	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -126,10 +129,10 @@ package com.managepro.dao;
 	                while (rs.next()) {
 	                    list.add(new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos"),
+	                        rs.getLong("quantidade_funcionarios"),
+	                        rs.getBigDecimal("total_ganho")
 	                    ));
 	                }
 	            }
@@ -137,27 +140,6 @@ package com.managepro.dao;
 	        return list;
 	    }
 	    
-	    
-	    /*
-	    public List<Object[]> getQuantidadeVendasPorCategoria(JDateChooser dateChooserInicial, JDateChooser dateChooserFinal) throws SQLException {
-	        List<Object[]> result = new ArrayList<>();
-	        String sql = "SELECT categoria, COUNT(*) as quantidade FROM vendas WHERE data BETWEEN ? AND ? GROUP BY categoria";
-
-	        Date dataInicial = new Date(dateChooserInicial.getDate().getTime());
-	        Date dataFinal = new Date(dateChooserFinal.getDate().getTime());
-
-	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-	            stmt.setDate(1, dataInicial);
-	            stmt.setDate(2, dataFinal);
-	            try (ResultSet rs = stmt.executeQuery()) {
-	                while (rs.next()) {
-	                    result.add(new Object[]{rs.getString("categoria"), rs.getInt("quantidade")});
-	                }
-	            }
-	        }
-	        return result;
-	    }
-	    */
 	    
 	    
 	    
@@ -178,6 +160,36 @@ package com.managepro.dao;
 	        
 	        return estatistica;
 	    }
+	    
+	    
+	    
+	    
+	    public List<Estatistica> findByDataAndTipo(Date dataInicio, Date dataFim, String tipo) throws SQLException {
+	        List<Estatistica> list = new ArrayList<>();
+	        String sql = "SELECT * FROM estatistica WHERE data BETWEEN ? AND ? AND tipo = ?";
+	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	            stmt.setDate(1, dataInicio);
+	            stmt.setDate(2, dataFim);
+	            stmt.setString(3, tipo);
+	            try (ResultSet rs = stmt.executeQuery()) {
+	                while (rs.next()) {
+	                    list.add(new Estatistica(
+	                        rs.getLong("id"),
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos"),
+	                        rs.getLong("quantidade_funcionarios"),
+	                        rs.getBigDecimal("total_ganho")
+	                    ));
+	                }
+	            }
+	        }
+	        return list;
+	    }
+
+
+
+	    
+
 	    
 	    
 	    
