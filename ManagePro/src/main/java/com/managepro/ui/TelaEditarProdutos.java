@@ -6,6 +6,8 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
+
 import com.managepro.core.model.Produto;
 import com.managepro.core.service.ProdutoService;
 import com.managepro.exceptions.ValidacaoException;
@@ -21,6 +23,8 @@ import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -110,10 +114,13 @@ public class TelaEditarProdutos {
 		textFieldCodigo.setBounds(312, 98, 131, 35);
 		editarProdutosPanel.add(textFieldCodigo);
 
-		MaskFormatter maskPrecoVenda = new MaskFormatter("*****************");
-		maskPrecoVenda.setValidCharacters("0123456789,.");
-		maskPrecoVenda.setAllowsInvalid(false);
-		textFieldPrecoVenda = new JFormattedTextField(maskPrecoVenda);
+		NumberFormat format = new DecimalFormat("#,##0.00");
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(BigDecimal.class);
+		formatter.setAllowsInvalid(false);
+		formatter.setMinimum(new BigDecimal("0.00"));
+		formatter.setMaximum(new BigDecimal("99999999.99"));
+		textFieldPrecoVenda = new JFormattedTextField(formatter);
 		textFieldPrecoVenda.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		textFieldPrecoVenda.setColumns(10);
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
