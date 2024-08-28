@@ -75,7 +75,7 @@ public class VendaDAO implements SaleRepository {
 		       statementVenda.close();
 		       statementProdutoVenda.close();
 	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace();
 	    }
@@ -99,7 +99,7 @@ public class VendaDAO implements SaleRepository {
 	        connection.close();
 	        
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace();  
 	    } 
@@ -141,7 +141,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	    
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace(); 
 	        return null;
@@ -185,7 +185,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 			System.out.println(e.getMessage());
 	        e.printStackTrace();  
 	        return null;
@@ -228,7 +228,7 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 	            e.printStackTrace();  
 	            return null;
@@ -268,12 +268,58 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
+	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicaï¿½ï¿½o do sistema tente novamente mais tarde");
 				System.out.println(e.getMessage());
 	            e.printStackTrace();  
 	            return null;
 	        }
 	}
+	
+	
+	
+	
+	public List<Venda> PesquisarVendasCpf(String cpf) throws ClassNotFoundException, SQLException {
+		try {
+			Connection connection = MySQLConnection.getConnection();
+	        Statement statement = connection.createStatement();
+	        
+	        String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+                    "FROM venda v " +
+                    "JOIN cliente c ON v.id_cliente = c.id_cliente " +
+                    "WHERE c.cpf LIKE '" + cpf + "%'";
+	        
+	        ResultSet resultSet = statement.executeQuery(sql);
+	        
+	        List<Venda> vendas = new ArrayList<>();
+	        		
+	        		while (resultSet.next()) {
+	    	            
+	    	        	Venda venda = new Venda();
+	    	            
+	    	            venda.setId(resultSet.getLong("id_venda"));
+	    	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario")))); 
+	    	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
+	    	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
+	    	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
+	    	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	    	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId())); 
+	    	
+	    	            vendas.add(venda);
+	    	        }
+	        		connection.close();
+	                statement.close();        
+	                resultSet.close();
+	                
+	                return vendas;
+			
+		} catch (SQLException | ClassNotFoundException e) {
+	        JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicaÃ§Ã£o do sistema, tente novamente mais tarde.");
+	        System.out.println(e.getMessage());
+	        e.printStackTrace(); 
+	        return null;
+	}
+	
+	
 
 	
 }

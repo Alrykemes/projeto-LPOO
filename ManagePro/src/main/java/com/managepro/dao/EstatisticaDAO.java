@@ -1,5 +1,19 @@
 package com.managepro.dao;
 
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.managepro.core.model.Estatistica;
+import com.managepro.repository.StatisticRepository;
+import com.toedter.calendar.JDateChooser;
+import com.managepro.repository.MySQLConnection;
+
 public class EstatisticaDAO {
 	package com.managepro.dao;
 

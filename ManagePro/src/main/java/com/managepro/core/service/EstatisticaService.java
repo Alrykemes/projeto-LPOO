@@ -21,7 +21,6 @@ public class EstatisticaService {
 	
 	public Estatistica getEstatisticaById(Long id) {
 		if (id == null || id < 0) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Id inválido");
 			throw new IllegalArgumentException("ID inválido.");
 		}
 		return estatisticaDAO.read(id);
