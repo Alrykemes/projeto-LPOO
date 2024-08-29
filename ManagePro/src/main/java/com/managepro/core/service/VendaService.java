@@ -1,5 +1,6 @@
 package com.managepro.core.service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class VendaService {
 		vendaDAO = new VendaDAO();
 	}
 	
-	public void cadastrarVenda(Venda venda) throws ExcecaoDeNegocios, ValidacaoException, ExcecaoDoSistema {
+	public void cadastrarVenda(Venda venda) throws ExcecaoDeNegocios, ValidacaoException, ExcecaoDoSistema, SQLException {
 		
 		if(venda != null) {	
 			validarVenda(venda);
@@ -93,6 +94,11 @@ public class VendaService {
 		}
 	}
 	
+	public List<Venda> getVendasPorCpfCliente(String cpf) throws ExcecaoDoSistema, ExcecaoDeNegocios {
+		return null;
+		
+	}
+	
 	public void deletarVendaPorId(Long id) throws ExcecaoDoSistema, ExcecaoDeNegocios {
 		if (vendaDAO.pesquisarVendaPorId(id) != null) {
 			vendaDAO.deletarVenda(id);
@@ -115,17 +121,19 @@ public class VendaService {
 	
 	public void validarVenda(Venda venda) throws ValidacaoException, ExcecaoDeNegocios {
 		
+		if(venda.getCliente() == null) {
+			throw new ExcecaoDeNegocios("A venda deve ter um cliente!");
+		}
+
+		if(venda.getProdutosVendidos() == null) {
+			throw new ValidacaoException("A venda deve ter Produtos");
+		}
+		
 		if(venda.getData() == null) {
 			throw new ValidacaoException("Data da Compra é null");
 		}
 		
-		if(venda.getProdutosVendidos() == null) {
-			throw new ValidacaoException("A lista de produtos da Compra é null");
-		}
 		
-		if(venda.getCliente() == null) {
-			throw new ExcecaoDeNegocios("A venda deve ter um cliente!");
-		}
 	}
 	
 	public void validarPix(boolean confirmacaoPix) {

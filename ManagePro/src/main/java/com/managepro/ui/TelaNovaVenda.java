@@ -38,6 +38,7 @@ import javax.swing.DefaultListModel;
 
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -462,7 +463,11 @@ public class TelaNovaVenda {
 				newVenda.setFuncionario(Janela.getInstance().getTelaLogin().getFuncionarioLogado());
 				newVenda.setCliente(cliente);
 				newVenda.setData(LocalDate.now());
-				newVenda.setProdutosVendidos(listaProdutosVenda);
+				if(!listaProdutosVenda.isEmpty()) {
+					newVenda.setProdutosVendidos(listaProdutosVenda);					
+				} else {
+				//	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você precisa adicionar um produto para vender!", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 				newVenda.setFormaDePagamentoEnum(FormaPagamento.valueOf(PagamentocomboBox.getSelectedItem().toString().replaceAll(" ",   "")));
 				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
 					try {
@@ -499,6 +504,9 @@ public class TelaNovaVenda {
 					SaleConfigPanel.repaint();
 					totalPriceOfSale = BigDecimal.ZERO;
 				} catch (ExcecaoDoSistema | ExcecaoDeNegocios | ValidacaoException ex) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				} catch (SQLException ex) {
+					ex.printStackTrace();
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			}

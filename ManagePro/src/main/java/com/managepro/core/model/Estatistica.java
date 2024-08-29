@@ -1,63 +1,67 @@
 package com.managepro.core.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Estatistica {
-	
-	private Long id;
-	private Long quantidadeProdutos;
-	private Long quantidadeVendas;
-	private Long quantidadeFuncionarios;
-	private BigDecimal totalGanho;
-	
-	public Estatistica() {}
-	
-	public Estatistica(Long id, Long quantidadeProdutos, Long quantidadeVendas, Long quantidadeFuncionarios, BigDecimal totalGanho) {
-		this.id = id;
-		this.quantidadeProdutos = quantidadeProdutos;
-		this.quantidadeVendas = quantidadeVendas;
-		this.quantidadeFuncionarios = quantidadeFuncionarios;
-		this.totalGanho = totalGanho;
-	}
 
-	public Long getId() {
-		return id;
-	}
+    private Long id;
+    private Long quantidadeProdutos;
+    private Long quantidadeVendas;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private BigDecimal totalGanho;
+    private Date data;
 
-	public Long getQuantidadeProdutos() {
-		return quantidadeProdutos;
-	}
+    public Estatistica() {}
 
-	public void setQuantidadeProdutos(Long quantidadeProdutos) {
-		this.quantidadeProdutos = quantidadeProdutos;
-	}
+    public Estatistica(Long id, Long quantidadeProdutos, Long quantidadeVendas, BigDecimal totalGanho, Date data) {
+        this.id = id;
+        this.quantidadeProdutos = quantidadeProdutos;
+        this.quantidadeVendas = quantidadeVendas;
 
-	public Long getQuantidadeVendas() {
-		return quantidadeVendas;
-	}
+        this.totalGanho = totalGanho;
+        this.data = data;
+    }
 
-	public void setQuantidadeVendas(Long quantidadeVendas) {
-		this.quantidadeVendas = quantidadeVendas;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Long getQuantidadeFuncionarios() {
-		return quantidadeFuncionarios;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setQuantidadeFuncionarios(Long quantidadeFuncionarios) {
-		this.quantidadeFuncionarios = quantidadeFuncionarios;
-	}
+    public Long getQuantidadeProdutos() {
+        return quantidadeProdutos;
+    }
 
-	public BigDecimal getTotalGanho() {
-		return totalGanho;
-	}
+    public void setQuantidadeProdutos(Long quantidadeProdutos) {
+        this.quantidadeProdutos = quantidadeProdutos;
+    }
 
-	public void setTotalGanho(BigDecimal totalGanho) {
-		this.totalGanho = totalGanho;
-	}
+    public Long getQuantidadeVendas() {
+        return quantidadeVendas;
+    }
+
+    public void setQuantidadeVendas(Long quantidadeVendas) {
+        this.quantidadeVendas = quantidadeVendas;
+    }
+
+
+    public BigDecimal getTotalGanho() {
+        return totalGanho;
+    }
+
+    public void setTotalGanho(BigDecimal totalGanho) {
+        this.totalGanho = totalGanho;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
 
 }

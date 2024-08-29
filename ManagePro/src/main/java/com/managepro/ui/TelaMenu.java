@@ -155,6 +155,7 @@ public class TelaMenu {
 						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.CONTADOR) {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Contabilidade");
+					Janela.getInstance().getTelaContabilidade().atualizarInformacoes();
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar a contabilidade.");
 				}

@@ -1,5 +1,6 @@
 package com.managepro.repository;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import com.managepro.core.model.Venda;
@@ -18,4 +19,6 @@ public interface SaleRepository {
 	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ExcecaoDoSistema;
 	
 	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ExcecaoDoSistema;
+	
+	public List<Venda> listarVendasPorCpfCliente(String cpf) throws ClassNotFoundException, SQLException, ExcecaoDoSistema;
 }

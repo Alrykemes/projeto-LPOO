@@ -66,8 +66,11 @@ public class VendaDAO implements SaleRepository {
 		           statementProdutoVenda.setLong(2, produto.getCodigoProduto());
 		           statementProdutoVenda.setInt(3, produto.getQuantidade());
 		           statementProdutoVenda.setBigDecimal(4, produto.getPreco());
-		
-		           statementProdutoVenda.execute();
+		           try {
+		        	   statementProdutoVenda.execute();					
+		           } catch (SQLException e) {
+		        	   throw new ExcecaoDoSistema(e.getMessage(), e);
+		           }
 		       }
 		       
 		       connection.close();
@@ -264,6 +267,43 @@ public class VendaDAO implements SaleRepository {
 				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 	        }
 	}
-
 	
+	public List<Venda> listarVendasPorCpfCliente(String cpf) throws ClassNotFoundException, SQLException, ExcecaoDoSistema {
+		try {
+			Connection connection = MySQLConnection.getConnection();
+	        Statement statement = connection.createStatement();
+
+	        String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+                    "FROM venda v " +
+                    "JOIN cliente c ON v.id_cliente = c.id_cliente " +
+                    "WHERE c.cpf LIKE '" + cpf + "%'";
+
+	        ResultSet resultSet = statement.executeQuery(sql);
+
+	        List<Venda> vendas = new ArrayList<>();
+
+	        		while (resultSet.next()) {
+
+	    	        	Venda venda = new Venda();
+
+	    	            venda.setId(resultSet.getLong("id_venda"));
+	    	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario"))));
+	    	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente")));
+	    	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
+	    	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
+	    	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	    	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
+
+	    	            vendas.add(venda);
+	    	        }
+	        		connection.close();
+	                statement.close();
+	                resultSet.close();
+
+	                return vendas;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+		}
+	}
 }

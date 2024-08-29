@@ -19,7 +19,7 @@ public interface StatisticRepository {
 	
 	public List<Estatistica> findByQuantidadeFuncionario(Long quantidadeFuncionario) throws SQLException;
 	
-	public List<Estatistica> findByPrecoTotal(BigDecimal precoTotal) throws SQLException;
+	public List<Estatistica> findByTotalGanho(BigDecimal precoTotal) throws SQLException;
 	
 	//public List<Object[]> getQuantidadeVendasPorCategoria(JDateChooser dateChooserInicial, JDateChooser dateChooserFinal) throws SQLException;
 	 

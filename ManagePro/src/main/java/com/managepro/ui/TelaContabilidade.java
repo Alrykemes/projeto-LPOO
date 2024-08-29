@@ -1,6 +1,5 @@
 package com.managepro.ui;
 
-import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -18,6 +17,7 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import com.managepro.core.model.Estatistica;
 import com.managepro.core.service.EstatisticaService;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -32,7 +32,6 @@ public class TelaContabilidade {
 	
 
 	private JPanel contabilidadePanel;
-	private Panel painelGrafico;
 	private Panel painelGrafico2;
 	private Panel painelGrafico3; 
 	private Panel painelOpcoes;
@@ -45,17 +44,20 @@ public class TelaContabilidade {
 	private JLabel quantidadeProdutos;
 	private JLabel quantidadeVendas;
 	private EstatisticaService estatisticaService;
-	private Estatistica estatistica;
 	private JComboBox<String> filtercomboBox;
 
 	public JPanel getPanel() {
 		return this.contabilidadePanel;
 	}
 	
-	public TelaContabilidade() throws SQLException, ClassNotFoundException {
+	public TelaContabilidade() {
 		
-			this.estatisticaService = new EstatisticaService(); 
-			this.estatistica = new Estatistica();
+			try {
+				this.estatisticaService = new EstatisticaService();
+			} catch (ExcecaoDoSistema ex) {
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			} 
+			
 			this.initialize();
 			this.atualizarInformacoes();
 	}
@@ -67,19 +69,14 @@ public class TelaContabilidade {
 		contabilidadePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contabilidadePanel.setLayout(null);
 		
-		painelGrafico = new Panel();
-		painelGrafico.setBackground(new Color(255, 255, 255));
-		painelGrafico.setBounds(132, 257, 510, 175);
-		contabilidadePanel.add(painelGrafico);
-		
 		painelGrafico2 = new Panel();
 		painelGrafico2.setBackground(new Color(255, 255, 255));
-		painelGrafico2.setBounds(648, 257, 280, 351);
+		painelGrafico2.setBounds(528, 257, 450, 351);
 		contabilidadePanel.add(painelGrafico2);
 		
 		painelOpcoes = new Panel();
 		painelOpcoes.setBackground(new Color(153, 51, 153));
-		painelOpcoes.setBounds(0, 0, 1020, 93);
+		painelOpcoes.setBounds(0, 0, 1020, 91);
 		contabilidadePanel.add(painelOpcoes);
 		painelOpcoes.setLayout(null);
 		
@@ -87,39 +84,39 @@ public class TelaContabilidade {
 		dataLabel.setForeground(new Color(255, 255, 255));
 		dataLabel.setBackground(new Color(255, 255, 255));
 		dataLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		dataLabel.setBounds(163, 11, 101, 29);
+		dataLabel.setBounds(289, 6, 101, 29);
 		painelOpcoes.add(dataLabel);
 		
 		JLabel finalLabel = new JLabel("Data Final *");
 		finalLabel.setForeground(new Color(255, 255, 255));
 		finalLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		finalLabel.setBounds(366, 11, 75, 29);
+		finalLabel.setBounds(492, 6, 75, 29);
 		painelOpcoes.add(finalLabel);
 		
-		JLabel agruparLabel = new JLabel("Agrupar por *");
+		JLabel agruparLabel = new JLabel("Tipo de Gráfico:\r\n");
 		agruparLabel.setForeground(new Color(255, 255, 255));
 		agruparLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		agruparLabel.setBounds(584, 11, 101, 29);
+		agruparLabel.setBounds(677, 6, 101, 29);
 		painelOpcoes.add(agruparLabel);
 		
 		filtercomboBox = new JComboBox<String>();
-		filtercomboBox.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		filtercomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Venda", "Produto", "Código", "Preço Total"}));
-		filtercomboBox.setBounds(584, 39, 167, 35);
+		filtercomboBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		filtercomboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Coluna ", "Pizza"}));
+		filtercomboBox.setBounds(677, 34, 120, 35);
 		painelOpcoes.add(filtercomboBox);
 		
 		JButton gerarRelatorio = new JButton("Gerar relatório");
 		gerarRelatorio.setBackground(new Color(255, 255, 255));
-		gerarRelatorio.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		gerarRelatorio.setBounds(826, 41, 145, 31);
+		gerarRelatorio.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		gerarRelatorio.setBounds(844, 34, 155, 35);
 		painelOpcoes.add(gerarRelatorio);
 		
 		escolherDataInicial = new JDateChooser();
-		escolherDataInicial.setBounds(163, 39, 155, 35);
+		escolherDataInicial.setBounds(289, 34, 155, 35);
 		painelOpcoes.add(escolherDataInicial);
 		
 		escolherDataFinal = new JDateChooser();
-		escolherDataFinal.setBounds(366, 39, 161, 35);
+		escolherDataFinal.setBounds(492, 34, 161, 35);
 		painelOpcoes.add(escolherDataFinal);
 		
 		
@@ -132,12 +129,12 @@ public class TelaContabilidade {
 		
 		painelGrafico3 = new Panel();
 		painelGrafico3.setBackground(new Color(255, 255, 255));
-		painelGrafico3.setBounds(132, 438, 510, 170);
+		painelGrafico3.setBounds(44, 257, 450, 351);
 		contabilidadePanel.add(painelGrafico3);
 		
 		cardUm = new Panel();
 		cardUm.setBackground(new Color(255, 255, 255));
-		cardUm.setBounds(132, 126, 255, 116);
+		cardUm.setBounds(44, 113, 255, 116);
 		contabilidadePanel.add(cardUm);
 		//cardUm.setLayout(null);
 		
@@ -157,7 +154,7 @@ public class TelaContabilidade {
 		cardDois = new Panel();
 		//cardDois.setLayout(null);
 		cardDois.setBackground(new Color(255, 255, 255));
-		cardDois.setBounds(410, 126, 248, 116);
+		cardDois.setBounds(394, 113, 248, 116);
 		contabilidadePanel.add(cardDois);
 		
 		
@@ -176,7 +173,7 @@ public class TelaContabilidade {
 		cardTres = new Panel();
 		//cardTres.setLayout(null);
 		cardTres.setBackground(new Color(255, 255, 255));
-		cardTres.setBounds(679, 126, 249, 116);
+		cardTres.setBounds(729, 113, 249, 116);
 		contabilidadePanel.add(cardTres);
 		
 		
@@ -202,10 +199,6 @@ public class TelaContabilidade {
 				escolherDataInicial.setDate(null);
 				escolherDataFinal.setDate(null);
 				
-				painelGrafico.removeAll();
-				painelGrafico.revalidate();
-				painelGrafico.repaint();
-				
 				painelGrafico2.removeAll();
 				painelGrafico2.revalidate();
 				painelGrafico2.repaint();
@@ -215,8 +208,20 @@ public class TelaContabilidade {
 				painelGrafico3.repaint();
 			}
 		});
-		botaoVoltar.setBounds(10, 26, 120, 35);
+		botaoVoltar.setBounds(10, 6, 120, 35);
 		painelOpcoes.add(botaoVoltar);
+		
+		JComboBox<String> filtercomboBox_1 = new JComboBox<String>();
+		filtercomboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] {"Total", "Data"}));
+		filtercomboBox_1.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		filtercomboBox_1.setBounds(157, 34, 86, 35);
+		painelOpcoes.add(filtercomboBox_1);
+		
+		JLabel agruparLabel_1 = new JLabel("Filtro:\r\n");
+		agruparLabel_1.setForeground(Color.WHITE);
+		agruparLabel_1.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		agruparLabel_1.setBounds(157, 6, 101, 29);
+		painelOpcoes.add(agruparLabel_1);
 		
 		
 		
@@ -241,18 +246,17 @@ public class TelaContabilidade {
     }
 		
 		
-		private void atualizarInformacoes() {
+		public void atualizarInformacoes() {
 			try {
 	            
-				List<Estatistica> estatisticas = estatisticaService.getAllEstatisticas();
+				Estatistica estatistica = estatisticaService.getEstatistica();
 	            
-	            if (!estatisticas.isEmpty()) {
-	                Estatistica estatistica = estatisticas.get(0); 
+	            if (estatistica != null) {
 	                
-	                quantidadeProdutos = new JLabel("Quantidade de Produtos: " + estatistica.getQuantidadeVendas());
-	                quantidadeVendas = new JLabel("Quantidade de Vendas: " + estatistica.getQuantidadeProdutos());
+	                quantidadeProdutos = new JLabel("Quantidade de Produtos: " + estatistica.getQuantidadeProdutos());
+	                quantidadeVendas = new JLabel("Quantidade de Vendas: " + estatistica.getQuantidadeVendas());
 	                ganhoTotal = new JLabel("Total Ganho: " + estatistica.getTotalGanho());
-	                
+	                 System.out.println();
 	                
 	                cardUm.removeAll();
 	                cardUm.add(quantidadeProdutos);
@@ -262,11 +266,9 @@ public class TelaContabilidade {
 	                cardTres.add(ganhoTotal);
 
 	                
-	                cardUm.revalidate();
+	                
 	                cardUm.repaint();
-	                cardDois.revalidate();
 	                cardDois.repaint();
-	                cardTres.revalidate();
 	                cardTres.repaint();
 	            }
 	        } catch (SQLException e) {
@@ -284,29 +286,6 @@ public class TelaContabilidade {
 		
 		
 		private void createAndDisplayCharts(Date dataInicial, Date dataFinal) {
-	        
-			
-			// Gráfico de barras
-	        CategoryDataset datasetBar = createBarDataset(dataInicial, dataFinal);
-	        JFreeChart chartBar = ChartFactory.createBarChart(
-	            "Gráfico de Barras",
-	            "Categoria",
-	            "Valor",
-	            datasetBar,
-	            PlotOrientation.VERTICAL,
-	            true,
-	            true,
-	            false
-	        );
-	        painelGrafico.removeAll(); 
-	        painelGrafico.setLayout(new BorderLayout());
-	        ChartPanel chartPanelBar = new ChartPanel(chartBar);
-	        painelGrafico.add(chartPanelBar, BorderLayout.SOUTH);
-	        chartPanelBar.setPreferredSize(painelGrafico.getSize());
-	        painelGrafico.revalidate(); 
-	        painelGrafico.repaint(); 
-
-	        
 	        
 	        // Gráfico de colunas
 	        CategoryDataset datasetColumn = createColumnDataset(dataInicial, dataFinal);
@@ -348,6 +327,7 @@ public class TelaContabilidade {
 
 	    }
 		
+		@SuppressWarnings("unused")
 		private CategoryDataset createBarDataset(Date dataInicial, Date dataFinal) {
 	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 	        
@@ -383,6 +363,4 @@ public class TelaContabilidade {
 	        dataset.setValue("Item 3", 50);
 	        return dataset;
 	    }
-	
-		
 }

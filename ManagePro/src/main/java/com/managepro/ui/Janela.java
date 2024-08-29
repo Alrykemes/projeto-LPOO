@@ -68,6 +68,10 @@ public class Janela {
 		return this.telaEditarProdutos;
 	}
 	
+	public TelaContabilidade getTelaContabilidade() {
+		return this.telaContabilidade;
+	}
+	
 	public JFrame getFrame() {
 		return this.frame;
 	}

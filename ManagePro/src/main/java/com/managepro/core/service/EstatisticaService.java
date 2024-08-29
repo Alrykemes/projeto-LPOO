@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import com.managepro.core.model.Estatistica;
 import com.managepro.dao.EstatisticaDAO;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.ui.Janela;
 
 
@@ -15,7 +16,7 @@ public class EstatisticaService {
 	
 	private EstatisticaDAO estatisticaDAO;
 	
-	public EstatisticaService() {
+	public EstatisticaService() throws ExcecaoDoSistema {
 		estatisticaDAO = new EstatisticaDAO();
 	}
 	
@@ -53,7 +54,7 @@ public class EstatisticaService {
 
 		}
 		
-		return estatisticaDAO.findByPrecoTotal(precoTotal);
+		return estatisticaDAO.findByTotalGanho(precoTotal);
 	}
 	
 	public Estatistica getEstatistica() throws SQLException {
