@@ -1,22 +1,5 @@
 package com.managepro.dao;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.managepro.core.model.Estatistica;
-import com.managepro.repository.StatisticRepository;
-import com.toedter.calendar.JDateChooser;
-import com.managepro.repository.MySQLConnection;
-
-public class EstatisticaDAO {
-	package com.managepro.dao;
-
 	import java.math.BigDecimal;
 	import java.sql.Connection;
 	import java.sql.Date;
@@ -27,16 +10,24 @@ public class EstatisticaDAO {
 	import java.util.List;
 
 	import com.managepro.core.model.Estatistica;
-	import com.managepro.repository.StatisticRepository;
-	import com.toedter.calendar.JDateChooser;
-	import com.managepro.repository.MySQLConnection;	
+
+import com.managepro.exceptions.ExcecaoDoSistema;
+import com.managepro.repository.MySQLConnection;
+import com.managepro.repository.StatisticRepository;	
 
 	public class EstatisticaDAO implements StatisticRepository {
 		
 		private Connection connection;
 
-	    public EstatisticaDAO(Connection connection) {
-	    	this.connection = connection;
+
+	    public EstatisticaDAO() throws ExcecaoDoSistema {
+	    	try {
+				this.connection = MySQLConnection.getConnection();
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
+			}
+
 	    }
 
 
@@ -49,10 +40,12 @@ public class EstatisticaDAO {
 	                if (rs.next()) {
 	                    return new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos_vendidos"),
+	                        rs.getBigDecimal("total_ganho"),
+	                        rs.getDate("date")
+
 	                    );
 	                } else {
 	                    return null;
@@ -75,10 +68,12 @@ public class EstatisticaDAO {
 	                Estatistica estatistica = new Estatistica (
 	                    
 	                	rs.getLong("id"),
-	                    rs.getLong("quantidade_venda"),
-	                    rs.getLong("quantidade_produto"),
-	                    rs.getLong("quantidade_funcionario"),
-	                    rs.getBigDecimal("preco_total")
+
+	                	rs.getLong("quantidade_produtos_vendidos"),
+	                    rs.getLong("quantidade_vendas"),
+	                    rs.getBigDecimal("total_ganho"),
+	                    rs.getDate("data")
+
 	                );
 	                
 	                list.add(estatistica);
@@ -92,19 +87,24 @@ public class EstatisticaDAO {
 	    }
 	    
 	    
+
+	    
 	    public List<Estatistica> findByQuantidadeVenda(Long quantidadeVenda) throws SQLException {
 	        List<Estatistica> list = new ArrayList<>();
-	        String sql = "SELECT * FROM estatistica WHERE quantidade_venda = ?";
+	        String sql = "SELECT * FROM estatistica WHERE quantidade_vendas = ?";
+
 	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 	            stmt.setLong(1, quantidadeVenda);
 	            try (ResultSet rs = stmt.executeQuery()) {
 	                while (rs.next()) {
 	                    list.add(new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos"),
+	                        rs.getBigDecimal("total_ganho"),
+	                        rs.getDate("data")
+
 	                    ));
 	                }
 	            }
@@ -113,19 +113,24 @@ public class EstatisticaDAO {
 	    }
 	    
 	    
+
+	    
 	    public List<Estatistica> findByQuantidadeFuncionario(Long quantidadeFuncionario) throws SQLException {
 	        List<Estatistica> list = new ArrayList<>();
-	        String sql = "SELECT * FROM estatistica WHERE quantidade_funcionario = ?";
+	        String sql = "SELECT * FROM estatistica WHERE quantidade_funcionarios = ?";
+
 	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 	            stmt.setLong(1, quantidadeFuncionario);
 	            try (ResultSet rs = stmt.executeQuery()) {
 	                while (rs.next()) {
 	                    list.add(new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos_vendidos"),
+	                        rs.getBigDecimal("total_ganho"),
+	                        rs.getDate("data")
+
 	                    ));
 	                }
 	            }
@@ -134,7 +139,10 @@ public class EstatisticaDAO {
 	    }
 	    
 	    
-	    public List<Estatistica> findByPrecoTotal(BigDecimal precoTotal) throws SQLException {
+
+	    
+	    public List<Estatistica> findByTotalGanho(BigDecimal precoTotal) throws SQLException {
+
 	        List<Estatistica> list = new ArrayList<>();
 	        String sql = "SELECT * FROM estatistica WHERE preco_total = ?";
 	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -143,10 +151,12 @@ public class EstatisticaDAO {
 	                while (rs.next()) {
 	                    list.add(new Estatistica(
 	                        rs.getLong("id"),
-	                        rs.getLong("quantidade_venda"),
-	                        rs.getLong("quantidade_produto"),
-	                        rs.getLong("quantidade_funcionario"),
-	                        rs.getBigDecimal("preco_total")
+
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos_vendidos"),
+	                        rs.getBigDecimal("total_ganho"),
+	                        rs.getDate("data")
+
 	                    ));
 	                }
 	            }
@@ -155,38 +165,22 @@ public class EstatisticaDAO {
 	    }
 	    
 	    
-	    /*
-	    public List<Object[]> getQuantidadeVendasPorCategoria(JDateChooser dateChooserInicial, JDateChooser dateChooserFinal) throws SQLException {
-	        List<Object[]> result = new ArrayList<>();
-	        String sql = "SELECT categoria, COUNT(*) as quantidade FROM vendas WHERE data BETWEEN ? AND ? GROUP BY categoria";
 
-	        Date dataInicial = new Date(dateChooserInicial.getDate().getTime());
-	        Date dataFinal = new Date(dateChooserFinal.getDate().getTime());
 
-	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-	            stmt.setDate(1, dataInicial);
-	            stmt.setDate(2, dataFinal);
-	            try (ResultSet rs = stmt.executeQuery()) {
-	                while (rs.next()) {
-	                    result.add(new Object[]{rs.getString("categoria"), rs.getInt("quantidade")});
-	                }
-	            }
-	        }
-	        return result;
-	    }
-	    */
-	    
 	    
 	    
 	    public Estatistica obterEstatisticas() throws SQLException {
 	        Estatistica estatistica = new Estatistica();
-	        String query = "SELECT quantidade_produtos, quantidade_funcionarios, total_ganho FROM estatisticas";
+
+	        String query = "SELECT quantidade_produtos_vendidos, quantidade_vendas, total_ganho FROM estatistica";
 	        
 	        try (PreparedStatement stmt = connection.prepareStatement(query);
 	             ResultSet rs = stmt.executeQuery()) {
 	            if (rs.next()) {
-	                estatistica.setQuantidadeProdutos(rs.getLong("quantidade_produtos"));
-	                estatistica.setQuantidadeFuncionarios(rs.getLong("quantidade_funcionarios"));
+
+	                estatistica.setQuantidadeProdutos(rs.getLong("quantidade_produtos_vendidos"));
+	                estatistica.setQuantidadeVendas(rs.getLong("quantidade_vendas"));
+
 	                estatistica.setTotalGanho(rs.getBigDecimal("total_ganho"));
 	            }
 	        } catch (SQLException e) {
@@ -199,7 +193,36 @@ public class EstatisticaDAO {
 	    
 	    
 	    
+
+	    public List<Estatistica> findByDataAndTipo(Date dataInicio, Date dataFim, String tipo) throws SQLException {
+	        List<Estatistica> list = new ArrayList<>();
+	        String sql = "SELECT * FROM estatistica WHERE data BETWEEN ? AND ? AND tipo = ?";
+	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	            stmt.setDate(1, dataInicio);
+	            stmt.setDate(2, dataFim);
+	            stmt.setString(3, tipo);
+	            try (ResultSet rs = stmt.executeQuery()) {
+	                while (rs.next()) {
+	                    list.add(new Estatistica(
+	                        rs.getLong("id"),
+	                        rs.getLong("quantidade_vendas"),
+	                        rs.getLong("quantidade_produtos"),
+	                        rs.getBigDecimal("total_ganho"),
+	                        rs.getDate("data")
+	                    ));
+	                }
+	            }
+	        }
+	        return list;
+	    }
+
+
+
+	    
+
+	    
+	    
+	    
+	    
 	}
 
-
-}

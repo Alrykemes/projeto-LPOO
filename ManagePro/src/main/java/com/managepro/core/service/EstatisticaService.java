@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 
 import com.managepro.core.model.Estatistica;
 import com.managepro.dao.EstatisticaDAO;
+
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.ui.Janela;
 
 
@@ -15,48 +17,56 @@ public class EstatisticaService {
 	
 	private EstatisticaDAO estatisticaDAO;
 	
-	public EstatisticaService() {
+
+	public EstatisticaService() throws ExcecaoDoSistema {
 		estatisticaDAO = new EstatisticaDAO();
 	}
 	
-	public Estatistica getEstatisticaById(Long id) {
+	public Estatistica getEstatisticaById(Long id) throws SQLException {
 		if (id == null || id < 0) {
-			throw new IllegalArgumentException("ID inválido.");
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Id inv�lido");
+			throw new IllegalArgumentException("ID inv�lido.");
+
 		}
 		return estatisticaDAO.read(id);
 	}
 	
-	public List<Estatistica> getAllEstatisticas() {
+
+	public List<Estatistica> getAllEstatisticas() throws SQLException {
 		return estatisticaDAO.listAll();
 	}
 	
-	public List<Estatistica> getByQuantidadeVendas(Long quantidadeVenda) {
+	public List<Estatistica> getByQuantidadeVendas(Long quantidadeVenda) throws SQLException {
 		if (quantidadeVenda == 0 || quantidadeVenda < 0) {
-			throw new IllegalArgumentException("Não foram realizadas vendas.");
+			throw new IllegalArgumentException("N�o foram realizadas vendas.");
+
 		}
 		
 		return estatisticaDAO.findByQuantidadeVenda(quantidadeVenda);
 	}
 	
-	public List<Estatistica> getByQuantidadeFuncionario(Long quantidadeFuncionario) {
+
+	public List<Estatistica> getByQuantidadeFuncionario(Long quantidadeFuncionario) throws SQLException {
 		if (quantidadeFuncionario == 0 || quantidadeFuncionario < 0) { 
-			throw new IllegalArgumentException("Não há funcionários cadastrados.");
+			throw new IllegalArgumentException("N�o h� funcion�rios cadastrados.");
 		}
 		
 		return estatisticaDAO.findByQuantidadeFuncionario(quantidadeFuncionario);
 	}
 	
-	public List<Estatistica> getByPrecoTotal(BigDecimal precoTotal) {
-		if (precoTotal == null || precoTotal < 0) {
-			throw new IllegalArgumentException("Preço inválido.");
+
+	public List<Estatistica> getByPrecoTotal(BigDecimal precoTotal) throws SQLException {
+		if (precoTotal == null || precoTotal.equals(BigDecimal.ZERO)) {
+			throw new IllegalArgumentException("Pre�o inv�lido.");
 
 		}
 		
-		return estatisticaDAO.findByPrecoTotal(precoTotal);
+		return estatisticaDAO.findByTotalGanho(precoTotal);
 	}
 	
-	public Estatistica getEstatistica() {
+	public Estatistica getEstatistica() throws SQLException {
 		return estatisticaDAO.obterEstatisticas();
 	}
 	
 }
+

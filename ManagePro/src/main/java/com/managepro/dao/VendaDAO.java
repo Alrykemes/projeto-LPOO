@@ -7,18 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-//import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import com.managepro.core.model.FormaPagamento;
 import com.managepro.core.model.ProdutoVendaDetails;
 import com.managepro.core.model.Venda;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.repository.MySQLConnection;
 import com.managepro.repository.SaleRepository;
-import com.managepro.ui.Janela;
 
 public class VendaDAO implements SaleRepository {
 	
@@ -32,11 +29,11 @@ public class VendaDAO implements SaleRepository {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void cadastrarVenda(Venda venda) {
+	public void cadastrarVenda(Venda venda) throws ExcecaoDoSistema {
 		   try {
 		        
 			   Connection connection = MySQLConnection.getConnection();
-			   PreparedStatement statementVenda = connection.prepareStatement("INSERT INTO venda (id_funcionario, id_cliente, forma_pagamento, data_venda, preco) VALUES (?, ?, ?, ?, ?)");
+			   PreparedStatement statementVenda = connection.prepareStatement("INSERT INTO venda (id_funcionario, id_cliente, forma_pagamento, data_venda, preco, valor_recebido, troco) VALUES (?, ?, ?, ?, ?, ?, ?)");
 			   PreparedStatement statementProdutoVenda = connection.prepareStatement("INSERT INTO produto_venda (id_venda, id_produto, quantidade, preco) VALUES (?, ?, ?, ?)");
 			   
 		       statementVenda.setLong(1, venda.getFuncionario().getId());
@@ -44,6 +41,8 @@ public class VendaDAO implements SaleRepository {
 		       statementVenda.setString(3, venda.getFormaDePagamentoEnum().name());
 		       statementVenda.setDate(4, Date.valueOf(venda.getData())); 
 		       statementVenda.setBigDecimal(5, venda.getPreco());
+		       statementVenda.setBigDecimal(6, venda.getValorRecebido());
+		       statementVenda.setBigDecimal(7, venda.getTroco());
 		
 		       statementVenda.execute();
 		
@@ -67,29 +66,33 @@ public class VendaDAO implements SaleRepository {
 		           statementProdutoVenda.setLong(2, produto.getCodigoProduto());
 		           statementProdutoVenda.setInt(3, produto.getQuantidade());
 		           statementProdutoVenda.setBigDecimal(4, produto.getPreco());
-		
-		           statementProdutoVenda.execute();
+		           try {
+		        	   statementProdutoVenda.execute();					
+		           } catch (SQLException e) {
+		        	   throw new ExcecaoDoSistema(e.getMessage(), e);
+		           }
 		       }
 		       
 		       connection.close();
 		       statementVenda.close();
 		       statementProdutoVenda.close();
 	    } catch (SQLException | ClassNotFoundException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();
+
+	    	e.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
+
 	    }
 	}
 	
-	public void deletarVenda(Long Id) throws ClassNotFoundException, SQLException {
+	public void deletarVenda(Long id) throws ExcecaoDoSistema {
 	
-	    try {
+		try {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	PreparedStatement statementDeletarProduto = connection.prepareStatement("DELETE FROM produto_venda WHERE id_venda = ?");
 	    	PreparedStatement statementDeletarVendas = connection.prepareStatement("DELETE FROM venda WHERE id_venda = ?");
 	
-	        statementDeletarProduto.setLong(1, Id);
-	        statementDeletarVendas.setLong(1, Id);
+	        statementDeletarProduto.setLong(1, id);
+	        statementDeletarVendas.setLong(1, id);
 	
 	        statementDeletarProduto.execute();
 	        statementDeletarVendas.execute();
@@ -97,23 +100,23 @@ public class VendaDAO implements SaleRepository {
 	        statementDeletarProduto.close();
 	        statementDeletarVendas.close();
 	        connection.close();
-	        
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();  
+
+	    	e.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e); 
+
 	    } 
 	}
 	
 	@Override
-	public List<Venda> pesquisarVendaPorId(Long id) throws ClassNotFoundException, SQLException {
+	public List<Venda> pesquisarVendaPorId(Long id) throws ExcecaoDoSistema {
 	
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	Statement statement = connection.createStatement();
 	
-	        String sql =  "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
-		            "FROM venda v WHERE v.id_venda LIKE '" + id + "%'";
+	    	
+	        String sql =  "SELECT * FROM venda v WHERE v.id_venda LIKE '" + id + "%'";
 	    	
 	        ResultSet resultSet = statement.executeQuery(sql);
 	        
@@ -129,7 +132,9 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId())); 
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
+	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
 	        }
@@ -141,23 +146,22 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	    
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace(); 
-	        return null;
+
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
+
 	    } 
 	}
 	
 	
 	
 	@Override
-	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIdFuncionario(Long idFuncionario) throws ExcecaoDoSistema {
 	    
 		try {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	Statement statement = connection.createStatement();
 	
-	    	String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
+	    	String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco, v.valor_recebido, v.troco" +
                     "FROM venda v WHERE v.id_funcionario LIKE '"+ idFuncionario +"%'";
 	    	
 	        ResultSet resultSet = statement.executeQuery(sql);
@@ -174,6 +178,8 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
 	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
@@ -185,17 +191,16 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	    } catch (SQLException | ClassNotFoundException e) {
-	    	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-	        e.printStackTrace();  
-	        return null;
+
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
+
 	    } 
 	}
 	
 	
 	
 	@Override
-	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorIntervaloDeData(LocalDate de, LocalDate ate) throws ExcecaoDoSistema {
 	    try {
 	    	Connection connection = MySQLConnection.getConnection();
 	    	PreparedStatement statement = connection.prepareStatement("SELECT * FROM venda WHERE data_venda BETWEEN ? AND ?;");
@@ -217,6 +222,8 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
 	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
@@ -228,20 +235,17 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-	            e.printStackTrace();  
-	            return null;
+
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
+
 	        }
 		}
 
 	@Override
-	public List<Venda> listarTodasAsVendas() throws ClassNotFoundException, SQLException {
+	public List<Venda> listarTodasAsVendas() throws ExcecaoDoSistema {
 		try {
 	    	Connection connection = MySQLConnection.getConnection();
-	    	PreparedStatement statement = connection.prepareStatement(
-	                "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, preco FROM venda AS v"
-	        );
+	    	PreparedStatement statement = connection.prepareStatement("SELECT * FROM venda");
 	
 	        ResultSet resultSet = statement.executeQuery();
 	
@@ -257,6 +261,8 @@ public class VendaDAO implements SaleRepository {
 	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	            venda.setPreco(resultSet.getBigDecimal("preco"));
+	            venda.setValorRecebido(resultSet.getBigDecimal("valor_recebido"));
+	            venda.setTroco(resultSet.getBigDecimal("troco"));
 	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
 	
 	            vendas.add(venda);
@@ -268,58 +274,48 @@ public class VendaDAO implements SaleRepository {
 	        return vendas;
 	
 	        } catch (SQLException | ClassNotFoundException e) {
-	        	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-	            e.printStackTrace();  
-	            return null;
+
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 	        }
 	}
+
 	
-	
-	
-	
-	public List<Venda> PesquisarVendasCpf(String cpf) throws ClassNotFoundException, SQLException {
+	public List<Venda> listarVendasPorCpfCliente(String cpf) throws ClassNotFoundException, SQLException, ExcecaoDoSistema {
 		try {
 			Connection connection = MySQLConnection.getConnection();
 	        Statement statement = connection.createStatement();
-	        
+
 	        String sql = "SELECT v.id_venda, v.id_funcionario, v.id_cliente, v.forma_pagamento, v.data_venda, v.preco " +
                     "FROM venda v " +
                     "JOIN cliente c ON v.id_cliente = c.id_cliente " +
                     "WHERE c.cpf LIKE '" + cpf + "%'";
-	        
+
 	        ResultSet resultSet = statement.executeQuery(sql);
-	        
+
 	        List<Venda> vendas = new ArrayList<>();
-	        		
+
 	        		while (resultSet.next()) {
-	    	            
+
 	    	        	Venda venda = new Venda();
-	    	            
+
 	    	            venda.setId(resultSet.getLong("id_venda"));
-	    	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario")))); 
-	    	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente"))); 
+	    	            venda.setFuncionario(funcionarioDAO.encontrarFuncionarioPeloId((resultSet.getLong("id_funcionario"))));
+	    	            venda.setCliente(clienteDAO.findClientById(resultSet.getLong("id_cliente")));
 	    	            venda.setFormaDePagamentoEnum(FormaPagamento.valueOf(resultSet.getString("forma_pagamento")));
 	    	            venda.setData(resultSet.getDate("data_venda").toLocalDate());
 	    	            venda.setPreco(resultSet.getBigDecimal("preco"));
-	    	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId())); 
-	    	
+	    	            venda.setProdutosVendidos(produtoDAO.getProductsForSale(venda.getId()));
+
 	    	            vendas.add(venda);
 	    	        }
 	        		connection.close();
-	                statement.close();        
+	                statement.close();
 	                resultSet.close();
-	                
-	                return vendas;
-			
-		} catch (SQLException | ClassNotFoundException e) {
-	        JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro na comunicação do sistema, tente novamente mais tarde.");
-	        System.out.println(e.getMessage());
-	        e.printStackTrace(); 
-	        return null;
-	}
-	
-	
 
-	
+	                return vendas;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
+		}
+	}
 }

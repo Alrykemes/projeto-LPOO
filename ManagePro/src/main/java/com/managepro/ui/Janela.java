@@ -21,6 +21,7 @@ public class Janela {
 	private TelaAdicionarCliente telaAdicionarCliente;
 	private TelaGerenciamentoDeVendas telaGerenciamentoDeVendas;
 	private TelaFuncionarios telaFuncionarios;
+	private TelaEditarFuncionario telaEditarFuncionario;
 	private TelaContabilidade telaContabilidade;
 	
 	
@@ -55,8 +56,20 @@ public class Janela {
 		return this.telaEstoque;
 	}
 	
+	public TelaFuncionarios getTelaFuncionarios() {
+		return this.telaFuncionarios;
+	}
+	
+	public TelaEditarFuncionario getTelaEditarFuncionario() {
+		return this.telaEditarFuncionario;
+	}
+	
 	public TelaEditarProdutos getTelaEditarProdutos() {
 		return this.telaEditarProdutos;
+	}
+	
+	public TelaContabilidade getTelaContabilidade() {
+		return this.telaContabilidade;
 	}
 	
 	public JFrame getFrame() {
@@ -89,12 +102,14 @@ public class Janela {
 			telaAdicionarCliente = new TelaAdicionarCliente();
 			telaGerenciamentoDeVendas = new TelaGerenciamentoDeVendas();
 			telaFuncionarios = new TelaFuncionarios();
+			telaEditarFuncionario = new TelaEditarFuncionario();
 			telaContabilidade = new TelaContabilidade();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
 		panelPrincipal.add(telaContabilidade.getPanel(), "Contabilidade");
+		panelPrincipal.add(telaEditarFuncionario.getPanel(), "EditarFuncionario");
 		panelPrincipal.add(telaFuncionarios.getPanel(), "Funcionarios");
 		panelPrincipal.add(telaGerenciamentoDeVendas.getPanel(), "GerenciamentoDeVendas");
 		panelPrincipal.add(telaAdicionarCliente.getPanel(), "AdicionarCliente");
