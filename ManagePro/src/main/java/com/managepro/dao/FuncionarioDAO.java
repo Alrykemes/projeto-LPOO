@@ -10,30 +10,28 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.managepro.core.model.Cargos;
 import com.managepro.core.model.Funcionario;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.repository.FuncionarioRepository;
 import com.managepro.repository.MySQLConnection;
-import com.managepro.ui.Janela;
 
 public class FuncionarioDAO implements FuncionarioRepository {
 
 	private Funcionario funcionario;
 
 	@Override
-	public Funcionario encontrarFuncionarioPeloUsuario(String user) {
+	public Funcionario encontrarFuncionarioPeloUsuario(String user) throws ExcecaoDoSistema {
 		try {
 			Connection connection = MySQLConnection.getConnection();
 			String sql = "SELECT f.id_funcionario, f.nome, f.cpf, t.numero, f.cargo, f.salario, f.data_admissao, f.usuario, f.senha "
 					+ "FROM funcionario AS f INNER JOIN telefone_funcionario AS t ON f.id_funcionario = t.id_funcionario "
-					+ "WHERE usuario = ?";
+					+ "WHERE f.usuario = ?";
 
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setString(1, user);
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, user);
 
-			ResultSet rs = stmt.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
 				funcionario = new Funcionario();
@@ -50,21 +48,17 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 			connection.close();
 			rs.close();
-			stmt.close();
+			statement.close();
 
 			return funcionario;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao procurar funcionário pelo usuário, tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			return null;
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 		}
 	}
 
 	@Override
-	public Funcionario encontrarFuncionarioPeloId(Long id) {
+	public Funcionario encontrarFuncionarioPeloId(Long id) throws ExcecaoDoSistema {
 		try {
 			Connection connection = MySQLConnection.getConnection();
 
@@ -72,10 +66,10 @@ public class FuncionarioDAO implements FuncionarioRepository {
 					+ "FROM funcionario AS f INNER JOIN telefone_funcionario AS t ON f.id_funcionario = t.id_funcionario "
 					+ "WHERE f.id_funcionario = ?";
 
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setLong(1, id);
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setLong(1, id);
 
-			ResultSet rs = stmt.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
 				funcionario = new Funcionario();
@@ -92,21 +86,17 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 			connection.close();
 			rs.close();
-			stmt.close();
+			statement.close();
 
 			return funcionario;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao procurar funcionário pelo ID, tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			return null;
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 		}
 	}
 
 	@Override
-	public Funcionario encontrarFuncionarioPeloCpf(String cpf) {
+	public Funcionario encontrarFuncionarioPeloCpf(String cpf) throws ExcecaoDoSistema {
 		try {
 			Connection connection = MySQLConnection.getConnection();
 
@@ -114,10 +104,10 @@ public class FuncionarioDAO implements FuncionarioRepository {
 					+ "FROM funcionario AS f INNER JOIN telefone_funcionario AS t ON f.id_funcionario = t.id_funcionario "
 					+ "WHERE cpf = ?";
 
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setString(1, cpf);
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, cpf);
 
-			ResultSet rs = stmt.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
 			while (rs.next()) {
 				funcionario = new Funcionario();
@@ -132,20 +122,20 @@ public class FuncionarioDAO implements FuncionarioRepository {
 				funcionario.setSenha(rs.getString("senha"));
 			}
 
+			connection.close();
+			rs.close();
+			statement.close();
+
 			return funcionario;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao procuruar funcionário pelo CPF, tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			return null;
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 		}
 
 	}
 
 	@Override
-	public void adicionarFuncionario(Funcionario funcionario) {
+	public void adicionarFuncionario(Funcionario funcionario) throws ExcecaoDoSistema {
 		try {
 			Connection connection = MySQLConnection.getConnection();
 			PreparedStatement statementFuncionario = connection.prepareStatement(
@@ -185,16 +175,14 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			connection.close();
 
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao adicionar funcionário, tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 		}
 
 	}
 
 	@Override
-	public void editarFuncionario(Funcionario funcionarioEditado, Funcionario funcionarioOriginal) {
+	public boolean editarFuncionario(Funcionario funcionarioEditado, Funcionario funcionarioOriginal)
+			throws ExcecaoDoSistema {
 		try {
 			Connection connection = MySQLConnection.getConnection();
 
@@ -228,17 +216,42 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			statementTelefone.close();
 			connection.close();
 
-		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao editar funcionário, tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
+			return true;
 
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+		}
 	}
 
 	@Override
-	public List<Funcionario> listaDeFuncionarios() {
+	public boolean removerFuncionario(Long idFuncionario) throws ExcecaoDoSistema {
+		try {
+			Connection connection = MySQLConnection.getConnection();
+			PreparedStatement statementTelefone = connection
+					.prepareStatement("DELETE FROM telefone_funcionario WHERE id_funcionario = ?");
+
+			statementTelefone.setLong(1, idFuncionario);
+			statementTelefone.execute();
+
+			PreparedStatement statementFuncionario = connection.prepareStatement(
+					"DELETE FROM funcionario WHERE id_funcionario = ?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+			statementFuncionario.setLong(1, idFuncionario);
+			statementFuncionario.executeUpdate();
+
+			statementFuncionario.close();
+			statementTelefone.close();
+			connection.close();
+
+			return true;
+
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
+		}
+	}
+
+	@Override
+	public List<Funcionario> listaDeFuncionarios() throws ExcecaoDoSistema {
 
 		List<Funcionario> funcionarios = new ArrayList<>();
 
@@ -266,38 +279,13 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			}
 
 			connection.close();
+			stmt.close();
+			rs.close();
+
+			return funcionarios;
+
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao pegar lista de funcionários, tente novamente mais tarde.");
-			e.printStackTrace();
-		}
-		return funcionarios;
-	}
-
-	@Override
-	public void removerFuncionario(Long idFuncionario) {
-		try {
-			Connection connection = MySQLConnection.getConnection();
-			PreparedStatement statementTelefone = connection
-					.prepareStatement("DELETE FROM telefone_funcionario WHERE id_funcionario =  ?");
-
-			statementTelefone.setLong(1, idFuncionario);
-			statementTelefone.execute();
-
-			PreparedStatement statementFuncionario = connection.prepareStatement(
-					"DELETE FROM funcionario WHERE id_funcionario = ?", PreparedStatement.RETURN_GENERATED_KEYS);
-
-			statementFuncionario.setLong(1, idFuncionario);
-			statementFuncionario.executeUpdate();
-
-			statementFuncionario.close();
-			statementTelefone.close();
-			connection.close();
-		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
-					"Erro ao remover funcionário, tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e);
 		}
 	}
 

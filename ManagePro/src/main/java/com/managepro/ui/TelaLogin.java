@@ -14,11 +14,14 @@ import javax.swing.SwingConstants;
 
 import com.managepro.core.model.Funcionario;
 import com.managepro.core.service.LoginService;
+import com.managepro.exceptions.ExcecaoDoSistema;
+import com.managepro.exceptions.ValidacaoException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 
@@ -136,11 +139,13 @@ public class TelaLogin {
 		
 		LoginService loginService = new LoginService();
 
-		if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
-			Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
-			Janela.getInstance().getPanelPrincipal().repaint();
-		} else {
-			 JOptionPane.showMessageDialog(panelLogin, "Usuário ou senha inválidos.", "Erro de Login", JOptionPane.ERROR_MESSAGE);
+		try {
+			if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
+				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
+				Janela.getInstance().getPanelPrincipal().repaint();
+			} 
+		} catch (ExcecaoDoSistema | ValidacaoException ex) {	
+			 JOptionPane.showMessageDialog(panelLogin, ex.getMessage(), "Erro de Login", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

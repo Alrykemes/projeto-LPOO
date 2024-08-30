@@ -105,7 +105,6 @@ public class TelaEditarFuncionario {
 		}
 		
 		campoCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		campoCpf.setText("CPF:");
 		campoCpf.setBounds(28, 233, 180, 35);
 		editarFuncionarioPanel.add(campoCpf);
 		campoCpf.setColumns(10);

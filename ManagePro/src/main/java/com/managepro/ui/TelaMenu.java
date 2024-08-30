@@ -80,6 +80,8 @@ public class TelaMenu {
 						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ESTOQUISTA) {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+					Janela.getInstance().getTelaEstoque().getTableProdutos().setModel(
+							Janela.getInstance().getTelaEstoque().atualizarTudo());
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o Estoque.");
 				}
@@ -136,6 +138,7 @@ public class TelaMenu {
 						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE) {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Funcionarios");
+					Janela.getInstance().getTelaFuncionarios().carregarFuncionariosNaTabela();
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o gerenciamento de funcionários.");
 				}
@@ -156,6 +159,7 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Contabilidade");
 					Janela.getInstance().getTelaContabilidade().atualizarInformacoes();
+					Janela.getInstance().getTelaContabilidade().exibirGraficosPorDefault();
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar a contabilidade.");
 				}

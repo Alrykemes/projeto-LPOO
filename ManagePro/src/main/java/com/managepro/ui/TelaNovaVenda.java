@@ -312,7 +312,11 @@ public class TelaNovaVenda {
 			public void actionPerformed(ActionEvent e) {
 				ClientService service = new ClientService();
 				String cpfCliente = cpfField.getText();
-				cliente = service.getClientCpf(cpfCliente);
+				try {
+					cliente = service.getClientCpf(cpfCliente);
+				} catch (ValidacaoException | ExcecaoDoSistema ex) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 				
 					if(cliente != null) {
 						if (cliente.getCpf() == null) {
@@ -368,24 +372,6 @@ public class TelaNovaVenda {
 					SaleConfigPanel.add(troco);
 				}
 				if(e.getItem().equals("PIX")) {
-					SaleConfigPanel.remove(txtValueInsert);
-					SaleConfigPanel.remove(valorInseridoField);
-					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(troco);
-				}
-				if(e.getItem().equals("CARTAO DE DEBITO")) {
-					SaleConfigPanel.remove(txtValueInsert);
-					SaleConfigPanel.remove(valorInseridoField);
-					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(troco);
-				}
-				if(e.getItem().equals("CARTAO DE CREDITO")) {
-					SaleConfigPanel.remove(txtValueInsert);
-					SaleConfigPanel.remove(valorInseridoField);
-					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(troco);
-				}
-				if(e.getItem().equals("CARTAO DE ALIMENTACAO")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(valorInseridoField);
 					SaleConfigPanel.remove(txtTroco);
@@ -465,8 +451,6 @@ public class TelaNovaVenda {
 				newVenda.setData(LocalDate.now());
 				if(!listaProdutosVenda.isEmpty()) {
 					newVenda.setProdutosVendidos(listaProdutosVenda);					
-				} else {
-				//	JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você precisa adicionar um produto para vender!", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 				newVenda.setFormaDePagamentoEnum(FormaPagamento.valueOf(PagamentocomboBox.getSelectedItem().toString().replaceAll(" ",   "")));
 				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
@@ -481,11 +465,11 @@ public class TelaNovaVenda {
 					}
 				}
 				
-				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.PIX)) {
+				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.PIX) && newVenda.getProdutosVendidos() != null) {
 					QrCodePix telaPix = new QrCodePix(Janela.getInstance().getFrame(), totalPriceOfSale);
 					telaPix.setVisible(true);
 					vendaService.validarPix(telaPix.getConfirmacaoPix());
-				}
+				} 
 				
 				newVenda.setPreco(totalPriceOfSale);
 				
@@ -605,6 +589,8 @@ public class TelaNovaVenda {
 		totalPriceOfSale = totalPriceOfSale.subtract(produtoVendaDetails.getPreco());
 
 	    totalPriceSale.setText(String.format("R$ %.2f", totalPriceOfSale));
+	    
+	    listaProdutosVenda.remove(produtoVendaDetails);
 
 	    listModelProdutoVenda.remove(listProdutos.getSelectedIndex());
 	    
