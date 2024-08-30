@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 import java.awt.Panel;
 import java.awt.Color;
@@ -13,6 +14,8 @@ import javax.swing.JFormattedTextField;
 
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -77,10 +80,13 @@ public class TelaAdicionarProdutos{
 		textFieldCodigo.setBounds(312, 98, 131, 35);
 		adicionarProdutoPanel.add(textFieldCodigo);
 		
-		MaskFormatter maskPrecoVenda = new MaskFormatter("*****************");
-		maskPrecoVenda.setValidCharacters("0123456789,.");
-		maskPrecoVenda.setAllowsInvalid(false);
-		textFieldPrecoVenda = new JFormattedTextField(maskPrecoVenda);
+		NumberFormat format = new DecimalFormat("#,##0.00");
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(BigDecimal.class);
+		formatter.setAllowsInvalid(false);
+		formatter.setMinimum(new BigDecimal("0.00"));
+		formatter.setMaximum(new BigDecimal("99999999.99"));
+		textFieldPrecoVenda = new JFormattedTextField(formatter);
 		textFieldPrecoVenda.setFocusLostBehavior(JFormattedTextField.PERSIST);
 		textFieldPrecoVenda.setColumns(10);
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
@@ -190,7 +196,7 @@ public class TelaAdicionarProdutos{
 				ProdutoService produtoService = new ProdutoService();
 				try {
 					produtoService.adicionarProduto(produto);
-					//Janela.getInstance().getTelaEstoque().atualizarTabela();
+					Janela.getInstance().getTelaEstoque().atualizarTabela();
 				} catch (ValidacaoException | ExcecaoDoSistema e1) {
 					JOptionPane.showMessageDialog(null, "Erro ao adicionar produto: " + e1.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();

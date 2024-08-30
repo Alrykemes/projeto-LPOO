@@ -145,7 +145,7 @@ public class TelaNovaVenda {
 		PrincipalPanel.add(addProductPanel);
 		addProductPanel.setLayout(null);
 		
-		JLabel lblTextCod = new JLabel("Informe o c�digo do produto: ");
+		JLabel lblTextCod = new JLabel("Informe o código do produto: ");
 		lblTextCod.setBounds(10, 205, 264, 24);
 		lblTextCod.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(lblTextCod);
@@ -234,12 +234,12 @@ public class TelaNovaVenda {
 		lblTextQtd.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(lblTextQtd);
 		
-		JLabel txtUnitPrice = new JLabel("Pre\u00E7o Unit\u00E1rio: \r\n");
+		JLabel txtUnitPrice = new JLabel("Preço Unitário: \r\n");
 		txtUnitPrice.setBounds(10, 335, 156, 24);
 		txtUnitPrice.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(txtUnitPrice);
 		
-		JLabel txtTotalPrice = new JLabel("Pre�o Total: ");
+		JLabel txtTotalPrice = new JLabel("Preço Total: ");
 		txtTotalPrice.setBounds(10, 392, 118, 24);
 		txtTotalPrice.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		addProductPanel.add(txtTotalPrice);
@@ -349,7 +349,7 @@ public class TelaNovaVenda {
 		txtNomeCliente.setBounds(10, 75, 150, 30);
 		SaleConfigPanel.add(txtNomeCliente);
 		
-		JLabel txtNomeFuncionario = new JLabel("Funcion�rio:\r\n");
+		JLabel txtNomeFuncionario = new JLabel("Funcionário:\r\n");
 		txtNomeFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtNomeFuncionario.setBounds(10, 146, 105, 24);
 		SaleConfigPanel.add(txtNomeFuncionario);
@@ -381,7 +381,7 @@ public class TelaNovaVenda {
 		});
 		SaleConfigPanel.add(PagamentocomboBox);
 		
-		JLabel txtMetodoPagamento = new JLabel("Selecione o m�todo de pagamento:");
+		JLabel txtMetodoPagamento = new JLabel("Selecione o método de pagamento:");
 		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtMetodoPagamento.setBounds(321, 16, 282, 25);
 		SaleConfigPanel.add(txtMetodoPagamento);
@@ -552,7 +552,7 @@ public class TelaNovaVenda {
 					produto = produtoService.getProductById(IDnovoProduto);
 					
 					if(produto.getCodigoProduto() == null || produto == null) {
-						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto n�o encontrado na base de dados!");
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Produto não encontrado na base de dados!");
 					} else {	
 						produtoVendaDetails.setCodigoProduto(produto.getCodigoProduto());
 						produtoVendaDetails.setNomeProduto(produto.getNomeProduto());
