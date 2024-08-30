@@ -48,11 +48,11 @@ public class ProdutoDAO  implements ProductRepository{
 		return produto;
 		
 		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			return null;
+			e.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 		}
-	}
+		}
+	
 	
 	
 		
@@ -87,12 +87,11 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.execute();
 				return null;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
 				e.printStackTrace();
-				return null;
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
-		}
+			}
+		
 
 		
 		public void removerProduto(Long id) throws ExcecaoDoSistema {
@@ -102,14 +101,14 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.setLong(1, id);
 				statement.execute();
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
-		}
-
+			}
+		
 
 		@Override
-		public List<Produto> pesquisarProdutoNome(String nomeProduto) {
+		public List<Produto> pesquisarProdutoNome(String nomeProduto) throws ExcecaoDoSistema {
 			try {	
 				connection = MySQLConnection.getConnection();
 				statement = connection.prepareStatement("SELECT * FROM produto WHERE nome LIKE ?");
@@ -129,11 +128,11 @@ public class ProdutoDAO  implements ProductRepository{
 				}
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-				return null;
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
-		}
+			}
+		
 		
 		public List<Produto> pesquisarProdutoID(Long id_produto) throws ExcecaoDoSistema {
 			try {	
@@ -157,9 +156,8 @@ public class ProdutoDAO  implements ProductRepository{
 						
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-				return null;
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
 		}
 
@@ -188,9 +186,8 @@ public class ProdutoDAO  implements ProductRepository{
 				
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-				return null;
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
 		}
 
@@ -218,9 +215,8 @@ public class ProdutoDAO  implements ProductRepository{
 						
 				return produtos;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-				return null;
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
 		}
 
@@ -249,9 +245,8 @@ public class ProdutoDAO  implements ProductRepository{
 						
 				return product;
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
-				return null;
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
 		}
 		
