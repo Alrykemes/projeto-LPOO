@@ -1,9 +1,10 @@
 package com.managepro.core.service;
 
 import java.time.LocalDate;
-import javax.swing.JOptionPane;
 import com.managepro.core.model.Cliente;
 import com.managepro.dao.ClienteDAO;
+import com.managepro.exceptions.ExcecaoDoSistema;
+import com.managepro.exceptions.ValidacaoException;
 import com.managepro.ui.Janela;
 
 public class ClientService {
@@ -16,14 +17,14 @@ public class ClientService {
 		clienteDAO = new ClienteDAO();
 	}
 	
-	public void cadastrarCliente(Cliente cliente) throws Exception {
+	public void cadastrarCliente(Cliente cliente) throws ValidacaoException, ExcecaoDoSistema {
 		if (cliente.getNome().length() >= 69) {
-			throw new Exception("Erro, nome muito grande");
+			throw new ValidacaoException("Erro, nome muito grande");
 		}
 
 		if (dataAtual.compareTo(cliente.getDataNascimento()) < 18) {
 			System.out.println(cliente.getDataNascimento().compareTo(dataAtual));
-			throw new Exception("Erro, Cliente menor de idade");
+			throw new ValidacaoException("Erro, Cliente menor de idade");
 		}
 		
 		if (clienteDAO.findClientByCpf(cliente.getCpf()) != null) {
@@ -31,15 +32,14 @@ public class ClientService {
 			Janela.getInstance().getTelaNovaVenda().setCliente(getClientCpf(cliente.getCpf()));
 			Janela.getInstance().getTelaNovaVenda().setClienteNaTela();
 		} else {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "CPF já¡ cadastrado)");
+			throw new ValidacaoException("Já existe um cadastro com esse cpf no sistema!");
 		}
 	}
 	
-	public Cliente getClientCpf(String cpf) {
+	public Cliente getClientCpf(String cpf) throws ValidacaoException, ExcecaoDoSistema {
 		
 		if(cpf.replaceAll(" ", "").length() != 14) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Número de CPF Invalido!");
-			return null;
+			throw new ValidacaoException("Cpf invalido!");
 		}
 		return clienteDAO.findClientByCpf(cpf);
 	}

@@ -38,6 +38,7 @@ import javax.swing.DefaultListModel;
 
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -311,7 +312,11 @@ public class TelaNovaVenda {
 			public void actionPerformed(ActionEvent e) {
 				ClientService service = new ClientService();
 				String cpfCliente = cpfField.getText();
-				cliente = service.getClientCpf(cpfCliente);
+				try {
+					cliente = service.getClientCpf(cpfCliente);
+				} catch (ValidacaoException | ExcecaoDoSistema ex) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 				
 					if(cliente != null) {
 						if (cliente.getCpf() == null) {
@@ -367,24 +372,6 @@ public class TelaNovaVenda {
 					SaleConfigPanel.add(troco);
 				}
 				if(e.getItem().equals("PIX")) {
-					SaleConfigPanel.remove(txtValueInsert);
-					SaleConfigPanel.remove(valorInseridoField);
-					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(troco);
-				}
-				if(e.getItem().equals("CARTAO DE DEBITO")) {
-					SaleConfigPanel.remove(txtValueInsert);
-					SaleConfigPanel.remove(valorInseridoField);
-					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(troco);
-				}
-				if(e.getItem().equals("CARTAO DE CREDITO")) {
-					SaleConfigPanel.remove(txtValueInsert);
-					SaleConfigPanel.remove(valorInseridoField);
-					SaleConfigPanel.remove(txtTroco);
-					SaleConfigPanel.remove(troco);
-				}
-				if(e.getItem().equals("CARTAO DE ALIMENTACAO")) {
 					SaleConfigPanel.remove(txtValueInsert);
 					SaleConfigPanel.remove(valorInseridoField);
 					SaleConfigPanel.remove(txtTroco);
@@ -462,9 +449,11 @@ public class TelaNovaVenda {
 				newVenda.setFuncionario(Janela.getInstance().getTelaLogin().getFuncionarioLogado());
 				newVenda.setCliente(cliente);
 				newVenda.setData(LocalDate.now());
-				newVenda.setProdutosVendidos(listaProdutosVenda);
+				if(!listaProdutosVenda.isEmpty()) {
+					newVenda.setProdutosVendidos(listaProdutosVenda);					
+				}
 				newVenda.setFormaDePagamentoEnum(FormaPagamento.valueOf(PagamentocomboBox.getSelectedItem().toString().replaceAll(" ",   "")));
-				if(newVenda.getFormaDePagamentoEnum() == FormaPagamento.DINHEIRO) {
+				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
 					try {
 						Number number = format.parse(valorInseridoField.getText());
 						BigDecimal valorRecebido = new BigDecimal(number.toString());
@@ -475,6 +464,13 @@ public class TelaNovaVenda {
 						// Ta tratando mas, como ta dando certo.
 					}
 				}
+				
+				if(newVenda.getFormaDePagamentoEnum().equals(FormaPagamento.PIX) && newVenda.getProdutosVendidos() != null) {
+					QrCodePix telaPix = new QrCodePix(Janela.getInstance().getFrame(), totalPriceOfSale);
+					telaPix.setVisible(true);
+					vendaService.validarPix(telaPix.getConfirmacaoPix());
+				} 
+				
 				newVenda.setPreco(totalPriceOfSale);
 				
 				try {
@@ -490,7 +486,11 @@ public class TelaNovaVenda {
 					totalPrice.setText("R$ 0,00");
 					totalPriceSale.setText("R$ 0,00");
 					SaleConfigPanel.repaint();
+					totalPriceOfSale = BigDecimal.ZERO;
 				} catch (ExcecaoDoSistema | ExcecaoDeNegocios | ValidacaoException ex) {
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				} catch (SQLException ex) {
+					ex.printStackTrace();
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -518,7 +518,9 @@ public class TelaNovaVenda {
 					unitPrice.setText("R$ 0,00");
 					totalPrice.setText("R$ 0,00");
 					totalPriceSale.setText("R$ 0,00");
-					
+					troco.setText("");
+					valorInseridoField.setText("");
+					totalPriceOfSale = BigDecimal.ZERO;
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 				}
@@ -587,6 +589,8 @@ public class TelaNovaVenda {
 		totalPriceOfSale = totalPriceOfSale.subtract(produtoVendaDetails.getPreco());
 
 	    totalPriceSale.setText(String.format("R$ %.2f", totalPriceOfSale));
+	    
+	    listaProdutosVenda.remove(produtoVendaDetails);
 
 	    listModelProdutoVenda.remove(listProdutos.getSelectedIndex());
 	    

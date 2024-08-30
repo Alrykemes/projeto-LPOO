@@ -17,6 +17,7 @@ import javax.swing.text.NumberFormatter;
 import com.managepro.core.model.Cargos;
 import com.managepro.core.model.Funcionario;
 import com.managepro.core.service.FuncionarioService;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.border.LineBorder;
@@ -124,7 +125,6 @@ public class TelaFuncionarios {
 			e.printStackTrace();
 		}
 		campoCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		campoCpf.setText("CPF:");
 		campoCpf.setBounds(211, 82, 180, 38);
 		panel_1.add(campoCpf);
 		campoCpf.setColumns(10);
@@ -264,9 +264,9 @@ public class TelaFuncionarios {
 					carregarFuncionariosNaTabela();
 
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Erro ao cadastrar funcionário, tente novamente mais tarde", "Erro",
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e1.getMessage(), "Erro",
 							JOptionPane.WARNING_MESSAGE);
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -278,9 +278,16 @@ public class TelaFuncionarios {
 				int linhaSelecionada = tabela.getSelectedRow();
 				if (linhaSelecionada != -1) {
 					FuncionarioService funcionarioService = new FuncionarioService();
-					List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+					List<Funcionario> funcionarios = null;
 					String nomeFuncionario = "";
 					String cpfFuncionario = "";
+
+					try {
+						funcionarios = funcionarioService.obterTodosFuncionarios();
+					} catch (ExcecaoDoSistema e1) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), e1.getMessage());
+						e1.printStackTrace();
+					}
 
 					try {
 						nomeFuncionario = funcionarios.get(linhaSelecionada).getNome();
@@ -297,13 +304,10 @@ public class TelaFuncionarios {
 							funcionarioService.apagarFuncionario(cpfFuncionario);
 							carregarFuncionariosNaTabela();
 						} catch (Exception e2) {
-							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-									"Erro ao remover funcionário, tente novamente mais tarde", "Erro",
+							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e2.getMessage(), "Erro",
 									JOptionPane.WARNING_MESSAGE);
+							e2.printStackTrace();
 						}
-
-					} else {
-						System.out.println("oofgg");
 					}
 
 				} else {
@@ -325,7 +329,13 @@ public class TelaFuncionarios {
 				int linhaSelecionada = tabela.getSelectedRow();
 				if (linhaSelecionada != -1) {
 					FuncionarioService funcionarioService = new FuncionarioService();
-					List<Funcionario> funcionarios = funcionarioService.obterTodosFuncionarios();
+					List<Funcionario> funcionarios = null;
+					try {
+						funcionarios = funcionarioService.obterTodosFuncionarios();
+					} catch (ExcecaoDoSistema e1) {
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), e1.getMessage());
+						e1.printStackTrace();
+					}
 
 					Janela.getInstance().getTelaEditarFuncionario().setCampos(funcionarios.get(linhaSelecionada));
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(),
@@ -350,7 +360,7 @@ public class TelaFuncionarios {
 		tabela.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		tabela.setBorder(new LineBorder(new Color(0, 0, 0)));
 		tabela.setToolTipText("");
-		tabela.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null } },
+		tabela.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Nome", "CPF", "Cargo", "Salário", "Data Admissão", "Telefone", "Usuário", "Senha" }));
 		tabela.setBounds(50, 248, 930, 200);
 
@@ -364,8 +374,6 @@ public class TelaFuncionarios {
 		scrollPane.setSize(986, 200);
 
 		panel_1.add(scrollPane);
-
-		carregarFuncionariosNaTabela();
 	}
 
 	public void carregarFuncionariosNaTabela() {
@@ -382,7 +390,7 @@ public class TelaFuncionarios {
 						funcionario.getUsuario(), funcionario.getSenha() });
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
 					"Erro ao inserir funcionários na tabela, tente novamente mais tarde", "Erro",
 					JOptionPane.WARNING_MESSAGE);
 		}

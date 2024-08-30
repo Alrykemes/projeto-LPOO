@@ -69,15 +69,15 @@ CREATE TABLE produto_venda (
 );
 
 CREATE TABLE estatistica (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    quantidade_produtos INT,
-    quantidade_vendas INT,
-    quantidade_funcionarios INT,
-    total_ganho DECIMAL(10,2)
+  id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  quantidade_produtos_vendidos bigint DEFAULT '0',
+  quantidade_vendas bigint DEFAULT '0',
+  total_ganho decimal(20,2) DEFAULT '0.00',
+  data date DEFAULT NULL
 );
 
-INSERT INTO estatistica (quantidade_produtos, quantidade_vendas, quantidade_funcionarios, total_ganho)
-VALUES (0, 0, 0, 0);
+INSERT INTO estatistica (quantidade_produtos_vendidos, quantidade_vendas, total_ganho, data)
+VALUES (0, 0, 0, null);
 
 INSERT INTO funcionario (nome, cpf, cargo, salario, data_admissao, usuario, senha) 
 VALUES("Administrador MANAGEPRO", "123.456.789-12", "ADMINISTRADOR", 10000.00, '2024-08-12', "admin", "123");
@@ -129,145 +129,93 @@ END//
 
 DELIMITER ;
 
+# Atualizacao do estoque a cada venda que e feita por trigger no bd
+
+DELIMITER $$
+
+CREATE TRIGGER atualiza_estoque AFTER INSERT ON produto_venda FOR EACH ROW
+BEGIN
+    DECLARE qtd_disponivel INT;
+    DECLARE nome_produto VARCHAR(255);
+    DECLARE msg_erro VARCHAR(255);
+
+    SELECT quantidade, nome_produto INTO qtd_disponivel, nome_produto
+    FROM produto
+    WHERE id_produto = NEW.id_produto;
+
+    IF qtd_disponivel IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Produto não encontrado.';
+    ELSEIF qtd_disponivel < NEW.quantidade THEN
+        SET msg_erro = CONCAT('Estoque insuficiente para o produto "', nome_produto, '". Quantidade disponível: ', qtd_disponivel, '.');
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg_erro;
+    ELSE
+        UPDATE produto SET quantidade = quantidade - NEW.quantidade
+        WHERE id_produto = NEW.id_produto;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
 # Procedure de atualização da tabela de Estatistica
 
-DELIMITER $$
+DELIMITER //
 
-CREATE PROCEDURE atualizar_estatistica_completa()
+CREATE PROCEDURE AtualizarEstatisticaPorData(IN dataEscolhida DATE)
 BEGIN
-    UPDATE estatistica
-    SET 
-        quantidade_produtos = (SELECT COALESCE(COUNT(*), 0) FROM produto),
-        quantidade_vendas = (SELECT COALESCE(COUNT(*), 0) FROM venda),
-        quantidade_funcionarios = (SELECT COALESCE(COUNT(*), 0) FROM funcionario),
-        total_ganho = (SELECT COALESCE(SUM(preco), 0) FROM produto)
-    WHERE id = 1;
-END$$
+    -- Verifica se já existe uma linha com a data fornecida
+    IF EXISTS (SELECT 1 FROM estatistica WHERE data = dataEscolhida) THEN
+        -- Se a linha já existe, atualiza a linha
+        UPDATE estatistica
+        SET 
+            quantidade_produtos_vendidos = (
+                SELECT COALESCE(SUM(pv.quantidade), 0)
+                FROM venda v
+                JOIN produto_venda pv ON v.id_venda = pv.id_venda
+                WHERE v.data_venda = dataEscolhida
+            ),
+            quantidade_vendas = (
+                SELECT COALESCE(COUNT(*), 0)
+                FROM venda
+                WHERE data_venda = dataEscolhida
+            ),
+            total_ganho = (
+                SELECT COALESCE(SUM(preco), 0)
+                FROM venda
+                WHERE data_venda = dataEscolhida
+            )
+        WHERE data = dataEscolhida;
+    ELSE
+        -- Se a linha não existe, insere uma nova linha
+        INSERT INTO estatistica (quantidade_produtos_vendidos, quantidade_vendas, total_ganho, data)
+        SELECT 
+            COALESCE(SUM(pv.quantidade), 0),
+            COALESCE(COUNT(v.id_venda), 0),
+            COALESCE(SUM(v.preco), 0),
+            dataEscolhida
+        FROM venda v
+        LEFT JOIN produto_venda pv ON v.id_venda = pv.id_venda
+        WHERE v.data_venda = dataEscolhida;
+    END IF;
+END //
 
 DELIMITER ;
-
-# Triggers da tabela funcionario para atualizar estatisticas 
-
-DELIMITER $$
-
-CREATE TRIGGER funcionario_insert_trigger
-AFTER INSERT ON funcionario
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
-
-
-DELIMITER $$
-
-CREATE TRIGGER funcionario_update_trigger
-AFTER UPDATE ON funcionario
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
-
-
-DELIMITER $$
-
-CREATE TRIGGER funcionario_delete_trigger
-AFTER DELETE ON funcionario
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
-
-# Triggers da tabela produto para atualizar estatisticas
-
-DELIMITER $$
-
-CREATE TRIGGER produto_insert_trigger
-AFTER INSERT ON produto
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
-
-DELIMITER $$
-
-CREATE TRIGGER produto_update_trigger
-AFTER UPDATE ON produto
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
 DELIMITER ;
 
 
-DELIMITER $$
-
-CREATE TRIGGER produto_delete_trigger
-AFTER DELETE ON produto
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
-
-# Triggers da tabela funcionario para atualizar estatisticas
-
-DELIMITER $$
-
-CREATE TRIGGER venda_insert_trigger
-AFTER INSERT ON venda
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
-
-
-DELIMITER $$
-
-CREATE TRIGGER venda_update_trigger
-AFTER UPDATE ON venda
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
-
-
-DELIMITER $$
-
-CREATE TRIGGER venda_delete_trigger
-AFTER DELETE ON venda
-FOR EACH ROW
-BEGIN
-    CALL atualizar_estatistica_completa();
-END$$
-
-DELIMITER ;
 
 # Triggers de atualização
 
 DELIMITER $$
 
 CREATE TRIGGER atualiza_total_ganho_after_produto_insert
-AFTER INSERT ON produto
+AFTER INSERT ON produto_venda
 FOR EACH ROW
 BEGIN
     UPDATE estatistica
-    SET total_ganho = (
-        SELECT COALESCE(SUM(preco), 0)
-        FROM produto
+    SET quantidade_produtos_vendidos = (
+        SELECT COALESCE(SUM(quantidade), 0)
+        FROM produto_venda
     )
     WHERE id = 1;  
 END $$
@@ -275,41 +223,67 @@ END $$
 DELIMITER $$
 
 CREATE TRIGGER atualiza_total_ganho_after_produto_update
-AFTER UPDATE ON produto
+AFTER DELETE ON produto_venda
 FOR EACH ROW
 BEGIN
     UPDATE estatistica
-    SET total_ganho = (
-        SELECT COALESCE(SUM(preco), 0)
-        FROM produto
+    SET quantidade_produtos_vendidos = (
+        SELECT COALESCE(SUM(quantidade), 0)
+        FROM produto_venda
     );
 END $$
+
+DELIMITER ;
+
+#atualiza a quantidade de vendas e o ganho total apos deletar ou inserir uma nova venda
+
+DELIMITER $$
+
+CREATE TRIGGER atualiza_estatistica_after_insert
+AFTER INSERT ON venda
+FOR EACH ROW
+BEGIN
+    -- Atualiza a quantidade de vendas e o total ganho na tabela estatistica
+    UPDATE estatistica
+    SET quantidade_vendas = (SELECT COUNT(*) FROM venda),
+        total_ganho = (SELECT COALESCE(SUM(preco), 0) FROM venda)
+    WHERE id = 1; -- Ajuste o WHERE conforme necessário
+END$$
 
 DELIMITER ;
 
 DELIMITER $$
 
-CREATE TRIGGER atualiza_total_ganho_update
-AFTER UPDATE ON venda
-FOR EACH ROW
-BEGIN
-    UPDATE estatistica
-    SET total_ganho = (
-        SELECT SUM(valor_venda)
-        FROM venda
-    );
-END $$
-
-CREATE TRIGGER atualiza_total_ganho_delete
+CREATE TRIGGER atualiza_estatistica_after_delete
 AFTER DELETE ON venda
 FOR EACH ROW
 BEGIN
+    -- Atualiza a quantidade de vendas e o total ganho na tabela estatistica
     UPDATE estatistica
-    SET total_ganho = (
-        SELECT SUM(valor_venda)
-        FROM venda
-    );
-END $$
+    SET quantidade_vendas = (SELECT COUNT(*) FROM venda),
+        total_ganho = (SELECT COALESCE(SUM(preco), 0) FROM venda)
+    WHERE id = 1; -- Ajuste o WHERE conforme necessário
+END$$
 
 DELIMITER ;
+
+# Atualiza os produtos vendidos
+
+DELIMITER $$
+
+CREATE TRIGGER atualizar_quantidade_produtos_vendidos
+AFTER INSERT ON produto_venda
+FOR EACH ROW
+BEGIN
+    DECLARE total_quantidade INT;
+
+    -- Soma todas as quantidades da tabela produto_venda
+    SELECT SUM(quantidade) INTO total_quantidade FROM produto_venda;
+
+    -- Atualiza a tabela estatistica com o valor total apenas onde id = 1
+    UPDATE estatistica
+    SET quantidade_produtos_vendidos = total_quantidade
+    WHERE id = 1;
+END$$
+
 DELIMITER ;

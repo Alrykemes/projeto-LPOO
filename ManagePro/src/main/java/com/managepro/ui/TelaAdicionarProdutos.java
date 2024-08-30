@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 
 import com.managepro.core.model.Produto;
 import com.managepro.core.service.ProdutoService;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.exceptions.ValidacaoException;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -65,7 +66,7 @@ public class TelaAdicionarProdutos{
 		adicionarProdutoPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
-		JLabel Codigo = new JLabel("C�digo *");
+		JLabel Codigo = new JLabel("Código *");
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
 		adicionarProdutoPanel.add(Codigo);
@@ -85,7 +86,7 @@ public class TelaAdicionarProdutos{
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		adicionarProdutoPanel.add(textFieldPrecoVenda);
 
-		JLabel PrecoVenda = new JLabel("Pre�o de Venda *");
+		JLabel PrecoVenda = new JLabel("Preço de Venda *");
 		PrecoVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		PrecoVenda.setBounds(501, 73, 110, 14);
 		adicionarProdutoPanel.add(PrecoVenda);
@@ -189,10 +190,11 @@ public class TelaAdicionarProdutos{
 				ProdutoService produtoService = new ProdutoService();
 				try {
 					produtoService.adicionarProduto(produto);
-					Janela.getInstance().getTelaEstoque().atualizarTabela();
-				} catch (ValidacaoException e1) {
+					//Janela.getInstance().getTelaEstoque().atualizarTabela();
+				} catch (ValidacaoException | ExcecaoDoSistema e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao adicionar produto: " + e1.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
-				}
+				} 
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
 				Janela.getInstance().getFrame().setBounds(0, 0, 1020, 680);
 				Janela.getInstance().getFrame().setLocationRelativeTo(null);

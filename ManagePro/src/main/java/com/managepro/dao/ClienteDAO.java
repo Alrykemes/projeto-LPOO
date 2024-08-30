@@ -7,19 +7,17 @@ import java.sql.Statement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 
-import javax.swing.JOptionPane;
-
 import com.managepro.core.model.Cliente;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.repository.ClientRepository;
 import com.managepro.repository.MySQLConnection;
-import com.managepro.ui.Janela;
 
 public class ClienteDAO implements ClientRepository{
 	
 	private Cliente cliente;
 	
 	@Override
-	public void addCliente(Cliente cliente) {
+	public void addCliente(Cliente cliente) throws ExcecaoDoSistema {
 		try {
 			Connection connection = MySQLConnection.getConnection();
 			PreparedStatement stmtCliente = connection.prepareStatement(
@@ -47,16 +45,14 @@ public class ClienteDAO implements ClientRepository{
 			}
 	        
 			connection.close();
-		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+		} catch (ClassNotFoundException | SQLException ex) {
+			ex.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", ex); 
 		}
-		
 	}
 
 	@Override
-	public Cliente findClientByCpf(String cpf){
+	public Cliente findClientByCpf(String cpf) throws ExcecaoDoSistema{
 		try {
 			
 			Connection connection = MySQLConnection.getConnection();
@@ -84,16 +80,13 @@ public class ClienteDAO implements ClientRepository{
 			
 			return cliente;
 			
-		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		
-			return cliente;
+		} catch (ClassNotFoundException | SQLException ex) {
+			ex.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", ex); 
 		}
 	}
 	
-	public Cliente findClientById(Long id){
+	public Cliente findClientById(Long id) throws ExcecaoDoSistema{
 		try {
 			
 			Connection connection = MySQLConnection.getConnection();
@@ -117,12 +110,9 @@ public class ClienteDAO implements ClientRepository{
 			
 			return cliente;
 			
-		} catch (ClassNotFoundException | SQLException e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunicação do sistema tente novamente mais tarde");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		
-			return null;
+		} catch (ClassNotFoundException | SQLException ex) {
+			ex.printStackTrace();
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", ex); 
 		}
 	}
 }
