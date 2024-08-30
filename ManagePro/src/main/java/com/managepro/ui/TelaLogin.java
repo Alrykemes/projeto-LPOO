@@ -92,7 +92,7 @@ public class TelaLogin {
 		txtLogin.setFont(new Font("SansSerif", Font.PLAIN, 30));
 		panelLogin.add(txtLogin);
 		
-		txtUser = new JLabel("Usuário");
+		txtUser = new JLabel("UsuÃ¡rio");
 		txtUser.setBounds(318, 248, 60, 16);
 		txtUser.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUser.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -133,7 +133,7 @@ public class TelaLogin {
 		String senha = new String(passwordLogin.getPassword()).trim();
 
 		if(usuario.isEmpty() || senha.isEmpty()) {
-			JOptionPane.showMessageDialog(panelLogin, "Usuário e/ou senha não podem estar vazios.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(panelLogin, "Usuï¿½rio e/ou senha nÃ£o podem estar vazios.", "Erro de Login", JOptionPane.WARNING_MESSAGE);
 	        return;
 		}
 		
@@ -157,7 +157,7 @@ public class TelaLogin {
 
 	        textField.getActionMap().put("moveFocus", new AbstractAction() {
 	            public void actionPerformed(ActionEvent e) {
-	                textField.transferFocus(); // Move o foco para o próximo componente
+	                textField.transferFocus(); // Move o foco para o prï¿½ximo componente
 	            }
 	        });
 	    }

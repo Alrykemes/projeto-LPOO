@@ -359,7 +359,7 @@ public class TelaGerenciamentoDeVendas {
 					if (arquivoSalvo.exists()) {
 	                    int resposta = JOptionPane.showConfirmDialog(
 	                            Janela.getInstance().getFrame(),
-	                            "O arquivo jï¿½ existe. Deseja sobrescrevï¿½-lo?",
+	                            "O arquivo jÃ¡ existe. Deseja sobrescrevÃª-lo?",
 	                            "Arquivo existente",
 	                            JOptionPane.YES_NO_OPTION,
 	                            JOptionPane.WARNING_MESSAGE
@@ -394,7 +394,7 @@ public class TelaGerenciamentoDeVendas {
  							
  							contentStream.beginText();
  							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 120);
- 							contentStream.showText("ENDEREï¿½O: Av. Prefeito Geraldo Pinho Alves, Nï¿½ 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
+ 							contentStream.showText("ENDEREÃ‡O: Av. Prefeito Geraldo Pinho Alves, NÂº 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
  							contentStream.endText();
  							
  							contentStream.beginText();
@@ -459,7 +459,7 @@ public class TelaGerenciamentoDeVendas {
  							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
  							contentStream.newLineAtOffset(140, pagina.getMediaBox().getHeight() - 340);
- 							contentStream.showText("Cï¿½D.  |             NOME             |   QUANTIDADE     "
+ 							contentStream.showText("CÃ“D.  |             NOME             |   QUANTIDADE     "
  									+ "  |   VALOR");
  							contentStream.endText();
  							
@@ -500,7 +500,7 @@ public class TelaGerenciamentoDeVendas {
 							
 							contentStream.beginText();
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-							contentStream.showText("MÉTODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
+							contentStream.showText("MÃ‰TODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
 							contentStream.endText();
 							inicioLinha += 15;
 							
@@ -543,7 +543,7 @@ public class TelaGerenciamentoDeVendas {
 		funcionarioNome.setBounds(125, 23, 331, 29);
 		vendaPanel.add(funcionarioNome);
 		
-		JLabel txtFuncionario = new JLabel("Funcionï¿½rio:");
+		JLabel txtFuncionario = new JLabel("FuncionÃ¡rio:");
 		txtFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtFuncionario.setBounds(125, 1, 331, 29);
 		vendaPanel.add(txtFuncionario);
@@ -563,7 +563,7 @@ public class TelaGerenciamentoDeVendas {
 					}
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"Vocï¿½ precisa selecionar alguma das vendas antes de deletar!");
+							"VocÃª precisa selecionar alguma das vendas antes de deletar!");
 				}
 			}
 			
@@ -584,7 +584,7 @@ public class TelaGerenciamentoDeVendas {
 		totalCompra.setBounds(154, 458, 119, 29);
 		vendaPanel.add(totalCompra);
 		
-		JLabel txtMetodoPagamento = new JLabel("Método de Pagamento:");
+		JLabel txtMetodoPagamento = new JLabel("MÃ©todo de Pagamento:");
 		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtMetodoPagamento.setBounds(10, 485, 195, 29);
 		vendaPanel.add(txtMetodoPagamento);
@@ -666,7 +666,7 @@ public class TelaGerenciamentoDeVendas {
 				if(pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
 					listModelVendas.clear();
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"ID de funcionario inválido, não pode conter letras, ou símbolos!");
+							"ID de funcionario invÃ¡lido, nï¿½o pode conter letras, ou sÃ­mbolos!");
 				} else {
 					listModelVendas.clear();
 					try {																	
@@ -678,7 +678,7 @@ public class TelaGerenciamentoDeVendas {
 			} else {
 				listModelVendas.clear();
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Vocï¿½ precisa digitar antes de Pesquisar");
+						"VocÃª precisa digitar antes de Pesquisar");
 			}
 		}
 		
@@ -689,7 +689,7 @@ public class TelaGerenciamentoDeVendas {
 				if(pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
 					listModelVendas.clear();
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"ID inválido, não pode conter letras!");
+							"ID invÃ¡lido, nÃ£o pode conter letras!");
 				} else {
 					try {
 						listModelVendas.clear();
@@ -702,7 +702,7 @@ public class TelaGerenciamentoDeVendas {
 			} else {
 				listModelVendas.clear();
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Você precisa digitar antes de Pesquisar");
+						"VocÃª precisa digitar antes de Pesquisar");
 			}
 		}
 		
@@ -723,7 +723,7 @@ public class TelaGerenciamentoDeVendas {
 			LocalDate ate = instantAte.atZone(ZoneId.systemDefault()).toLocalDate();
 			if (de.compareTo(ate) >= 0) {
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Você precisa selecionar as datas antes de Pesquisar");
+						"VocÃª precisa selecionar as datas antes de Pesquisar");
 			} else {
 				try {
 					if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
@@ -732,7 +732,7 @@ public class TelaGerenciamentoDeVendas {
 					} else {
 						listModelVendas.clear();
 						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-								"Você precisa selecionar as datas antes de Pesquisar");
+								"VocÃª precisa selecionar as datas antes de Pesquisar");
 					}
 				} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

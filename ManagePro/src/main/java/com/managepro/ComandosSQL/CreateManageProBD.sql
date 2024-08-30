@@ -101,15 +101,15 @@ INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade)
 VALUES("Biscoito Treloso", "2.29", 20, "Vitarela", 'Vitarela', '2024-09-22');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
-VALUES("Arroz", "7.32", 20, "Emoï¿½ï¿½es", 'Cadan Distribuiï¿½ï¿½o', '2027-12-18');
+VALUES("Arroz", "7.32", 20, "EmoÃ§Ãµes", 'Cadan DistribuiÃ§Ã£o', '2027-12-18');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
-VALUES("Feijï¿½o", "5.29", 20, "Turquesa", 'Cadan Distribuiï¿½ï¿½o', '2026-07-26');
+VALUES("FeijÃ£o", "5.29", 20, "Turquesa", 'Cadan DistribuiÃ§Ã£o', '2026-07-26');
 
 INSERT INTO produto (nome, preco, quantidade, marca, fornecedor, validade) 
-VALUES("Azeite de Oliva", "46.90", 20, "Gallo", 'Cadan Distribuição', '2026-03-17');
+VALUES("Azeite de Oliva", "46.90", 20, "Gallo", 'Cadan DistribuiÃ§Ã£o', '2026-03-17');
 
-# Trigger para não permitir Troco e Valor Recebido ser nullo quando a forma de pagamento for dinheiro.
+# Trigger para nï¿½o permitir Troco e Valor Recebido ser nullo quando a forma de pagamento for dinheiro.
 DELIMITER //
 
 CREATE TRIGGER validar_venda
@@ -118,11 +118,11 @@ FOR EACH ROW
 BEGIN
     IF NEW.forma_pagamento = 'DINHEIRO' THEN
         IF NEW.valor_recebido IS NULL OR NEW.troco IS NULL THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Erro: Valor recebido e troco devem ser preenchidos quando o método de pagamento for DINHEIRO.';
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Erro: Valor recebido e troco devem ser preenchidos quando o mÃ©todo de pagamento for DINHEIRO.';
         END IF;
     ELSE
         IF NEW.valor_recebido IS NOT NULL OR NEW.troco IS NOT NULL THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Erro: Valor recebido e troco devem ser nulos quando o método de pagamento não for DINHEIRO.';
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Erro: Valor recebido e troco devem ser nulos quando o mÃ©todo de pagamento nÃ£o for DINHEIRO.';
         END IF;
     END IF;
 END//
@@ -139,14 +139,14 @@ BEGIN
     DECLARE nome_produto VARCHAR(255);
     DECLARE msg_erro VARCHAR(255);
 
-    SELECT quantidade, nome_produto INTO qtd_disponivel, nome_produto
+    SELECT quantidade, nome INTO qtd_disponivel, nome_produto
     FROM produto
     WHERE id_produto = NEW.id_produto;
 
     IF qtd_disponivel IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Produto não encontrado.';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Produto nÃ£o encontrado.';
     ELSEIF qtd_disponivel < NEW.quantidade THEN
-        SET msg_erro = CONCAT('Estoque insuficiente para o produto "', nome_produto, '". Quantidade disponível: ', qtd_disponivel, '.');
+        SET msg_erro = CONCAT('Estoque insuficiente para o produto "', nome_produto, '". Quantidade disponÃ­vel: ', qtd_disponivel, '.');
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg_erro;
     ELSE
         UPDATE produto SET quantidade = quantidade - NEW.quantidade
@@ -157,15 +157,15 @@ END$$
 DELIMITER ;
 
 
-# Procedure de atualização da tabela de Estatistica
+# Procedure de atualizaï¿½ï¿½o da tabela de Estatistica
 
 DELIMITER //
 
 CREATE PROCEDURE AtualizarEstatisticaPorData(IN dataEscolhida DATE)
 BEGIN
-    -- Verifica se já existe uma linha com a data fornecida
+    -- Verifica se jï¿½ existe uma linha com a data fornecida
     IF EXISTS (SELECT 1 FROM estatistica WHERE data = dataEscolhida) THEN
-        -- Se a linha já existe, atualiza a linha
+        -- Se a linha jï¿½ existe, atualiza a linha
         UPDATE estatistica
         SET 
             quantidade_produtos_vendidos = (
@@ -186,7 +186,7 @@ BEGIN
             )
         WHERE data = dataEscolhida;
     ELSE
-        -- Se a linha não existe, insere uma nova linha
+        -- Se a linha nï¿½o existe, insere uma nova linha
         INSERT INTO estatistica (quantidade_produtos_vendidos, quantidade_vendas, total_ganho, data)
         SELECT 
             COALESCE(SUM(pv.quantidade), 0),
@@ -204,7 +204,7 @@ DELIMITER ;
 
 
 
-# Triggers de atualização
+# Triggers de atualizaï¿½ï¿½o
 
 DELIMITER $$
 
@@ -247,7 +247,7 @@ BEGIN
     UPDATE estatistica
     SET quantidade_vendas = (SELECT COUNT(*) FROM venda),
         total_ganho = (SELECT COALESCE(SUM(preco), 0) FROM venda)
-    WHERE id = 1; -- Ajuste o WHERE conforme necessário
+    WHERE id = 1; -- Ajuste o WHERE conforme necessï¿½rio
 END$$
 
 DELIMITER ;
@@ -262,7 +262,7 @@ BEGIN
     UPDATE estatistica
     SET quantidade_vendas = (SELECT COUNT(*) FROM venda),
         total_ganho = (SELECT COALESCE(SUM(preco), 0) FROM venda)
-    WHERE id = 1; -- Ajuste o WHERE conforme necessário
+    WHERE id = 1; -- Ajuste o WHERE conforme necessï¿½rio
 END$$
 
 DELIMITER ;
