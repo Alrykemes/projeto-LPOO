@@ -143,7 +143,9 @@ public class TelaLogin {
 			if(loginService.authenticate(userLogin.getText(), new String(passwordLogin.getPassword()))) {
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 				Janela.getInstance().getPanelPrincipal().repaint();
-			} 
+			} else {
+				 JOptionPane.showMessageDialog(panelLogin, "Usuario ou senha Incorreto!", "Erro de Login", JOptionPane.ERROR_MESSAGE);
+			}
 		} catch (ExcecaoDoSistema | ValidacaoException ex) {	
 			 JOptionPane.showMessageDialog(panelLogin, ex.getMessage(), "Erro de Login", JOptionPane.ERROR_MESSAGE);
 		}
