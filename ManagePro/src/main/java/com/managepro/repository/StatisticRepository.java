@@ -22,5 +22,5 @@ public interface StatisticRepository {
 		 
 	public Estatistica obterEstatisticas() throws SQLException;
 	
-	public List<Estatistica> findByDataAndTipo(Date dataInicio, Date dataFim, String tipo) throws SQLException;
+	public List<Estatistica> findByData(Date dataInicio, Date dataFim) throws SQLException;
 }

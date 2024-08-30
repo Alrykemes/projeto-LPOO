@@ -79,6 +79,14 @@ import com.managepro.ui.Janela;
 		
 		
 		
+		public List<Estatistica> findByData(Date dataInicio, Date dataFim) throws SQLException {
+	        
+			return estatisticaDAO.findByData(dataInicio, dataFim);
+	    
+		}
+		
+		
+		
 		
 	}
 

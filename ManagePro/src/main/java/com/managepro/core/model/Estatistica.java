@@ -1,23 +1,24 @@
 package com.managepro.core.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Estatistica {
 	
 	private Long id;
 	private Long quantidadeProdutos;
 	private Long quantidadeVendas;
-	private Long quantidadeFuncionarios;
 	private BigDecimal totalGanho;
+	private Date data;
 	
 	public Estatistica() {}
 	
-	public Estatistica(Long id, Long quantidadeProdutos, Long quantidadeVendas, Long quantidadeFuncionarios, BigDecimal totalGanho) {
+	public Estatistica(Long id, Long quantidadeProdutos, Long quantidadeVendas, BigDecimal totalGanho, Date data) {
 		this.id = id;
 		this.quantidadeProdutos = quantidadeProdutos;
 		this.quantidadeVendas = quantidadeVendas;
-		this.quantidadeFuncionarios = quantidadeFuncionarios;
 		this.totalGanho = totalGanho;
+		this.data = data;
 	}
 
 	public Long getId() {
@@ -44,13 +45,6 @@ public class Estatistica {
 		this.quantidadeVendas = quantidadeVendas;
 	}
 
-	public Long getQuantidadeFuncionarios() {
-		return quantidadeFuncionarios;
-	}
-
-	public void setQuantidadeFuncionarios(Long quantidadeFuncionarios) {
-		this.quantidadeFuncionarios = quantidadeFuncionarios;
-	}
 
 	public BigDecimal getTotalGanho() {
 		return totalGanho;
@@ -58,6 +52,14 @@ public class Estatistica {
 
 	public void setTotalGanho(BigDecimal totalGanho) {
 		this.totalGanho = totalGanho;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 }
