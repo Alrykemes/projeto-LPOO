@@ -131,7 +131,6 @@ public class TelaGerenciamentoDeVendas {
 		textDateAte.setBounds(175, 48, 40, 15);
 		textDateAte.setFont(new Font("SansSerif", Font.BOLD, 16));
 		
-		
 		ComboBoxFiltro = new JComboBox<String>();
 		ComboBoxFiltro.setFont(new Font("SansSerif", Font.PLAIN, 17));
 		ComboBoxFiltro.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "IDFuncionario", "Data", "Todas"}));
@@ -281,8 +280,7 @@ public class TelaGerenciamentoDeVendas {
 				}
 			});
 		pesquisaPanel.add(btnPesquisaVenda);
-		
-		
+				
 		vendaPanel = new JPanel();
 		vendaPanel.setBounds(402, 0, 592, 630);
 		PrincipalPanel.add(vendaPanel);
@@ -480,10 +478,7 @@ public class TelaGerenciamentoDeVendas {
 							contentStream.endText();
 			
 							
-						} 
-						
-						
-						
+						} 				
 						documento.save(arquivoSalvo.getAbsolutePath());
 						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nota Fiscal criada e salva em: " + arquivoSalvo.getAbsolutePath());
 					} catch (IOException ex) {
@@ -523,7 +518,7 @@ public class TelaGerenciamentoDeVendas {
 					}
 				} else {
 					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"Voc� precisa selecionar alguma das vendas antes de deletar!");
+							"Você precisa selecionar alguma das vendas antes de deletar!");
 				}
 			}
 			
@@ -641,7 +636,6 @@ public class TelaGerenciamentoDeVendas {
 				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		
 		if (ComboBoxFiltro.getSelectedItem().equals("Data")) {
 			
 			Instant instantDe = dateChooserDe.getDate().toInstant();

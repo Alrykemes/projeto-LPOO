@@ -68,20 +68,24 @@ public class EditarProdutoVenda extends JDialog {
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	try {
                 String senhaInserida = new String(txtSenha.getPassword());
+                
                 if (loginService.verificarSenha(senhaInserida)) {
-                	
-                	Janela.getInstance().getTelaNovaVenda().removerProduto(
-                			Janela.getInstance().getTelaNovaVenda().getListaProdutos().getSelectedValue());
-                	Janela.getInstance().getTelaNovaVenda().adicionarProduto(txtCodigo, txtQuantidade);
+                               	Janela.getInstance().getTelaNovaVenda().removerProduto(
+                		Janela.getInstance().getTelaNovaVenda().getListaProdutos().getSelectedValue());
+                Janela.getInstance().getTelaNovaVenda().adicionarProduto(txtCodigo, txtQuantidade);
                 	
                     confirmado = true;
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(parent, "Senha incorreta!", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
-            }
-        });
+           	} catch(Exception ex) {
+          		JOptionPane.showMessageDialog(parent, "Senha incorreta!", "Erro", JOptionPane.ERROR_MESSAGE);
+           	}
+          }
+      });
         getContentPane().add(btnOk);
 
         JButton btnCancelar = new JButton("Cancelar");

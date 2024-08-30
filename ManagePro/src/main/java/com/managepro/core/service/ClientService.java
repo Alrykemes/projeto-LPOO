@@ -18,11 +18,13 @@ public class ClientService {
 	
 	public void cadastrarCliente(Cliente cliente) throws Exception {
 		if (cliente.getNome().length() >= 69) {
-			throw new Exception("Erro, nome muito grande");
+			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Erro, nome muito grande!");
+			//throw new Exception("Erro, nome muito grande");
 		}
 
 		if (dataAtual.compareTo(cliente.getDataNascimento()) < 18) {
 			System.out.println(cliente.getDataNascimento().compareTo(dataAtual));
+			//JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Erro, cliente menor de idade!");
 			throw new Exception("Erro, cliente menor de idade");
 		}
 		

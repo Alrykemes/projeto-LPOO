@@ -96,11 +96,10 @@ public class TelaEditarProdutos {
 		editarProdutosPanel.add(textFieldNomeProduto);
 		textFieldNomeProduto.setColumns(10);
 
-		JLabel Codigo = new JLabel("C�digo *");
+		JLabel Codigo = new JLabel("Código *");
 		Codigo.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		Codigo.setBounds(312, 73, 70, 14);
 		editarProdutosPanel.add(Codigo);
-
 
 		MaskFormatter maskCodigo = new MaskFormatter("*****************");
 		textFieldCodigo = new JFormattedTextField(maskCodigo);
@@ -116,7 +115,6 @@ public class TelaEditarProdutos {
 		textFieldPrecoVenda.setColumns(10);
 		textFieldPrecoVenda.setBounds(501, 98, 131, 35);
 		editarProdutosPanel.add(textFieldPrecoVenda);
-
 
 		JLabel PrecoDeVenda = new JLabel("Preço de Venda *");
 		PrecoDeVenda.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -217,6 +215,7 @@ public class TelaEditarProdutos {
 					produtoService.atualizarProduto(produto);
 					Janela.getInstance().getTelaEstoque().atualizarTabela();
 				} catch (ValidacaoException e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao atualizar produto: " + e1.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");

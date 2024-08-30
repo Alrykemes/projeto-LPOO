@@ -99,8 +99,7 @@ public class TelaEditarFuncionario {
 			maskCpf.setAllowsInvalid(false);
 			campoCpf = new JFormattedTextField(maskCpf);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de cpf: " + e.getMessage(), "Erro",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de cpf: " + e.getMessage(), "Erro",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		
@@ -160,8 +159,7 @@ public class TelaEditarFuncionario {
 			maskTelefone.setAllowsInvalid(false);
 			campoTelefone = new JFormattedTextField(maskTelefone);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de telefone: " + e.getMessage(), "Erro",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de telefone: " + e.getMessage(), "Erro",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		
@@ -263,9 +261,7 @@ public class TelaEditarFuncionario {
 					Janela.getInstance().getFrame().setLocationRelativeTo(null);
 					Janela.getInstance().getTelaFuncionarios().carregarFuncionariosNaTabela();
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Erro ao editar funcionário, tente novamente mais tarde", "Erro",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),"Erro ao editar funcionário, tente novamente mais tarde", "Erro",JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

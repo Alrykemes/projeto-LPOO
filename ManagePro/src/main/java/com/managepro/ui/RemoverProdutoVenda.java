@@ -39,14 +39,19 @@ public class RemoverProdutoVenda extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String senhaInserida = new String(txtSenha.getPassword());
+              try { 
                 if (loginService.verificarSenha(senhaInserida)) {
                 	Janela.getInstance().getTelaNovaVenda().removerProduto(
                 			Janela.getInstance().getTelaNovaVenda().getListaProdutos().getSelectedValue());
                     confirmado = true;
                     dispose();
+                    
                 } else {
                     JOptionPane.showMessageDialog(parent, "Senha incorreta!", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
+          	} catch(Exception ex) {
+          		JOptionPane.showMessageDialog(parent, "Senha incorreta!", "Erro", JOptionPane.ERROR_MESSAGE);
+           		}
             }
         });
         getContentPane().add(btnOk);

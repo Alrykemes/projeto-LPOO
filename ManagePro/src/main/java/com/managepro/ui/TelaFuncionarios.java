@@ -119,8 +119,7 @@ public class TelaFuncionarios {
 			maskCpf.setAllowsInvalid(false);
 			campoCpf = new JFormattedTextField(maskCpf);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de cpf: " + e.getMessage(), "Erro",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de cpf: " + e.getMessage(), "Erro",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		campoCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
@@ -179,8 +178,7 @@ public class TelaFuncionarios {
 			maskTelefone.setAllowsInvalid(false);
 			campoTelefone = new JFormattedTextField(maskTelefone);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de telefone: " + e.getMessage(), "Erro",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro ao aplicar a máscara de telefone: " + e.getMessage(), "Erro",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		campoTelefone.setFont(new Font("SansSerif", Font.PLAIN, 18));
@@ -239,7 +237,6 @@ public class TelaFuncionarios {
 					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Salário inválido");
 
 				}
-
 				LocalDate valorDataAdmissao = dataAdmissaoLD;
 				String valorTelefone = campoTelefone.getText();
 				String valorUsuario = campoUsuario.getText();
@@ -264,13 +261,10 @@ public class TelaFuncionarios {
 					carregarFuncionariosNaTabela();
 
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Erro ao cadastrar funcionário, tente novamente mais tarde", "Erro",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),"Erro ao cadastrar funcionário, tente novamente mais tarde", "Erro",JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
-
 		botaoRemoverFuncionario = new JButton("Remover");
 		botaoRemoverFuncionario.setForeground(new Color(0, 0, 0));
 		botaoRemoverFuncionario.addActionListener(new ActionListener() {
@@ -286,34 +280,24 @@ public class TelaFuncionarios {
 						nomeFuncionario = funcionarios.get(linhaSelecionada).getNome();
 						cpfFuncionario = funcionarios.get(linhaSelecionada).getCpf();
 					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Erro na tabela", "Erro",
-								JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Erro na tabela", "Erro",JOptionPane.WARNING_MESSAGE);
 					}
-
-					if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(),
-							"Deseja remover o funcionário " + nomeFuncionario + "?", "Remover Funcionário",
-							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(),"Deseja remover o funcionário " + nomeFuncionario + "?", "Remover Funcionário",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						try {
 							funcionarioService.apagarFuncionario(cpfFuncionario);
 							carregarFuncionariosNaTabela();
 						} catch (Exception e2) {
-							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-									"Erro ao remover funcionário, tente novamente mais tarde", "Erro",
-									JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),"Erro ao remover funcionário, tente novamente mais tarde", "Erro",JOptionPane.WARNING_MESSAGE);
 						}
-
 					} else {
 						System.out.println("oofgg");
 					}
 
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
-
 		botaoRemoverFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
 		botaoRemoverFuncionario.setBackground(new Color(255, 255, 255));
 		botaoRemoverFuncionario.setBounds(525, 269, 170, 40);
@@ -333,14 +317,11 @@ public class TelaFuncionarios {
 					Janela.getInstance().getFrame().setBounds(0, 0, 700, 500);
 					Janela.getInstance().getFrame().setLocationRelativeTo(null);
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),"Selecione um funcionário na tabela abaixo", "Nenhuma seleção",JOptionPane.WARNING_MESSAGE);
 				}
 
 			}
 		});
-
 		botaoEditarFuncionario.setBackground(new Color(255, 255, 255));
 		botaoEditarFuncionario.setFont(new Font("SansSerif", Font.BOLD, 20));
 		botaoEditarFuncionario.setBounds(274, 269, 170, 40);

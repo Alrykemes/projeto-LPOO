@@ -55,10 +55,7 @@ public class TelaEstoque {
 	
 	public TelaEstoque() throws ParseException {
 		this.initialize();
-	}
-	
-	
-	
+	}	
 	private void initialize() throws ParseException{
 		
 		produtoService = new ProdutoService();
@@ -89,7 +86,6 @@ public class TelaEstoque {
 					}
 					else {
 						tabelaId(Long.valueOf(textPesquisaField.getText().trim()));
-						
 					}
 				}
 				if (comboBox.getSelectedItem().equals("Nome")) {
@@ -272,8 +268,7 @@ public class TelaEstoque {
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
-		estoquePanel.add(Voltar);
-		
+		estoquePanel.add(Voltar);		
 		JButton botaoAtualizar = new JButton("Atualizar");
 		botaoAtualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -301,7 +296,6 @@ public class TelaEstoque {
 		estoquePanel.add(botaoAtualizar);		
 		
 	}
-	
 	public DefaultTableModel atualizarTudo () {
 		
 		List<Produto> produtos = produtoService.listarProdutos();
@@ -320,7 +314,6 @@ public class TelaEstoque {
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		return tabelaAtualizada;
 	}
-	
 	public void tabelaId (Long id) {
 		
 		List<Produto> produtos = produtoService.pesquisarProdutoPorId(id);
@@ -338,8 +331,7 @@ public class TelaEstoque {
          String[] nomeColuna = {"Código","Nome","Fornecedor","Quantidade","Marca","Preço","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
-	}
-	
+	}	
 	public void tabelaNome (String Nome) {
 		
 		List<Produto> produtos = produtoService.pesquisarProdutoPorNome(Nome);
@@ -357,8 +349,7 @@ public class TelaEstoque {
          String[] nomeColuna = {"Código","Nome","Fornecedor","Quantidade","Marca","Preço","Data de Validade"}; 
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
-	}
-	
+	}	
 	public void tabelaValidade (LocalDate date) throws ClassNotFoundException, SQLException {
 		
 		List<Produto> produtos = produtoService.pesquisarProdutoValidade(date);
@@ -377,7 +368,6 @@ public class TelaEstoque {
          DefaultTableModel tabelaAtualizada = new DefaultTableModel(dados,nomeColuna);
 		listaProduto.setModel(tabelaAtualizada);
 	}
-	
 	public void atualizarTabela () {
 		listaProduto.setModel(atualizarTudo());
 	}

@@ -191,6 +191,7 @@ public class TelaAdicionarProdutos{
 					produtoService.adicionarProduto(produto);
 					Janela.getInstance().getTelaEstoque().atualizarTabela();
 				} catch (ValidacaoException e1) {
+					JOptionPane.showMessageDialog(null, "Erro ao adicionar produto: " + e1.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
