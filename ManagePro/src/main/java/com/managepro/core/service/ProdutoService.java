@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.managepro.core.model.Produto;
 import com.managepro.dao.ProdutoDAO;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.exceptions.ValidacaoException;
 
 public class ProdutoService {
@@ -18,11 +19,11 @@ public class ProdutoService {
 		produtoDAO = new ProdutoDAO();
 	}
 
-	public Produto getProductById(Long codigoProduto) {
+	public Produto getProductById(Long codigoProduto) throws ExcecaoDoSistema {
 		return produtoDAO.findProductById(codigoProduto);
 	}
 	
-	public void adicionarProduto(Produto produto) throws ValidacaoException {
+	public void adicionarProduto(Produto produto) throws ValidacaoException, ExcecaoDoSistema {
 		validacao(produto);
 		produtoDAO.newProduct(produto);
 	}
@@ -31,15 +32,15 @@ public class ProdutoService {
 		return produtoDAO.pesquisarProdutoNome(nomeProduto);
 	}
 	
-	public List<Produto> pesquisarProdutoPorId(Long id){
+	public List<Produto> pesquisarProdutoPorId(Long id) throws ExcecaoDoSistema{
 		return produtoDAO.pesquisarProdutoID(id);
 	}
 
-	public List<Produto> pesquisarProdutoValidade(LocalDate validade) throws ClassNotFoundException, SQLException{
+	public List<Produto> pesquisarProdutoValidade(LocalDate validade) throws ClassNotFoundException, SQLException, ExcecaoDoSistema{
 		return produtoDAO.pesquisarProdutoValidade(validade);
 	}
 
-	public List<Produto> listarProdutos()  {
+	public List<Produto> listarProdutos() throws ExcecaoDoSistema  {
 		try {
 			return produtoDAO.getTodosProdutos();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -48,11 +49,11 @@ public class ProdutoService {
 		}
 	}
 
-	public void removerProduto(Long codigoProduto) {
+	public void removerProduto(Long codigoProduto) throws ExcecaoDoSistema {
 		produtoDAO.removerProduto(codigoProduto);
 	}
 
-	public void atualizarProduto(Produto produto) throws ValidacaoException {
+	public void atualizarProduto(Produto produto) throws ValidacaoException, ExcecaoDoSistema {
 		validacao(produto);
 		produtoDAO.editarProduto(produto);	
 	}
@@ -60,31 +61,31 @@ public class ProdutoService {
 
 	public void validacao(Produto produto) throws ValidacaoException {
 
-		// exceções buscar produto
+		// exceï¿½ï¿½es buscar produto
 
 			if (produto == null) {
-				throw new ValidacaoException("Produto não existe.");
+				throw new ValidacaoException("Produto nï¿½o existe.");
 			}
 
-			// exceções gerais do produto
+			// exceï¿½ï¿½es gerais do produto
 
 			if (produto.getNomeProduto() == null) {
-			throw new ValidacaoException("Nome do produto é obrigatório");
+			throw new ValidacaoException("Nome do produto ï¿½ obrigatï¿½rio");
 			}
 			
 			if (produto.getMarca() == null) {
-				throw new ValidacaoException("Marca é obrigatória.");
+				throw new ValidacaoException("Marca ï¿½ obrigatï¿½ria.");
 			}
 
 			if (produto.getPreco() == null) {
-				throw new ValidacaoException("Preço é obrigatório.");
+				throw new ValidacaoException("Preï¿½o ï¿½ obrigatï¿½rio.");
 			}
 			
 			BigDecimal zero = new BigDecimal(0);
 			int resultado = produto.getPreco().compareTo(zero);
 
 			if (resultado < 0 || resultado == 0) {
-				throw new ValidacaoException("Preço não pode ser negativo e/ou é obrigatório.");
+				throw new ValidacaoException("Preï¿½o nï¿½o pode ser negativo e/ou ï¿½ obrigatï¿½rio.");
 			}
 
 		}

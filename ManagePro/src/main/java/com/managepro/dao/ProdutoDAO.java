@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import com.managepro.core.model.Produto;
 import com.managepro.core.model.ProdutoVendaDetails;
+import com.managepro.exceptions.ExcecaoDoSistema;
 import com.managepro.repository.MySQLConnection;
 import com.managepro.repository.ProductRepository;
 import com.managepro.ui.Janela;
@@ -25,7 +26,7 @@ public class ProdutoDAO  implements ProductRepository{
 	private Connection connection;
 	private PreparedStatement statement;
 	
-	public Produto findProductById(Long id) {
+	public Produto findProductById(Long id) throws ExcecaoDoSistema {
 		try {
 		Connection connection = MySQLConnection.getConnection();
 		Statement stmt = connection.createStatement();
@@ -55,7 +56,7 @@ public class ProdutoDAO  implements ProductRepository{
 	
 	
 		
-		public void newProduct(Produto produto) {
+		public void newProduct(Produto produto) throws ExcecaoDoSistema {
 			try {
 				connection = MySQLConnection.getConnection();
 				statement = connection.prepareStatement("INSERT INTO produto (nome,preco,quantidade,marca,fornecedor,validade) VALUES (?,?,?,?,?,?)");
@@ -67,13 +68,13 @@ public class ProdutoDAO  implements ProductRepository{
 				statement.setDate(6, Date.valueOf(produto.getValidade()));
 				statement.execute();
 			} catch (ClassNotFoundException | SQLException e) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro Na Comunica��o do sistema tente novamente mais tarde");
-				System.out.println(e.getMessage());
+				e.printStackTrace();
+				throw new ExcecaoDoSistema("Ocorreu um erro na comunicação do sistema.", e); 
 			}
 		}
 
 		
-		public Produto editarProduto(Produto produto) {
+		public Produto editarProduto(Produto produto) throws ExcecaoDoSistema {
 			try {
 				connection = MySQLConnection.getConnection();
 				statement = connection.prepareStatement("UPDATE produto SET nome = ?,preco = ?,quantidade = ?,marca = ?,fornecedor = ?,validade = ? WHERE id_produto = '" + produto.getCodigoProduto() + "'");
@@ -94,7 +95,7 @@ public class ProdutoDAO  implements ProductRepository{
 		}
 
 		
-		public void removerProduto(Long id) {
+		public void removerProduto(Long id) throws ExcecaoDoSistema {
 			try {
 				connection = MySQLConnection.getConnection();
 				statement = connection.prepareStatement("DELETE FROM produto WHERE id_produto = ?");
@@ -134,7 +135,7 @@ public class ProdutoDAO  implements ProductRepository{
 			}
 		}
 		
-		public List<Produto> pesquisarProdutoID(Long id_produto) {
+		public List<Produto> pesquisarProdutoID(Long id_produto) throws ExcecaoDoSistema {
 			try {	
 				connection = MySQLConnection.getConnection();
 				statement = connection.prepareStatement("SELECT * FROM produto WHERE id_produto = ?");
@@ -163,7 +164,7 @@ public class ProdutoDAO  implements ProductRepository{
 		}
 
 		@Override
-		public List<ProdutoVendaDetails> getProductsForSale(Long idVenda) {
+		public List<ProdutoVendaDetails> getProductsForSale(Long idVenda) throws ExcecaoDoSistema {
 			
 			try {
 				
@@ -196,7 +197,7 @@ public class ProdutoDAO  implements ProductRepository{
 
 
 		@Override
-		public List<Produto> getTodosProdutos() throws ClassNotFoundException, SQLException {
+		public List<Produto> getTodosProdutos() throws ClassNotFoundException, SQLException, ExcecaoDoSistema {
 			try {	
 				connection = MySQLConnection.getConnection();
 				statement = connection.prepareStatement("SELECT * FROM produto;");
@@ -226,7 +227,7 @@ public class ProdutoDAO  implements ProductRepository{
 
 
 		@Override
-		public List<Produto> pesquisarProdutoValidade(LocalDate validade) throws ClassNotFoundException, SQLException {
+		public List<Produto> pesquisarProdutoValidade(LocalDate validade) throws ClassNotFoundException, SQLException, ExcecaoDoSistema {
 			try {	
 				connection = MySQLConnection.getConnection();
 				statement = connection.prepareStatement("SELECT * FROM produto WHERE validade = ?");
