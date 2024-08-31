@@ -32,6 +32,7 @@ import javax.swing.DefaultListModel;
 
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -177,7 +178,6 @@ public class TelaNovaVenda {
 								JOptionPane.WARNING_MESSAGE);
 					}
 					
-			
 					System.out.println(qtdProdutos);
 					
 					if (qtdProdutos != 0) {
@@ -261,6 +261,9 @@ public class TelaNovaVenda {
 				} catch (ExcecaoDeNegocios | ValidacaoException | ExcecaoDoSistema e1) {
 					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e1.getMessage(), "Erro",
 							JOptionPane.WARNING_MESSAGE);
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					
 					e1.printStackTrace();
 				}
 
