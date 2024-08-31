@@ -1,60 +1,66 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.managepro</groupId>
-  <artifactId>com.managepro.project</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>ManageProProject</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <dependencies>
-  	<!-- JCalendar -->
-     <dependency>
-     <groupId>com.toedter</groupId>
-     <artifactId>jcalendar</artifactId>
-     <version>1.4</version>
-     </dependency>
-    <!-- Mockito -->
-   	<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>5.12.0</version>
-    <scope>test</scope>
-	</dependency>
-    <dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-junit-jupiter</artifactId>
-    <version>5.12.0</version>
-    <scope>test</scope>
-	</dependency>
-	<!--MySQL Driver JDBC-->
-	<dependency>
-	<groupId>mysql</groupId>
-	<artifactId>mysql-connector-java</artifactId>
-	<version>8.0.32</version>
-	</dependency>
-	<!-- Zxing Barcode Scanner -->
-	<dependency>
-  	<groupId>com.google.zxing</groupId>
-	<artifactId>core</artifactId>
-	<version>3.5.3</version>
-	</dependency>
-	<!-- Mercado Pago -->
-	<dependency>
-  	<groupId>com.mercadopago</groupId>
-  	<artifactId>sdk-java</artifactId>
-  	<version>2.1.27</version>
-	</dependency>
-	<!-- JFreeChart Graphs -->
-    <dependency>
-    <groupId>org.jfree</groupId>
-    <artifactId>jfreechart</artifactId>
-    <version>1.5.3</version> 
-    </dependency>
-    <!-- ApachePdfBox -->
-  	<dependency>
-    <groupId>org.apache.pdfbox</groupId>
-    <artifactId>pdfbox</artifactId>
-    <version>2.0.29</version>
-	</dependency>
-  </dependencies>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.managepro</groupId>
+	<artifactId>com.managepro</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>ManageProProject</name>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- JCalendar -->
+		<dependency>
+			<groupId>com.toedter</groupId>
+			<artifactId>jcalendar</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- Mockito -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>5.12.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>5.12.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- MySQL Driver JDBC -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.32</version>
+		</dependency>
+		<!-- Zxing Barcode Scanner -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<!-- JFreeChart Graphs -->
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.5.3</version>
+		</dependency>
+		<!-- ApachePdfBox -->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.29</version>
+		</dependency>
+	</dependencies>
 </project>

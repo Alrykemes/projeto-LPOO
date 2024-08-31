@@ -80,8 +80,10 @@ public class TelaMenu {
 						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.ESTOQUISTA) {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Estoque");
+					Janela.getInstance().getTelaEstoque().getTableProdutos().setModel(
+							Janela.getInstance().getTelaEstoque().atualizarTudo());
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o Estoque.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÃª nÃ£o tem permissÃ£o para acessar o Estoque.");
 				}
 			}
 		});
@@ -99,7 +101,7 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "NovaVenda");
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para criar uma nova Venda.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÃª nÃ£o tem permissÃ£o para criar uma nova Venda.");
 				}
 			}
 		});
@@ -119,7 +121,7 @@ public class TelaMenu {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "GerenciamentoDeVendas");
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o gerenciamento de vendas.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÃª nÃ£o tem permissÃ£o para acessar o gerenciamento de vendas.");
 				}
 			}
 		});
@@ -136,8 +138,9 @@ public class TelaMenu {
 						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.GERENTE) {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Funcionarios");
+					Janela.getInstance().getTelaFuncionarios().carregarFuncionariosNaTabela();
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar o gerenciamento de funcionários.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÃª nÃ£o tem permissÃ£o para acessar o gerenciamento de funcionï¿½rios.");
 				}
 			}
 		});
@@ -155,8 +158,10 @@ public class TelaMenu {
 						|| Janela.getInstance().getTelaLogin().getFuncionarioLogado().getFuncao() == Cargos.CONTADOR) {
 					
 					Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Contabilidade");
+					Janela.getInstance().getTelaContabilidade().atualizarInformacoes();
+					Janela.getInstance().getTelaContabilidade().exibirGraficosPorDefault();
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Você não tem premissão para acessar a contabilidade.");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "VocÃª nÃ£o tem permissÃ£o para acessar a contabilidade.");
 				}
 			}
 		});

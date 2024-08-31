@@ -2,7 +2,6 @@ package com.managepro.repository;
 
 import java.util.List;
 
-
 import com.managepro.core.model.Funcionario;
 import com.managepro.exceptions.ExcecaoDoSistema;
 

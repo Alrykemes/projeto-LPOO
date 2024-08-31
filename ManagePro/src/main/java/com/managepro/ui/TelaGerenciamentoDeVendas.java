@@ -1,6 +1,7 @@
 package com.managepro.ui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
@@ -49,7 +50,7 @@ public class TelaGerenciamentoDeVendas {
 	private JLabel funcionarioNome;
 	private JLabel idVenda;
 	private JLabel data;
-    private DateTimeFormatter formatoData;
+	private DateTimeFormatter formatoData;
 	private JLabel metodoPagamento;
 	private JLabel clienteNome;
 	private JLabel cpfCliente;
@@ -59,26 +60,25 @@ public class TelaGerenciamentoDeVendas {
 	private DefaultListModel<ProdutoVendaDetails> listModelProdutos;
 	private JLabel txtTroco;
 	private JLabel txtValorRecebido;
-	
+
 	private VendaService vendaService;
 	private JLabel valorRecebidolbl;
 	private JLabel trocolbl;
-	
 
 	public JPanel getPanel() {
 		return this.gerenciamentoVendasPanel;
 	}
-	
+
 	public TelaGerenciamentoDeVendas() throws ParseException {
 		initialize();
 	}
-		
+
 	private void initialize() throws ParseException {
 		vendaService = new VendaService();
 		formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		listModelVendas = new DefaultListModel<>();
 		listModelProdutos = new DefaultListModel<>();
-		
+
 		gerenciamentoVendasPanel = new JPanel();
 		gerenciamentoVendasPanel.setSize(1020, 680);
 		gerenciamentoVendasPanel.setLayout(null);
@@ -88,22 +88,22 @@ public class TelaGerenciamentoDeVendas {
 		PrincipalPanel.setSize(1020, 680);
 		gerenciamentoVendasPanel.add(PrincipalPanel);
 		PrincipalPanel.setLayout(null);
-		
+
 		pesquisaPanel = new JPanel();
 		pesquisaPanel.setBounds(10, 45, 392, 585);
 		PrincipalPanel.add(pesquisaPanel);
 		pesquisaPanel.setLayout(null);
-		
+
 		JLabel txtPesquisar = new JLabel("Pesquisar");
 		txtPesquisar.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtPesquisar.setBounds(10, 11, 85, 20);
 		pesquisaPanel.add(txtPesquisar);
-		
+
 		JLabel txtFiltrar = new JLabel("Filtrar:");
 		txtFiltrar.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtFiltrar.setBounds(211, 11, 52, 20);
 		pesquisaPanel.add(txtFiltrar);
-		
+
 		MaskFormatter maskPesquisa = new MaskFormatter("*****************");
 		FieldPesquisar = new JFormattedTextField(maskPesquisa);
 		FieldPesquisar.setFocusLostBehavior(JFormattedTextField.PERSIST);
@@ -115,13 +115,13 @@ public class TelaGerenciamentoDeVendas {
 			public void focusGained(FocusEvent e) {
 				FieldPesquisar.setForeground(new Color(0, 0, 0));
 			}
-			
+
 			public void focusLost(FocusEvent e) {
 				FieldPesquisar.setForeground(new Color(105, 105, 105));
 			}
 		});
 		pesquisaPanel.add(FieldPesquisar);
-		
+
 		dateChooserDe = new JDateChooser();
 		dateChooserDe.setBounds(40, 42, 128, 30);
 		dateChooserDe.getDateEditor().setEnabled(false);
@@ -129,7 +129,7 @@ public class TelaGerenciamentoDeVendas {
 		textDateDe = new JLabel("De:");
 		textDateDe.setBounds(10, 48, 30, 15);
 		textDateDe.setFont(new Font("SansSerif", Font.BOLD, 16));
-		
+
 		dateChooserAte = new JDateChooser();
 		dateChooserAte.setBounds(210, 42, 128, 30);
 		dateChooserAte.getDateEditor().setEnabled(false);
@@ -137,17 +137,17 @@ public class TelaGerenciamentoDeVendas {
 		textDateAte = new JLabel("At�:");
 		textDateAte.setBounds(175, 48, 40, 15);
 		textDateAte.setFont(new Font("SansSerif", Font.BOLD, 16));
-		
-		
+
 		ComboBoxFiltro = new JComboBox<String>();
 		ComboBoxFiltro.setFont(new Font("SansSerif", Font.PLAIN, 17));
-		ComboBoxFiltro.setModel(new DefaultComboBoxModel<String>(new String[] {"ID", "IDFuncionario", "Data", "Todas"}));
+		ComboBoxFiltro
+				.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "IDFuncionario", "Data", "Todas" }));
 		ComboBoxFiltro.setBounds(264, 10, 118, 22);
 		pesquisaPanel.add(ComboBoxFiltro);
 		ComboBoxFiltro.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				
-				if(e.getItem().equals("ID")) {
+
+				if (e.getItem().equals("ID")) {
 					FieldPesquisar.setBounds(10, 42, 329, 30);
 					FieldPesquisar.setEnabled(true);
 					FieldPesquisar.setText("");
@@ -171,8 +171,8 @@ public class TelaGerenciamentoDeVendas {
 					vendaPanel.repaint();
 					pesquisaPanel.repaint();
 				}
-				
-				if(e.getItem().equals("Data")) {
+
+				if (e.getItem().equals("Data")) {
 					FieldPesquisar.setBounds(0, 0, 0, 0);
 					pesquisaPanel.remove(FieldPesquisar);
 					btnPesquisaVenda.setEnabled(true);
@@ -194,8 +194,8 @@ public class TelaGerenciamentoDeVendas {
 					vendaPanel.repaint();
 					pesquisaPanel.repaint();
 				}
-				
-				if(e.getItem().equals("IDFuncionario")) {
+
+				if (e.getItem().equals("IDFuncionario")) {
 					FieldPesquisar.setBounds(10, 42, 329, 30);
 					FieldPesquisar.setEnabled(true);
 					btnPesquisaVenda.setEnabled(true);
@@ -219,8 +219,8 @@ public class TelaGerenciamentoDeVendas {
 					vendaPanel.repaint();
 					pesquisaPanel.repaint();
 				}
-				
-				if(e.getItem().equals("Todas")) {
+
+				if (e.getItem().equals("Todas")) {
 					FieldPesquisar.setBounds(10, 42, 329, 30);
 					FieldPesquisar.setEnabled(false);
 					dateChooserAte.cleanup();
@@ -244,26 +244,27 @@ public class TelaGerenciamentoDeVendas {
 					try {
 						listModelVendas.addAll(vendaService.getTodasVendas());
 					} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
-						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro",
+								JOptionPane.ERROR_MESSAGE);
 					}
 					vendaPanel.repaint();
 					pesquisaPanel.repaint();
 				}
 			}
 		});
-		
+
 		listaVendas = new JList<Venda>(listModelVendas);
 		listaVendas.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {
 					Venda vendaSelecionada = (Venda) listaVendas.getSelectedValue();
-					if(vendaSelecionada != null) {
+					if (vendaSelecionada != null) {
 						idVenda.setText(vendaSelecionada.getId().toString());
 						funcionarioNome.setText(vendaSelecionada.getFuncionario().getNome());
 						data.setText(vendaSelecionada.getData().format(formatoData));
 						totalCompra.setText(String.format("R$ %.2f", vendaSelecionada.getPreco()));
 						metodoPagamento.setText(vendaSelecionada.getFormaDePagamentoEnum().toString());
-						if(vendaSelecionada.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
+						if (vendaSelecionada.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
 							vendaPanel.add(valorRecebidolbl);
 							vendaPanel.add(trocolbl);
 							vendaPanel.add(txtTroco);
@@ -295,44 +296,44 @@ public class TelaGerenciamentoDeVendas {
 		JScrollPane scrollPaneVendas = new JScrollPane(listaVendas);
 		scrollPaneVendas.setBounds(10, 83, 372, 491);
 		pesquisaPanel.add(scrollPaneVendas, BorderLayout.CENTER);
-		
+
 		btnPesquisaVenda = new JButton("");
-		btnPesquisaVenda.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/LupaIcon.png")));
+		btnPesquisaVenda.setIcon(
+				new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/LupaIcon.png")));
 		btnPesquisaVenda.setBounds(349, 42, 33, 30);
 		btnPesquisaVenda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					atualizarListModels();
-				}
-			});
+				atualizarListModels();
+			}
+		});
 		pesquisaPanel.add(btnPesquisaVenda);
-		
-		
+
 		vendaPanel = new JPanel();
 		vendaPanel.setBounds(402, 0, 592, 630);
 		PrincipalPanel.add(vendaPanel);
 		vendaPanel.setLayout(null);
-		
+
 		idVenda = new JLabel("0");
 		idVenda.setToolTipText("");
 		idVenda.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		idVenda.setBounds(10, 23, 72, 29);
 		vendaPanel.add(idVenda);
-		
+
 		JLabel TextID = new JLabel("ID:");
 		TextID.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		TextID.setBounds(10, 0, 33, 29);
 		vendaPanel.add(TextID);
-		
+
 		JLabel txtData = new JLabel("Data:");
 		txtData.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		txtData.setBounds(466, 0, 116, 29);
 		vendaPanel.add(txtData);
-		
+
 		data = new JLabel("00/00/0000");
 		data.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		data.setBounds(466, 23, 116, 29);
 		vendaPanel.add(data);
-		
+
 		listaProdutos = new JList<ProdutoVendaDetails>(listModelProdutos);
 		listaProdutos.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		listaProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -340,42 +341,40 @@ public class TelaGerenciamentoDeVendas {
 		JScrollPane scrollPaneProdutos = new JScrollPane(listaProdutos);
 		scrollPaneProdutos.setBounds(10, 65, 572, 330);
 		vendaPanel.add(scrollPaneProdutos, BorderLayout.CENTER);
-		
+
 		buttonNotaFiscal = new JButton("Emitir Nota Fiscal");
 		buttonNotaFiscal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setDialogTitle("Escolha onde salvar a nota fiscal");
-				
-				Venda vendaNota = listaVendas.getSelectedValue();
-				
-				fileChooser.setSelectedFile(new File("ID_" + vendaNota.getId() + "_" + vendaNota.getData() + ".pdf"));
-				
-				int userSelection = fileChooser.showSaveDialog(Janela.getInstance().getFrame());
-				
-				if(userSelection == JFileChooser.APPROVE_OPTION) {
-					File arquivoSalvo = fileChooser.getSelectedFile();
-					
-					if (arquivoSalvo.exists()) {
-	                    int resposta = JOptionPane.showConfirmDialog(
-	                            Janela.getInstance().getFrame(),
-	                            "O arquivo j� existe. Deseja sobrescrev�-lo?",
-	                            "Arquivo existente",
-	                            JOptionPane.YES_NO_OPTION,
-	                            JOptionPane.WARNING_MESSAGE
-	                    );
 
-	                    if (resposta == JOptionPane.NO_OPTION) {
-	                        JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), "Por favor, escolha outro nome para o arquivo.");
-	                        return;
-	                    }
-	                }
-					
-					try (PDDocument documento = new PDDocument()){
+				Venda vendaNota = listaVendas.getSelectedValue();
+
+				fileChooser.setSelectedFile(new File("ID_" + vendaNota.getId() + "_" + vendaNota.getData() + ".pdf"));
+
+				int userSelection = fileChooser.showSaveDialog(Janela.getInstance().getFrame());
+
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File arquivoSalvo = fileChooser.getSelectedFile();
+
+					if (arquivoSalvo.exists()) {
+						int resposta = JOptionPane.showConfirmDialog(Janela.getInstance().getFrame(),
+
+								"O arquivo já existe. Deseja sobrescrevê-lo?", "Arquivo existente",
+								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+						if (resposta == JOptionPane.NO_OPTION) {
+							JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+									"Por favor, escolha outro nome para o arquivo.");
+							return;
+						}
+					}
+
+					try (PDDocument documento = new PDDocument()) {
 						PDPage pagina = new PDPage();
 						documento.addPage(pagina);
-						
-						try (PDPageContentStream contentStream = new PDPageContentStream(documento, pagina)){
+
+						try (PDPageContentStream contentStream = new PDPageContentStream(documento, pagina)) {
 							// Centralizando e mostrando titulo da pagina
 							String titulo = "ManagePro";
 							float calcDoTexto = PDType1Font.HELVETICA_BOLD.getStringWidth(titulo) / 1000 * 20;
@@ -383,259 +382,273 @@ public class TelaGerenciamentoDeVendas {
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
 							contentStream.newLineAtOffset(centro, pagina.getMediaBox().getHeight() - 50);
- 							contentStream.showText(titulo);
+							contentStream.showText(titulo);
 							contentStream.endText();
 							// Dados da compra e da empresa
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 100);
- 							contentStream.showText("CNPJ: 93.157.244/0001-33");
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
- 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 120);
- 							contentStream.showText("ENDERE�O: Av. Prefeito Geraldo Pinho Alves, N� 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
- 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 140);
- 							contentStream.showText("DATA: " + vendaNota.getData().format(formatoData));
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
- 							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 160);
- 							contentStream.showText("------------------------------------------------------------------------------------------"
- 									+ "---------------------------------------------------------");
+							contentStream.showText("CNPJ: 93.157.244/0001-33");
 							contentStream.endText();
-							
+
+							contentStream.beginText();
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 120);
+
+							contentStream.showText(
+									"ENDEREÇO: Av. Prefeito Geraldo Pinho Alves, Nº 1.400, Maranguape I, Paulista/PE CEP: 53441-600");
+							contentStream.endText();
+
+							contentStream.beginText();
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 140);
+							contentStream.showText("DATA: " + vendaNota.getData().format(formatoData));
+							contentStream.endText();
+
+							contentStream.beginText();
+							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 160);
+							contentStream.showText(
+									"------------------------------------------------------------------------------------------"
+											+ "---------------------------------------------------------");
+							contentStream.endText();
+
 							String cliente = "Cliente";
 							float calcDoTexto2 = PDType1Font.HELVETICA_BOLD.getStringWidth(cliente) / 1000 * 20;
 							float centro2 = (pagina.getMediaBox().getWidth() - calcDoTexto2) / 2;
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 22);
- 							contentStream.newLineAtOffset(centro2, pagina.getMediaBox().getHeight() - 180);
- 							contentStream.showText(cliente);
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
-							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
- 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 210);
- 							contentStream.showText("CLIENTE: " + vendaNota.getCliente().getNome());
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
-							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
- 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 230);
- 							contentStream.showText("CPF: " + vendaNota.getCliente().getCpf());
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
-							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
- 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 250);
- 							contentStream.showText("DATA DE NASCIMENTO: " + vendaNota.getCliente().getDataNascimento().format(formatoData));
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
-							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
- 							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 270);
- 							contentStream.showText("TELEFONE: " + vendaNota.getCliente().getTelefone());
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
- 							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 290);
- 							contentStream.showText("------------------------------------------------------------------------------------------"
- 									+ "---------------------------------------------------------");
+							contentStream.newLineAtOffset(centro2, pagina.getMediaBox().getHeight() - 180);
+							contentStream.showText(cliente);
 							contentStream.endText();
-							
+
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 210);
+							contentStream.showText("CLIENTE: " + vendaNota.getCliente().getNome());
+							contentStream.endText();
+
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 230);
+							contentStream.showText("CPF: " + vendaNota.getCliente().getCpf());
+							contentStream.endText();
+
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 250);
+							contentStream.showText("DATA DE NASCIMENTO: "
+									+ vendaNota.getCliente().getDataNascimento().format(formatoData));
+							contentStream.endText();
+
+							contentStream.beginText();
+							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+							contentStream.newLineAtOffset(20, pagina.getMediaBox().getHeight() - 270);
+							contentStream.showText("TELEFONE: " + vendaNota.getCliente().getTelefone());
+							contentStream.endText();
+
+							contentStream.beginText();
+							contentStream.newLineAtOffset(12, pagina.getMediaBox().getHeight() - 290);
+							contentStream.showText(
+									"------------------------------------------------------------------------------------------"
+											+ "---------------------------------------------------------");
+							contentStream.endText();
+
 							String txtCupomFiscal = "Cupom Fiscal";
 							float calcDoTexto3 = PDType1Font.HELVETICA_BOLD.getStringWidth(txtCupomFiscal) / 1000 * 20;
 							float centro3 = (pagina.getMediaBox().getWidth() - calcDoTexto3) / 2;
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 22);
- 							contentStream.newLineAtOffset(centro3, pagina.getMediaBox().getHeight() - 310);
- 							contentStream.showText(txtCupomFiscal);
- 							contentStream.endText();
- 							
- 							contentStream.beginText();
+							contentStream.newLineAtOffset(centro3, pagina.getMediaBox().getHeight() - 310);
+							contentStream.showText(txtCupomFiscal);
+							contentStream.endText();
+
+							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
- 							contentStream.newLineAtOffset(140, pagina.getMediaBox().getHeight() - 340);
- 							contentStream.showText("C�D.  |             NOME             |   QUANTIDADE     "
- 									+ "  |   VALOR");
- 							contentStream.endText();
- 							
+							contentStream.newLineAtOffset(140, pagina.getMediaBox().getHeight() - 340);
+
+							contentStream.showText("CÓD.  |             NOME             |   QUANTIDADE     "
+
+									+ "  |   VALOR");
+							contentStream.endText();
+
 							int inicioLinha = 360;
-							for (ProdutoVendaDetails pvd : vendaNota.getProdutosVendidos()) {	
+							for (ProdutoVendaDetails pvd : vendaNota.getProdutosVendidos()) {
 								contentStream.beginText();
 								contentStream.newLineAtOffset(150, pagina.getMediaBox().getHeight() - inicioLinha);
 								contentStream.showText(pvd.getCodigoProduto().toString());
 								contentStream.endText();
-								
+
 								contentStream.beginText();
 								contentStream.newLineAtOffset(198, pagina.getMediaBox().getHeight() - inicioLinha);
 								contentStream.showText(pvd.getNomeProduto());
 								contentStream.endText();
-								
+
 								contentStream.beginText();
 								contentStream.newLineAtOffset(355, pagina.getMediaBox().getHeight() - inicioLinha);
 								contentStream.showText(String.valueOf(pvd.getQuantidade()));
 								contentStream.endText();
-								
+
 								contentStream.beginText();
 								contentStream.newLineAtOffset(440, pagina.getMediaBox().getHeight() - inicioLinha);
 								contentStream.showText(String.format("%.2f", pvd.getPreco()));
 								contentStream.endText();
-								
+
 								inicioLinha += 15;
-								
+
 							}
-							
+
 							inicioLinha += 25;
-							
+
 							contentStream.beginText();
 							contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-							contentStream.showText("TOTAL DA COMPRA: " + String.format("R$ %.2f", vendaNota.getPreco()));
+							contentStream
+									.showText("TOTAL DA COMPRA: " + String.format("R$ %.2f", vendaNota.getPreco()));
 							contentStream.endText();
 							inicioLinha += 15;
-							
+
 							contentStream.beginText();
 							contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-							contentStream.showText("M�TODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
+
+							contentStream
+									.showText("MÉTODO DE PAGAMENTO: " + vendaNota.getFormaDePagamentoEnum().name());
 							contentStream.endText();
 							inicioLinha += 15;
-							
-							if(vendaNota.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
+
+							if (vendaNota.getFormaDePagamentoEnum().equals(FormaPagamento.DINHEIRO)) {
 								contentStream.beginText();
 								contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
-								contentStream.showText("VALOR PAGO: " + String.format("R$ %.2f", vendaNota.getValorRecebido()));
+								contentStream.showText(
+										"VALOR PAGO: " + String.format("R$ %.2f", vendaNota.getValorRecebido()));
 								contentStream.endText();
 								inicioLinha += 15;
-								
+
 								contentStream.beginText();
 								contentStream.newLineAtOffset(160, pagina.getMediaBox().getHeight() - inicioLinha);
 								contentStream.showText("TROCO: " + String.format("R$ %.2f", vendaNota.getTroco()));
 								contentStream.endText();
-								
+
 							}
-			
-							
-						} 
-						
-						
-						
+
+						}
+
 						documento.save(arquivoSalvo.getAbsolutePath());
-						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Nota Fiscal criada e salva em: " + arquivoSalvo.getAbsolutePath());
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+								"Nota Fiscal criada e salva em: " + arquivoSalvo.getAbsolutePath());
 					} catch (IOException ex) {
-	                    ex.printStackTrace();
-	                    JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro ao criar o PDF.");
-	                }
+						ex.printStackTrace();
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), "Erro ao criar o PDF.");
+					}
 				}
-				
+
 			}
 		});
 		buttonNotaFiscal.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		buttonNotaFiscal.setBounds(10, 578, 210, 41);
 		vendaPanel.add(buttonNotaFiscal);
-		
+
 		funcionarioNome = new JLabel("");
 		funcionarioNome.setToolTipText("");
 		funcionarioNome.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		funcionarioNome.setBounds(125, 23, 331, 29);
 		vendaPanel.add(funcionarioNome);
-		
-		JLabel txtFuncionario = new JLabel("Funcion�rio:");
+
+		JLabel txtFuncionario = new JLabel("Funcionário:");
 		txtFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtFuncionario.setBounds(125, 1, 331, 29);
 		vendaPanel.add(txtFuncionario);
-		
+
 		btnDeletar = new JButton("Deletar");
 		btnDeletar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!listaVendas.isSelectionEmpty()) {
-					if(JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(), "Deseja realmente deletar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
+				if (!listaVendas.isSelectionEmpty()) {
+					if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(),
+							"Deseja realmente deletar a venda?", "Cancelar", JOptionPane.YES_NO_OPTION) == 0) {
 						try {
 							Long idDelete = listaVendas.getSelectedValue().getId();
 							vendaService.deletarVendaPorId(idDelete);
 						} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
-							JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(),
+									"Erro", JOptionPane.ERROR_MESSAGE);
 						}
 						atualizarListModels();
 					}
 				} else {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"Voc� precisa selecionar alguma das vendas antes de deletar!");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+
+							"Você precisa selecionar alguma das vendas antes de deletar!");
+
 				}
 			}
-			
+
 		});
 		btnDeletar.setForeground(new Color(255, 255, 255));
 		btnDeletar.setBackground(new Color(255, 0, 0));
 		btnDeletar.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		btnDeletar.setBounds(453, 578, 129, 41);
 		vendaPanel.add(btnDeletar);
-		
+
 		JLabel txtTotalCompra = new JLabel("Total da Compra:");
 		txtTotalCompra.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtTotalCompra.setBounds(10, 458, 146, 29);
 		vendaPanel.add(txtTotalCompra);
-		
+
 		totalCompra = new JLabel("R$ 0,00");
 		totalCompra.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		totalCompra.setBounds(154, 458, 119, 29);
 		vendaPanel.add(totalCompra);
-		
-		JLabel txtMetodoPagamento = new JLabel("M�todo de Pagamento:");
+
+		JLabel txtMetodoPagamento = new JLabel("Método de Pagamento:");
 		txtMetodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtMetodoPagamento.setBounds(10, 485, 195, 29);
 		vendaPanel.add(txtMetodoPagamento);
-		
+
 		metodoPagamento = new JLabel("");
 		metodoPagamento.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		metodoPagamento.setBounds(199, 485, 182, 29);
 		vendaPanel.add(metodoPagamento);
-		
+
 		JLabel txtCliente = new JLabel("Cliente:");
 		txtCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtCliente.setBounds(10, 394, 61, 32);
 		vendaPanel.add(txtCliente);
-		
+
 		clienteNome = new JLabel("");
 		clienteNome.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		clienteNome.setBounds(71, 394, 245, 29);
 		vendaPanel.add(clienteNome);
-		
+
 		JLabel txtCpf = new JLabel("CPF:");
 		txtCpf.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtCpf.setBounds(10, 422, 46, 29);
 		vendaPanel.add(txtCpf);
-		
+
 		cpfCliente = new JLabel("000.000.000-00");
 		cpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		cpfCliente.setBounds(55, 422, 135, 29);
 		vendaPanel.add(cpfCliente);
-		
+
 		txtTroco = new JLabel("Troco:");
 		txtTroco.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtTroco.setBounds(10, 540, 52, 29);
 		vendaPanel.add(txtTroco);
-		
+
 		txtValorRecebido = new JLabel("Valor Recebido:");
 		txtValorRecebido.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		txtValorRecebido.setBounds(10, 513, 129, 29);
 		vendaPanel.add(txtValorRecebido);
-		
+
 		valorRecebidolbl = new JLabel("R$ 0,00");
 		valorRecebidolbl.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		valorRecebidolbl.setBounds(141, 513, 119, 29);
 		vendaPanel.add(valorRecebidolbl);
-		
+
 		trocolbl = new JLabel("R$ 0,00");
 		trocolbl.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		trocolbl.setBounds(65, 540, 119, 29);
 		vendaPanel.add(trocolbl);
-		
+
 		JButton btnVoltar = new JButton("Voltar   ");
-		btnVoltar.setIcon(new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
+		btnVoltar.setIcon(
+				new ImageIcon(TelaGerenciamentoDeVendas.class.getResource("/com/managepro/assets/BackToHome.png")));
 		btnVoltar.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -650,94 +663,105 @@ public class TelaGerenciamentoDeVendas {
 				cpfCliente.setText("-");
 				dateChooserAte.cleanup();
 				dateChooserDe.cleanup();
-				
+
 				Janela.getInstance().getCardLayout().show(Janela.getInstance().getPanelPrincipal(), "Menu");
 			}
 		});
 		btnVoltar.setBounds(10, 11, 120, 35);
 		PrincipalPanel.add(btnVoltar);
 	}
-	
+
 	private void atualizarListModels() {
-		
+
 		if (ComboBoxFiltro.getSelectedItem().equals("IDFuncionario")) {
 			String pesquisaString = FieldPesquisar.getText().replaceAll(" ", "");
-			if(!pesquisaString.isEmpty()) {
-				if(pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
+			if (!pesquisaString.isEmpty()) {
+				if (pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
 					listModelVendas.clear();
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"ID de funcionario inv�lido, n�o pode conter letras, ou s�mbolos!");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+
+							"ID de funcionario inválido, n�o pode conter letras, ou símbolos!");
+
 				} else {
 					listModelVendas.clear();
-					try {																	
-						listModelVendas.addAll(vendaService.getVendasPorFuncionarioId(Long.valueOf(pesquisaString)));											
+					try {
+						listModelVendas.addAll(vendaService.getVendasPorFuncionarioId(Long.valueOf(pesquisaString)));
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-					}					
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			} else {
 				listModelVendas.clear();
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Voc� precisa digitar antes de Pesquisar");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+
+						"Você precisa digitar antes de Pesquisar");
+
 			}
 		}
-		
+
 		if (ComboBoxFiltro.getSelectedItem().equals("ID")) {
 			String pesquisaString = FieldPesquisar.getText().replaceAll(" ", "");
-			if(!pesquisaString.isEmpty()) {
+			if (!pesquisaString.isEmpty()) {
 				listModelVendas.clear();
-				if(pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
+				if (pesquisaString.matches(".*[a-zA-Z\\p{Punct}]+.*")) {
 					listModelVendas.clear();
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-							"ID inv�lido, n�o pode conter letras!");
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+
+							"ID inválido, não pode conter letras!");
+
 				} else {
 					try {
 						listModelVendas.clear();
 						listModelVendas.addAll(vendaService.getVendasPorId(Long.valueOf(pesquisaString)));
 					} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
-						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-					}																							
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
-				
+
 			} else {
 				listModelVendas.clear();
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Voc� precisa digitar antes de Pesquisar");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+						"Você precisa digitar antes de Pesquisar");
 			}
 		}
-		
+
 		if (ComboBoxFiltro.getSelectedItem().equals("Todas")) {
 			listModelVendas.clear();
 			try {
 				listModelVendas.addAll(vendaService.getTodasVendas());
 			} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		
+
 		if (ComboBoxFiltro.getSelectedItem().equals("Data")) {
-			
+
 			Instant instantDe = dateChooserDe.getDate().toInstant();
 			LocalDate de = instantDe.atZone(ZoneId.systemDefault()).toLocalDate();
 			Instant instantAte = dateChooserAte.getDate().toInstant();
 			LocalDate ate = instantAte.atZone(ZoneId.systemDefault()).toLocalDate();
 			if (de.compareTo(ate) >= 0) {
-				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-						"Voc� precisa selecionar as datas antes de Pesquisar");
+				JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+						"Você precisa selecionar as datas antes de Pesquisar");
 			} else {
 				try {
-					if(!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
+					if (!vendaService.getVendasPorIntervaloDeDatas(de, ate).isEmpty()) {
 						listModelVendas.clear();
-						listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));	
+						listModelVendas.addAll(vendaService.getVendasPorIntervaloDeDatas(de, ate));
 					} else {
 						listModelVendas.clear();
-						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), 
-								"Voc� precisa selecionar as datas antes de Pesquisar");
+						JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
+								"Você precisa selecionar as datas antes de Pesquisar");
 					}
 				} catch (ExcecaoDoSistema | ExcecaoDeNegocios ex) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(), ex.getMessage(), "Erro",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
 	}
+
 }

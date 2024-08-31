@@ -1,6 +1,7 @@
 package com.managepro.ui;
 
 import javax.swing.JPanel;
+
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
@@ -68,6 +69,7 @@ public class TelaEditarFuncionario {
 		editarFuncionarioPanel.setLayout(null);
 
 		tituloTela = new JLabel("EDITAR FUNCIONÁRIO");
+
 		tituloTela.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		tituloTela.setBounds(28, 20, 237, 38);
 		editarFuncionarioPanel.add(tituloTela);
@@ -105,7 +107,6 @@ public class TelaEditarFuncionario {
 		}
 		
 		campoCpf.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		campoCpf.setText("CPF:");
 		campoCpf.setBounds(28, 233, 180, 35);
 		editarFuncionarioPanel.add(campoCpf);
 		campoCpf.setColumns(10);

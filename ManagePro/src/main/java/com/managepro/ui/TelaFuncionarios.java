@@ -2,7 +2,6 @@ package com.managepro.ui;
 
 import javax.swing.JPanel;
 
-
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -266,8 +265,8 @@ public class TelaFuncionarios {
 					carregarFuncionariosNaTabela();
 
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
-							e1.getMessage(), "Erro",
+
+					JOptionPane.showMessageDialog(Janela.getInstance().getFrame(), e1.getMessage(), "Erro",
 							JOptionPane.WARNING_MESSAGE);
 					e1.printStackTrace();
 				}
@@ -302,6 +301,7 @@ public class TelaFuncionarios {
 
 					if (JOptionPane.showConfirmDialog(Janela.getInstance().getPanelPrincipal(),
 							"Deseja remover o funcionário " + nomeFuncionario + "?", "Remover Funcionário",
+
 							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						try {
 							funcionarioService.apagarFuncionario(cpfFuncionario);
@@ -379,6 +379,7 @@ public class TelaFuncionarios {
 		panel_1.add(scrollPane);
 
 		carregarFuncionariosNaTabela();
+
 	}
 
 	public void carregarFuncionariosNaTabela() {
@@ -395,7 +396,8 @@ public class TelaFuncionarios {
 						funcionario.getUsuario(), funcionario.getSenha() });
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(Janela.getInstance().getFrame(),
+
+			JOptionPane.showMessageDialog(Janela.getInstance().getPanelPrincipal(),
 					"Erro ao inserir funcionários na tabela, tente novamente mais tarde", "Erro",
 					JOptionPane.WARNING_MESSAGE);
 		}

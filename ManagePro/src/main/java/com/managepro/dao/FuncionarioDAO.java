@@ -26,7 +26,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			Connection connection = MySQLConnection.getConnection();
 			String sql = "SELECT f.id_funcionario, f.nome, f.cpf, t.numero, f.cargo, f.salario, f.data_admissao, f.usuario, f.senha "
 					+ "FROM funcionario AS f INNER JOIN telefone_funcionario AS t ON f.id_funcionario = t.id_funcionario "
-					+ "WHERE usuario = ?";
+					+ "WHERE f.usuario = ?";
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, user);
@@ -53,7 +53,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			return funcionario;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new ExcecaoDoSistema("Erro ao procurar funcionário pelo usuário", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 
 			String sql = "SELECT f.id_funcionario, f.nome, f.cpf, t.numero, f.cargo, f.salario, f.data_admissao, f.usuario , f.senha "
 					+ "FROM funcionario AS f INNER JOIN telefone_funcionario AS t ON f.id_funcionario = t.id_funcionario "
-					+ "WHERE id_funcionario = ?";
+					+ "WHERE f.id_funcionario = ?";
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setLong(1, id);
@@ -91,7 +91,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			return funcionario;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new ExcecaoDoSistema("Erro ao procurar funcionário pelo ID", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			return funcionario;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new ExcecaoDoSistema("Erro ao procurar funcionário pelo CPF", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 		}
 
 	}
@@ -155,7 +155,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			int linhasAfetadas = statementFuncionario.executeUpdate();
 
 			if (linhasAfetadas == 0) {
-				throw new SQLException("Falha ao Atualizar Funcionário, nenhum registro foi modificado!");
+				throw new SQLException("Falha ao Atualizar Funcion�rio, nenhum registro foi modificado!");
 			}
 
 			ResultSet rs = statementFuncionario.getGeneratedKeys();
@@ -167,7 +167,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 				statementTelefone.execute();
 
 			} else {
-				throw new SQLException("Falha ao Inserir Funcionário, ID não Gerado ou nulo!");
+				throw new SQLException("Falha ao Inserir Funcion�rio, ID n�o Gerado ou nulo!");
 			}
 
 			rs.close();
@@ -175,7 +175,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			connection.close();
 
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new ExcecaoDoSistema("Erro ao adicionar funcionário ao banco", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 		}
 
 	}
@@ -201,7 +201,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			int linhasAfetadas = statementFuncionario.executeUpdate();
 
 			if (linhasAfetadas == 0) {
-				throw new SQLException("Falha ao Atualizar Funcionário, nenhum registro foi modificado!");
+				throw new SQLException("Falha ao Atualizar Funcion�rio, nenhum registro foi modificado!");
 			}
 
 			String updateTelefoneQuery = "UPDATE telefone_funcionario SET numero = ? WHERE id_funcionario = ?";
@@ -219,7 +219,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			return true;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new ExcecaoDoSistema("Erro ao editar funcionário", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 		}
 	}
 
@@ -246,7 +246,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			return true;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new ExcecaoDoSistema("Erro ao remover funcionário do banco", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 		}
 	}
 
@@ -285,7 +285,7 @@ public class FuncionarioDAO implements FuncionarioRepository {
 			return funcionarios;
 
 		} catch (ClassNotFoundException | SQLException e) {
-			throw new ExcecaoDoSistema("Erro ao procurar funcionários", e);
+			throw new ExcecaoDoSistema("Ocorreu um erro na comunica��o do sistema.", e);
 		}
 	}
 

@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
+encoding//src/main/java/com/managepro/core/service/ProdutoService.java=UTF-8
 encoding//src/main/java/com/managepro/dao/ProdutoDAO.java=UTF-8
+encoding//src/main/java/com/managepro/ui/EditarProdutoVenda.java=UTF-8
 encoding//src/main/java/com/managepro/ui/TelaAdicionarProdutos.java=UTF-8
 encoding//src/main/java/com/managepro/ui/TelaContabilidade.java=UTF-8
 encoding//src/main/java/com/managepro/ui/TelaEditarProdutos.java=UTF-8
+encoding/<project>=UTF-8

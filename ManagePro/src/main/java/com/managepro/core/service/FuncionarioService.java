@@ -27,7 +27,7 @@ public class FuncionarioService {
 					funcionarioDAO.adicionarFuncionario(funcionario);
 				}
 			} else {
-				throw new ExcecaoDeNegocios("Erro ao validar os dados do funcionário.");
+				throw new ExcecaoDeNegocios("Erro ao validar os dados do funcion�rio.");
 			}
 		} catch (Exception e) {
 			throw new ExcecaoDoSistema("Erro ao criar funcionário: " + e.getMessage(), e);
@@ -36,32 +36,32 @@ public class FuncionarioService {
 
 	public boolean validarCampos(Funcionario funcionario) throws ValidacaoException {
 		if (funcionario.getNome().length() <= 4 || funcionario.getNome().length() >= 69) {
-			throw new ValidacaoException("O nome inserido não é válido. Deve ter entre 5 e 68 caracteres.");
+			throw new ValidacaoException("O nome inserido n�o � v�lido. Deve ter entre 5 e 68 caracteres.");
 		}
 
 		if (funcionario.getCpf().length() != 14) {
-			throw new ValidacaoException("CPF inválido. Deve conter 14 caracteres.");
+			throw new ValidacaoException("CPF inv�lido. Deve conter 14 caracteres.");
 		}
 
 		try {
 			BigDecimal salario = funcionario.getSalario();
 			if (salario == null || salario.compareTo(BigDecimal.ZERO) <= 0) {
-				throw new ValidacaoException("Salário inválido. Deve ser um número positivo.");
+				throw new ValidacaoException("Sal�rio inv�lido. Deve ser um n�mero positivo.");
 			}
 		} catch (NumberFormatException e) {
-			throw new ValidacaoException("Salário inválido. Deve conter apenas números.");
+			throw new ValidacaoException("Sal�rio inv�lido. Deve conter apenas n�meros.");
 		}
 
 		if (funcionario.getUsuario().length() < 4) {
-			throw new ValidacaoException("Nome de usuário muito curto. Deve ter pelo menos 4 caracteres.");
+			throw new ValidacaoException("Nome de usu�rio muito curto. Deve ter pelo menos 4 caracteres.");
 		} else if (funcionario.getUsuario().length() > 20) {
-			throw new ValidacaoException("Nome de usuário muito extenso. Máximo de 20 caracteres.");
+			throw new ValidacaoException("Nome de usu�rio muito extenso. M�ximo de 20 caracteres.");
 		}
 
 		if (funcionario.getSenha().length() < 4) {
 			throw new ValidacaoException("Senha muito curta. Deve ter pelo menos 4 caracteres.");
 		} else if (funcionario.getSenha().length() > 20) {
-			throw new ValidacaoException("Senha muito extensa. Máximo de 20 caracteres.");
+			throw new ValidacaoException("Senha muito extensa. M�ximo de 20 caracteres.");
 		}
 		return true;
 	}
@@ -75,11 +75,11 @@ public class FuncionarioService {
 					return true;
 				} else {
 					throw new ExcecaoDoSistema(
-							"Erro ao editar funcionário: Funcionário não encontrado com o CPF: " + cpfOriginal);
+							"Erro ao editar funcion�rio: Funcion�rio n�o encontrado com o CPF: " + cpfOriginal);
 				}
 			}
 		} catch (Exception e) {
-			throw new ExcecaoDeNegocios("Erro ao editar funcionário: " + e.getMessage(), e);
+			throw new ExcecaoDeNegocios("Erro ao editar funcion�rio: " + e.getMessage(), e);
 		}
 		return false;
 	}
@@ -91,10 +91,10 @@ public class FuncionarioService {
 				funcionarioDAO.removerFuncionario(funcionarioRetornoBanco.getId());
 				return true;
 			} else {
-				throw new ExcecaoDoSistema("Erro ao remover funcionário: Funcionário não encontrado com o CPF: " + cpf);
+				throw new ExcecaoDoSistema("Erro ao remover funcion�rio: Funcion�rio n�o encontrado com o CPF: " + cpf);
 			}
 		} catch (Exception e) {
-			throw new ExcecaoDeNegocios("Erro ao remover funcionário: " + e.getMessage(), e);
+			throw new ExcecaoDeNegocios("Erro ao remover funcion�rio: " + e.getMessage(), e);
         }
 	}
 
@@ -102,7 +102,7 @@ public class FuncionarioService {
 		try {
 			return funcionarioDAO.listaDeFuncionarios();
 		} catch (Exception e) {
-			throw new ExcecaoDoSistema("Erro ao obter lista de funcionários: " + e.getMessage(), e);
+			throw new ExcecaoDoSistema("Erro ao obter lista de funcion�rios: " + e.getMessage(), e);
 		}
 	}
 }

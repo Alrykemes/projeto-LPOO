@@ -20,53 +20,58 @@ public class Janela {
 	private TelaNovaVenda telaNovaVenda;
 	private TelaAdicionarCliente telaAdicionarCliente;
 	private TelaGerenciamentoDeVendas telaGerenciamentoDeVendas;
-	private TelaEditarFuncionario telaEditarFuncionario;
 	private TelaFuncionarios telaFuncionarios;
+	private TelaEditarFuncionario telaEditarFuncionario;
 	private TelaContabilidade telaContabilidade;
-
+	
+	
 	public static Janela getInstance() {
-		if (instance == null) {
+		if(instance == null) {
 			instance = new Janela();
 		}
 		return instance;
 	}
-
+	
 	public CardLayout getCardLayout() {
 		return this.cardLayout;
 	}
-
+	
 	public JPanel getPanelPrincipal() {
 		return this.panelPrincipal;
 	}
-
+	
 	public TelaLogin getTelaLogin() {
 		return this.telaLogin;
 	}
-
+	
 	public TelaAdicionarCliente getTelaAdicionarCliente() {
-		return this.telaAdicionarCliente;
+	    return this.telaAdicionarCliente;
 	}
-
-	public TelaEditarFuncionario getTelaEditarFuncionario() {
-		return this.telaEditarFuncionario;
-	}
-
+	
 	public TelaNovaVenda getTelaNovaVenda() {
 		return this.telaNovaVenda;
 	}
-
-	public TelaFuncionarios getTelaFuncionarios() {
-		return this.telaFuncionarios;
-	}
-
+	
 	public TelaEstoque getTelaEstoque() {
 		return this.telaEstoque;
 	}
-
+	
+	public TelaFuncionarios getTelaFuncionarios() {
+		return this.telaFuncionarios;
+	}
+	
+	public TelaEditarFuncionario getTelaEditarFuncionario() {
+		return this.telaEditarFuncionario;
+	}
+	
 	public TelaEditarProdutos getTelaEditarProdutos() {
 		return this.telaEditarProdutos;
 	}
-
+	
+	public TelaContabilidade getTelaContabilidade() {
+		return this.telaContabilidade;
+	}
+	
 	public JFrame getFrame() {
 		return this.frame;
 	}
@@ -78,17 +83,16 @@ public class Janela {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("ManagePro");
-		frame.setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(TelaMenu.class.getResource("/com/managepro/assets/ManageProIcon.png")));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(TelaMenu.class.getResource("/com/managepro/assets/ManageProIcon.png")));
 		frame.setBounds(0, 0, 1020, 680);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-
+		
 		panelPrincipal = new JPanel(new CardLayout());
 		frame.add(panelPrincipal);
-
-		try {
+		
+		try {			
 			telaLogin = new TelaLogin();
 			telaMenu = new TelaMenu();
 			telaEstoque = new TelaEstoque();
@@ -98,26 +102,26 @@ public class Janela {
 			telaAdicionarCliente = new TelaAdicionarCliente();
 			telaGerenciamentoDeVendas = new TelaGerenciamentoDeVendas();
 			telaFuncionarios = new TelaFuncionarios();
-			telaContabilidade = new TelaContabilidade();
 			telaEditarFuncionario = new TelaEditarFuncionario();
+			telaContabilidade = new TelaContabilidade();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
+		
 		panelPrincipal.add(telaContabilidade.getPanel(), "Contabilidade");
+		panelPrincipal.add(telaEditarFuncionario.getPanel(), "EditarFuncionario");
 		panelPrincipal.add(telaFuncionarios.getPanel(), "Funcionarios");
 		panelPrincipal.add(telaGerenciamentoDeVendas.getPanel(), "GerenciamentoDeVendas");
 		panelPrincipal.add(telaAdicionarCliente.getPanel(), "AdicionarCliente");
 		panelPrincipal.add(telaNovaVenda.getPanel(), "NovaVenda");
 		panelPrincipal.add(telaAdicionarProdutos.getPanel(), "AdicionarProdutos");
 		panelPrincipal.add(telaEditarProdutos.getPanel(), "EditarProdutos");
-		panelPrincipal.add(telaEditarFuncionario.getPanel(), "EditarFuncionario");
 		panelPrincipal.add(telaEstoque.getPanel(), "Estoque");
 		panelPrincipal.add(telaMenu.getPanel(), "Menu");
 		panelPrincipal.add(telaLogin.getPanel(), "Login");
-
-		cardLayout = (CardLayout) (panelPrincipal.getLayout());
+		
+		cardLayout = (CardLayout)(panelPrincipal.getLayout());
 		cardLayout.show(panelPrincipal, "Login");
-
+		
 	}
 }
